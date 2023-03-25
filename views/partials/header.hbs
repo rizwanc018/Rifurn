@@ -47,8 +47,8 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </a>
                     <ul class="dropdown-menu pull-right" aria-labelledby="navbarDropdown">
@@ -57,11 +57,125 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Login</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal"
+                                href="#">Login</a></li>
                         <li><a class="dropdown-item" href="#">Logout</a></li>
                     </ul>
-                </li> 
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center">
+                    <h4>Login</h4>
+                </div>
+                <div class="d-flex flex-column text-center">
+                    <form action="/user/login">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email1" placeholder="Your email address...">
+                        </div>
+                        <div class="my-3"></div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password1" placeholder="Your password...">
+                        </div>
+                        <div class="mb-3"></div>
+                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Login</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <div class="small signup-section">Not a member yet? <a href="#" data-bs-toggle="modal"
+                        data-bs-target="#signUpModal" class="text-danger"> Sign Up</a>.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Signup Modal --}}
+<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center">
+                    <h4>Signup</h4>
+                </div>
+                <div class="d-flex flex-column">
+                    <form id="mobileForm" novalidate action="">
+                        <div class="input-group mb-1">
+                            <span class="input-group-text">+91</span>
+                            <input type="tel" id="mobile" name="mobile" class="form-control" pattern="^[6-9]\d{9}$"
+                                value="" required />
+                        </div>
+                        <label class="form-label" for="mobile">Mobile</label>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-outline-danger btn-block btn-round">Continue</button>
+                        </div>
+
+                    </form>
+
+                    <form class="d-none" id="otpForm" novalidate action="user/signup" method="POST">
+                        {{!-- <div class="">
+                            <input type="tel" id="mobile" name="mobile" class="form-control" pattern="^[6-9]\d{9}$"
+                                value="" />
+                            <label class="form-label" for="mobile">Mobile</label>
+                        </div> --}}
+
+                        <div class="form-outline">
+                            <input type="" id="otp" name="otp" class="form-control" pattern="^[0-9]\d{4}$" value="" />
+                            <label class="form-label" for="otp">OTP</label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-outline-danger btn-block btn-round">Continue</button>
+                        </div>
+
+                    </form>
+                    <script>
+                        const mobileForm = document.querySelector('#mobileForm');
+                        const otpForm = document.querySelector('#otpForm');
+                        let url = window.location.origin
+                        mobileForm.addEventListener('submit', e => {
+                            let mobileNum = document.querySelector('#mobile').value
+                            e.preventDefault();
+                            if (!mobileForm.checkValidity()) {
+                            } else {
+                                console.log(mobileNum)
+                                mobileForm.classList.add('d-none')
+                                otpForm.classList.remove('d-none')
+                                $.ajax({
+                                    url: `${url}/twilio/sendotp`,
+                                    method: "POST",
+                                    data: {mobile: mobileNum},
+                                    success: res => {
+                                        console.log(res)
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                    }
+                                })
+                            }
+                            mobileForm.classList.add('was-validated');
+                        })
+                    </script>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <div class="signup-section small">Already member? <a href="#" data-bs-toggle="modal"
+                        data-bs-target="#loginModal" class="text-info text-danger">Login</a>.</div>
+            </div>
+        </div>
+    </div>
+</div>
