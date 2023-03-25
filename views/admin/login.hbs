@@ -1,0 +1,51 @@
+<!-- Section: Design Block -->
+<section class="background-radial-gradient overflow-hidden">
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+        <div class="row gx-lg-5 align-items-center mb-5 justify-content-center">
+
+            <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+                <div class="card bg-glass">
+                    <div class="card-body px-4 py-5 px-md-5">
+                        <form novalidate action="/admin/login" method="POST">
+                            <!-- Email input -->
+                            <h5 class="text-danger">Admin Login</h5>
+                            <div class="form-outline mb-4 form-floating">
+                                <input type="text" id="username" name="username" class="form-control"
+                                    placeholder="Username" required />
+                                <label class="form-label" for="username">Username</label>
+                            </div>
+
+                            <!-- Password input -->
+                            <div class="form-outline mb-3 form-floating">
+                                <input type="password" id="password" name="password" class="form-control"
+                                    placeholder="password" required />
+                                <label class="form-label" for="password">Password</label>
+                            </div>
+                            <div class="row">
+                                <button type="submit" class="col-4 btn btn-primary mt-4 py-2 mx-auto">
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                        <script>
+                            const form = document.querySelector('form');
+                            const uname = document.querySelector('#username')
+                            form.addEventListener('submit', e => {
+                                if(uname.value.trim() === "") {
+                                    uname.value = ""
+                                }
+                                if (!form.checkValidity()) {
+                                    e.preventDefault();
+                                }
+                                form.classList.add('was-validated');
+                            })
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

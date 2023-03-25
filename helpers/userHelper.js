@@ -2,11 +2,12 @@ import bcrypt from "bcrypt";
 import UserModel from "../models/userModel.js";
 
 const userHelper = {
-    doSignup: (body) => {
+    doSignup: (req, res) => {
         return new Promise(async (resolve, reject) => {
-            const { firstname, lastname, mobile, email, password } = body
-            if (mobile && email && password) {
-                const hash = await bcrypt.hash(password, 10)
+            const { mobile } = req.body
+            console.log(`=============================req.body`, req.body);
+            if (mobile) {
+                const status = sendOTP(req, res)
                 UserModel.create({ firstname: firstname, lastname: lastname, email: email, mobile: Number(mobile), password: hash })
                     .then(data => {
                         resolve(data)

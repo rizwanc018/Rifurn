@@ -2,7 +2,7 @@ import userHelper from "../helpers/userHelper.js";
 
 const userController = {
     doSignup : (req, res) => {
-        userHelper.doSignup(req.body)
+        userHelper.doSignup(req, res)
         .then(data => {
             res.send(data)
         }).catch(err => {
