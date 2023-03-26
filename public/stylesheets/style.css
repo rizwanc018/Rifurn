@@ -26,7 +26,8 @@ header{
 }
 
 .dropdown-menu.pull-right {
-    left: -350% !important;
+    left: auto !important;
+    right: 0;
 }
 
 body {

@@ -9,6 +9,7 @@ const client = twilio(TWILIO_SID, TWILIO_AUTH_TOKEN, { lazyLoading: true });
 const sendOTP = async (req, res) => {
     const { mobile } = req.body
     try {
+        console.log(`herrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr`);
         const status = await client.verify.v2.services(TWILIO_SERVICE_SID)
             .verifications
             .create({ to: `+91${mobile}`, channel: 'sms' })

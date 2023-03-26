@@ -13,19 +13,23 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.png"> --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css">
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
-    <link rel='stylesheet' href='/stylesheets/style.css' /> 
+    <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
-    {{!-- {{#if isAdmin}}
+    {{#if isAdmin}}
     {{>adminHeader}}
     {{else}}
-    {{/if}} --}}
     {{> header }}
+    {{/if}}
 
     {{{body}}}
-    
+
+
+    {{#if isAdmin}}
+    {{else}}
     {{> footer }}
+    {{/if}}
 
 </body>
 

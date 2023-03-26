@@ -8,6 +8,8 @@ import * as dotenv from 'dotenv'
 import userRouter from './routes/userRouter.js';
 import twilioRouter from './routes/twilioRouter.js'
 import adminRouter from './routes/adminRouter.js';
+import session from 'express-session';
+
 
 const app = express()
 const __filename = fileURLToPath(import.meta.url);
@@ -22,6 +24,17 @@ app.use(express.urlencoded({ extended: false }));
 app.listen(process.env.PORT, () => {
     console.log(`Listening on PORT : ${process.env.PORT}`);
 })
+app.use(session({
+    secret: 'my-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 6000000 }
+}));
+
+// HBS helper
+hbs.registerHelper("inc", function (value, options) {
+    return parseInt(value) + 1;
+});
 
 // DB
 mongoose.connect(process.env.DATABASE_URL)
@@ -35,5 +48,5 @@ app.use('/twilio', twilioRouter)
 app.use('/admin', adminRouter)
 
 app.get('/', (req, res) => {
-    res.status(200).render('index', {title: "Rifurn"})
+    res.status(200).render('index', { title: "Rifurn" })
 })

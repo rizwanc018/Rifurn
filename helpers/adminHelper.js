@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 import adminModel from "../models/adminModel.js";
+import categoryModel from "../models/categoryModel.js"
+
 
 const adminHelper = {
     doLogin: (req, res) => {
@@ -15,6 +17,31 @@ const adminHelper = {
             } else {
                 reject(false)
             }
+        })
+    },
+    addCategory: (req, res) => {
+        let { category } = req.body
+        category = category.charAt(0).toUpperCase() + category.slice(1);
+        return new Promise(async (resolve, reject) => {
+            if (category) {
+                categoryModel.create({ category: category }).then(status => {
+                    resolve(status)
+                }).catch(err => {
+                    reject(err)
+                })
+            } else {
+                reject("Category not provided")
+            }
+        })
+    },
+    getAllCategories: () => {
+        return new Promise(async (resolve, reject) => {
+            categoryModel.find({})
+                .then(categories => {
+                    resolve(categories)
+                }).catch(err => {
+                    reject(err)
+                })
         })
     },
     getAllUsers: () => {
@@ -60,7 +87,7 @@ const adminHelper = {
             const { firstname, lastname, email, password } = req.body
             if (email && password && firstname) {
                 let emailExist = await Usermodel.exists({ email: email })
-                if (emailExist) { reject({err: "Email already exist", data: req.body}); return }
+                if (emailExist) { reject({ err: "Email already exist", data: req.body }); return }
                 const passwordHash = await bcrypt.hash(password, 10)
                 Usermodel.create({ firstname: firstname, lastname: lastname, email: email, password: passwordHash }).then(data => {
                     resolve(data)
