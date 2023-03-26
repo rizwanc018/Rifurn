@@ -14,10 +14,14 @@ const verifyAdmin = (req, res, next) => {
 adminRouter.get('/login', adminController.getLoginPage)
 adminRouter.post('/login', adminController.doLogin)
 adminRouter.get('/dashboard', verifyAdmin, adminController.showDashboard)
-adminRouter.get('/categories', verifyAdmin, adminController.showCategories)
+// adminRouter.get('/categories', verifyAdmin, adminController.showCategories)
+adminRouter.get('/categories', adminController.showCategories)
 adminRouter.get('/products', verifyAdmin, adminController.showProducts)
 adminRouter.get('/users', verifyAdmin, adminController.showUsers)
 adminRouter.post('/addcategoty', verifyAdmin, adminController.addCategoty)
+adminRouter.get('/category/delete/:id', verifyAdmin, adminController.deleteCategory)
+adminRouter.put('/category/edit/:id',adminController.editCategory)
+
 
 
 

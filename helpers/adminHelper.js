@@ -34,6 +34,24 @@ const adminHelper = {
             }
         })
     },
+    deleteCategory: (req) => {
+        return new Promise(async (resolve, reject) => {
+            categoryModel.deleteOne({ _id: req.params.id }).then(status => {
+                resolve(status)
+            }).catch(err => {
+                reject(err)
+            })
+        })
+    },
+    editCategory: (req) => {
+        return new Promise(async (resolve, reject) => {
+            categoryModel.updateOne({ _id: req.params.id }, {category: req.body.category}).then(status => {
+                resolve(status)
+            }).catch(err => {
+                reject(err)
+            })
+        })
+    },
     getAllCategories: () => {
         return new Promise(async (resolve, reject) => {
             categoryModel.find({})

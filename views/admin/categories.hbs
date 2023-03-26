@@ -6,13 +6,10 @@
 <hr>
 <div class="container">
     <div class="row justify-content-end mb-3">
-        {{!-- <a href="/admin/adduser" class="btn btn-success col-3 me-3 small">
-            <i class="fa-solid fa-plus"></i>
-            Add Category
-        </a> --}}
         <a class="btn btn-success col-3 me-3" data-bs-toggle="modal" data-bs-target="#addCategoryModal" href="#"><i
                 class="fa-solid fa-plus"></i>
-            Add Category</a>
+            Add Category
+        </a>
     </div>
 
     <div class="row">
@@ -30,12 +27,13 @@
                     <th scope="row" class="nr">{{inc @index}}</th>
                     <td>{{category}}</td>
                     <td>
-                        <a class="btn btn-primary btn-sm px-2" href="/admin/edit/{{_id}}"><i
+                        <a class="btn btn-primary btn-sm px-2" data-bs-toggle="modal" onclick="editCategory(this)"
+                            category={{category}} objId={{_id}} data-bs-target="#editCategoryModal" href="#"><i
                                 class="fa fa-pen-to-square"></i>
                         </a>
                         <a class="btn btn-danger btn-sm px-2"
                             onclick="return confirm('are you sure you want to delete {{category}}?')"
-                            href="/admin/delete/{{_id}}"><i class="fa fa-trash"></i></a>
+                            href="/admin/category/delete/{{_id}}"><i class="fa fa-trash"></i></a>
                     </td>
 
                 </tr>
@@ -45,8 +43,8 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+{{!-- Add Category --}}
+<div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -59,8 +57,8 @@
                 <div class="d-flex flex-column text-center">
                     <form action="">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="category" placeholder="Category. . ." required
-                                value="">
+                            <input type="text" class="form-control" id="addFormcategory" placeholder="Category. . ."
+                                required value="">
                         </div>
                         <div class="my-3"></div>
                         <button type="submit" class="btn btn-primary btn-block btn-round">Add category</button>
@@ -71,11 +69,66 @@
     </div>
 </div>
 
+{{!-- Edit Category --}}
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center">
+                    <h4>Edit Category</h4>
+                </div>
+                <div class="d-flex flex-column text-center">
+                    <form action="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="categoryEditInput" placeholder="Category. . ."
+                                required value="">
+                        </div>
+                        <div class="my-3"></div>
+                        <button type="submit" class="btn btn-primary btn-block btn-round">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    const addCategoryform = document.querySelector('#addCategoryModal')
+    //    $('td').on('click', 'a', () => {
+    //        console.log("cliced A")
+    //    })
+    let item
+    let id
+    let categoryEditInput
+    function editCategory(e) {
+        item = e.getAttribute("category")
+        id = e.getAttribute("objId")
+        categoryEditInput = document.querySelector('#categoryEditInput')
+        categoryEditInput.value = item
+    }
+    const editCategoryForm = document.querySelector('#editCategoryModal')
     let url = window.location.origin
+    editCategoryForm.addEventListener('submit', e => {
+        e.preventDefault();
+        $.ajax({
+            url: `${url}/admin/category/edit/${id}`,
+            method: "PUT",
+            data: { category: categoryEditInput.value },
+            success: res => {
+                window.location.reload()
+            },
+            error: err => {
+                console.log(err)
+                alert("Error")
+            }
+        })
+    })
+
+    const addCategoryform = document.querySelector('#addCategoryModal')
     addCategoryform.addEventListener('submit', e => {
-        let category = document.querySelector('#category')
+        let category = document.querySelector('#addFormcategory')
         e.preventDefault();
         $.ajax({
             url: `${url}/admin/addcategoty`,
@@ -83,8 +136,7 @@
             data: { category: category.value },
             success: res => {
                 console.log(res)
-                alert(res)
-                category.value = ""
+                window.location.reload()
             },
             error: err => {
                 console.log(err)

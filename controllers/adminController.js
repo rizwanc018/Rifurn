@@ -16,8 +16,7 @@ const adminController = {
             })
     },
     showDashboard: (req, res) => {
-        // res.render('admin/dashboard', {isAdmin: req.session.isAdmin})
-        res.render('admin/dashboard', { isAdmin: true })
+        res.render('admin/dashboard', {isAdmin: req.session.isAdmin})
     },
     addCategoty: (req, res) => {
         adminHelper.addCategory(req,res)
@@ -25,6 +24,20 @@ const adminController = {
             res.status(200).send("Category Created Successfully")
         }).catch(err => {
             res.status(400).send(err)
+        })
+    },
+    deleteCategory: (req, res) => {
+        adminHelper.deleteCategory(req,res).then(() => {
+            res.status(200).redirect('/admin/categories')
+        }).catch(err => {
+            res.redirect('/')
+        })
+    },
+    editCategory: (req, res) => {
+        adminHelper.editCategory(req,res).then((status) => {
+            res.status(200).send(status.acknowledged)
+        }).catch(err => {
+            res.redirect('/')
         })
     },
     showCategories: (req, res) => {
