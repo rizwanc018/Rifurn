@@ -4,5 +4,7 @@ import userController from '../controllers/userController.js';
 const userRouter = express.Router()
 
 userRouter.post('/signup', userController.doSignup)
+userRouter.post('/verifyotp', userController.doOTPVerification)
+
 
 export default userRouter;

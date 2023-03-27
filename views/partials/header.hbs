@@ -128,8 +128,7 @@
 
                     <form class="d-none" id="otpForm" novalidate action="user/signup" method="POST">
                         <div class="">
-                            <input type="tel" id="otpNum" name="mobile" class="form-control"
-                                value="" />
+                            <input type="tel" id="otpNum" name="mobile" class="form-control" value="" />
                             <label class="form-label" for="mobile">Mobile</label>
                         </div>
                         <div class="form-outline">
@@ -156,11 +155,10 @@
                                 mobileForm.classList.add('d-none')
                                 otpForm.classList.remove('d-none')
                                 $.ajax({
-                                    url: `${url}/twilio/signup`,
+                                    url: `${url}/user/signup`,
                                     method: "POST",
                                     data: { mobile: mobileNum },
                                     success: res => {
-                                        console.log(res)
                                         otpNum.value = res
                                     },
                                     error: err => {
@@ -178,13 +176,16 @@
                             } else {
                                 console.log(otp)
                                 $.ajax({
-                                    url: `${url}/twilio/verifyotp`,
+                                    url: `${url}/user/verifyotp`,
                                     method: "POST",
                                     data: { mobile: otpNum.value, otp: otp },
                                     success: res => {
-                                        console.log(res)
-                                        //window.location.href='/'
-                                        alert(res)
+                                        if (res.valid) {
+                                            alert(`Signup success ${res}`)
+                                            window.location.reload()
+                                        } else {
+                                            alert("invalid OTP")
+                                        }
                                     },
                                     error: err => {
                                         console.log(err)

@@ -1,40 +1,40 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/userModel.js";
+import { sendOTP, verifyOTP } from "../helpers/twilioHelper.js";
+
 
 const userHelper = {
     doSignup: (req, res) => {
         return new Promise(async (resolve, reject) => {
-            const { mobile } = req.body
-            console.log(`=============================req.body`, req.body);
+            let { mobile } = req.body
+            mobile = Number("91" + mobile)
             if (mobile) {
-                const status = sendOTP(req, res)
-                UserModel.create({ firstname: firstname, lastname: lastname, email: email, mobile: Number(mobile), password: hash })
-                    .then(data => {
-                        resolve(data)
-                    }).catch(err => {
-                        reject(err)
-                    })
+                const numberExist = await UserModel.exists({ mobile: mobile })
+                if (numberExist) {
+                    reject("Number already exist try login")
+                } else {
+                    const status = await sendOTP(mobile)
+                    resolve(status.to)
+                }
             } else {
-                reject("no email/password")
+                reject("Invalid mobile number")
             }
         })
     },
-
-    // doLogin: (req) => {
-    //     return new Promise(async (resolve, reject) => {
-    //         const { email, password } = req.body
-    //         const userCreds = await Usermodel.findOne({ email: email })
-    //         if (userCreds) {
-    //             const status = await bcrypt.compare(password, userCreds.password)
-    //             if (status) {
-    //                 resolve(userCreds)
-    //             }
-    //             reject("Invalid Credentials")
-    //         } else {
-    //             reject("Invalid Credentials")
-    //         }
-    //     })
-    // }
+    doOTPVerificationForSignup: (req, res) => {
+        const { mobile, otp } = req.body
+        return new Promise(async (resolve, reject) => {
+            if (otp) {
+                const status = await verifyOTP(mobile, otp)
+                if (status.valid) {
+                    UserModel.create({ mobile: mobile })
+                    resolve(status)
+                }
+            } else {
+                reject("Invalid OTP")
+            }
+        })
+    }
 }
 
 export default userHelper

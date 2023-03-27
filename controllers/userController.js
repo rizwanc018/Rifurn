@@ -6,6 +6,14 @@ const userController = {
         .then(data => {
             res.send(data)
         }).catch(err => {
+            res.status(400).send(err)
+        })
+    },
+    doOTPVerification: (req, res) => {
+        userHelper.doOTPVerificationForSignup(req, res)
+        .then(data => {
+            res.status(200).send(data)
+        }).catch(err => {
             res.send(err)
         })
     }
