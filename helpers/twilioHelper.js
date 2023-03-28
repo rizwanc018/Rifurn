@@ -25,6 +25,7 @@ const verifyOTP = async (mobile, otp) => {
             .verificationChecks
             .create({ to: mobile, code: otp })
             .then(status => {
+                console.log(status)
                 resolve(status)
             }).catch(err => {
                 reject(err || 'Something went wrong')
