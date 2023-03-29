@@ -1,3 +1,4 @@
+import { response } from "express"
 import adminHelper from "../helpers/adminHelper.js"
 
 const adminController = {
@@ -50,7 +51,7 @@ const adminController = {
     showAddProduct: (req, res) => {
         adminHelper.getAllCategories()
             .then(categories => {
-                res.render("admin/addProduct", { isAdmin: true, categories: categories })
+                res.render("admin/addProduct", { isAdmin: req.session.isAdmin || true, categories: categories })
             }).catch(err => {
                 console.log(err);
                 res.status(400).redirect('/')
@@ -64,8 +65,18 @@ const adminController = {
                 res.redirect('/admin/product/add')
             })
     },
-    showProducts: (req, res) => {
-        res.render("admin/products", { isAdmin: true })
+    getAllProducts: (req, res) => {
+        adminHelper.getAllProducts()
+        .then(products => {
+            res.render("admin/products", { isAdmin: true, products })
+        }).catch(err => {
+            console.log(err);
+        })
+    },
+    deleteProduct: (req, res) => {
+        adminHelper.deleteProduct(req).then(response => {
+            res.redirect("/admin/products")
+        })
     },
     showUsers: (req, res) => {
         res.send("Users")

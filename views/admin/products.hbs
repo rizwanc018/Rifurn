@@ -6,8 +6,7 @@
 <hr>
 <div class="container">
     <div class="row justify-content-end mb-3">
-        <a class="btn btn-success col-3 me-3" href="/admin/product/add"><i
-                class="fa-solid fa-plus"></i>
+        <a class="btn btn-success col-3 me-3" href="/admin/product/add"><i class="fa-solid fa-plus"></i>
             Add Product
         </a>
     </div>
@@ -22,30 +21,35 @@
                     <th scope="col">Category</th>
                     <th scope="col">Stock</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Images</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
+                {{#each products }}
                 <tr>
-                    <th scope="row" class="nr">1</th>
-                    <td>Wooden Chair</td>
-                    <td>2500</td>
-                    <td>Chair</td>
-                    <td>26</td>
-                    <td>Lorem ipsum dolor sit amet.</td>
-
+                    <th scope="row" class="nr">{{inc @index}}</th>
+                    <td>{{productName}}</td>
+                    <td>{{price}}</td>
+                    <td>{{category}}</td>
+                    <td>{{stock}}</td>
+                    <td class="small">{{description}}</td>
+                    <td> 
+                        {{#each images }}
+                            <img src=https://res.cloudinary.com/dz9knbtwi/image/upload/h_50,w_50/{{this}} alt="" srcset="">
+                        {{/each}}
+                    </td>
 
                     <td>
-                        <a class="btn btn-primary btn-sm px-2" data-bs-toggle="modal" onclick="editCategory(this)"
-                            category={{category}} objId={{_id}} data-bs-target="#editCategoryModal" href="#">
+                        <a href="/admin/product/edit/{{_id}}?img={{images}}" class="btn btn-primary btn-sm px-2" data-bs-toggle="modal" data-bs-target="#editCategoryModal" href="#">
                             <i class="fa fa-pen-to-square"></i>
                         </a>
                         <a class="btn btn-danger btn-sm px-2"
-                            onclick="return confirm('are you sure you want to delete {{category}}?')"
-                            href="/admin/category/delete/{{_id}}"><i class="fa fa-trash"></i></a>
+                            onclick="return confirm('are you sure you want to delete {{productName}}?')"
+                            href="/admin/product/delete/{{_id}}?img={{images}}"><i class="fa fa-trash"></i></a>
                     </td>
-
                 </tr>
+                {{/each}}
             </tbody>
         </table>
     </div>
