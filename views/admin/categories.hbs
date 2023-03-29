@@ -109,7 +109,7 @@
         categoryEditInput.value = item
     }
     const editCategoryForm = document.querySelector('#editCategoryModal')
-    let url = window.location.origin
+    var url = window.location.origin
     editCategoryForm.addEventListener('submit', e => {
         e.preventDefault();
         $.ajax({

@@ -1,0 +1,37 @@
+<form enctype="multipart/form-data" action="/admin/product/add" method="POST">
+    <div class="row mb-3">
+        <div class="col-6">
+            <label for="productName" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="productName" name="productName" aria-describedby="productNameHelp">
+        </div>
+
+        <div class="col-6">
+            <label for="productCategory" class="form-label">Category</label>
+            <select id="productCategory" name="productCategory" class="form-select" aria-label="Default select example">
+                {{#each categories }}
+                <option value="{{category}}">{{category}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <label for="productPrice" class="form-label">Price</label>
+            <input type="text" class="form-control" id="productPrice" name="productPrice"
+                aria-describedby="productPrice">
+        </div>
+        <div class="col-6">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock" aria-describedby="Stock">
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="productDescription" class="form-label">Description</label>
+        <textarea class="form-control" id="productDescription" name="productDescription" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="image" class="form-label">Description</label>
+        <input type="file" class="form-control" id="image" name="image" aria-describedby="productImage" multiple>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Product</button>
+</form>
