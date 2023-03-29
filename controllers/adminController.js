@@ -1,4 +1,3 @@
-import { response } from "express"
 import adminHelper from "../helpers/adminHelper.js"
 
 const adminController = {
@@ -17,67 +16,36 @@ const adminController = {
     showDashboard: (req, res) => {
         res.render('admin/dashboard', { isAdmin: req.session.isAdmin })
     },
-    addCategoty: (req, res) => {
-        adminHelper.addCategory(req, res)
-            .then(status => {
-                res.status(200).send("Category Created Successfully")
-            }).catch(err => {
-                res.status(400).send(err)
-            })
-    },
-    deleteCategory: (req, res) => {
-        adminHelper.deleteCategory(req, res).then(() => {
-            res.status(200).redirect('/admin/categories')
-        }).catch(err => {
-            res.redirect('/')
-        })
-    },
-    editCategory: (req, res) => {
-        adminHelper.editCategory(req, res).then((status) => {
-            res.status(200).send(status.acknowledged)
-        }).catch(err => {
-            res.redirect('/')
-        })
-    },
-    showCategories: (req, res) => {
-        adminHelper.getAllCategories()
-            .then(data => {
-                res.render("admin/categories", { isAdmin: req.session.isAdmin, categories: data })
-            }).catch(err => {
-                console.log(err);
-                res.status(400).redirect('/')
-            })
-    },
-    showAddProduct: (req, res) => {
-        adminHelper.getAllCategories()
-            .then(categories => {
-                res.render("admin/addProduct", { isAdmin: req.session.isAdmin || true, categories: categories })
-            }).catch(err => {
-                console.log(err);
-                res.status(400).redirect('/')
-            })
-    },
-    addProduct: (req, res) => {
-        adminHelper.addProduct(req, res)
-            .then(data => {
-                res.redirect(`/admin/product/add`)
-            }).catch(err => {
-                res.redirect('/admin/product/add')
-            })
-    },
-    getAllProducts: (req, res) => {
-        adminHelper.getAllProducts()
-        .then(products => {
-            res.render("admin/products", { isAdmin: true, products })
-        }).catch(err => {
-            console.log(err);
-        })
-    },
-    deleteProduct: (req, res) => {
-        adminHelper.deleteProduct(req).then(response => {
-            res.redirect("/admin/products")
-        })
-    },
+    // showAddProduct: (req, res) => {
+    //     adminHelper.getAllCategories()
+    //         .then(categories => {
+    //             res.render("admin/addProduct", { isAdmin: req.session.isAdmin || true, categories: categories })
+    //         }).catch(err => {
+    //             console.log(err);
+    //             res.status(400).redirect('/')
+    //         })
+    // },
+    // addProduct: (req, res) => {
+    //     adminHelper.addProduct(req, res)
+    //         .then(data => {
+    //             res.redirect(`/admin/product/add`)
+    //         }).catch(err => {
+    //             res.redirect('/admin/product/add')
+    //         })
+    // },
+    // getAllProducts: (req, res) => {
+    //     adminHelper.getAllProducts()
+    //     .then(products => {
+    //         res.render("admin/products", { isAdmin: true, products })
+    //     }).catch(err => {
+    //         console.log(err);
+    //     })
+    // },
+    // deleteProduct: (req, res) => {
+    //     adminHelper.deleteProduct(req).then(response => {
+    //         res.redirect("/admin/products")
+    //     })
+    // },
     showUsers: (req, res) => {
         res.send("Users")
     }
