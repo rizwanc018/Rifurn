@@ -27,11 +27,38 @@ const productController = {
                 console.log(err);
             })
     },
+    getProductEditPage: async (req, res) => {
+        const categories = await categoryHelper.getAllCategories()
+        productHelper.getSingleProduct(req, res)
+            .then(data => {
+                res.render("admin/editProduct", { isAdmin: true, product: data, categories: categories })
+            }).catch(err => { console.log(err) })
+    },
     deleteProduct: (req, res) => {
         productHelper.deleteProduct(req).then(response => {
             res.redirect("/admin/products")
+        }).catch(err => {
+            console.log(err)
+            res.redirect("/admin/products")
         })
     },
+    deleteImage: (req, res) => {
+        productHelper.deleteImage(req)
+            .then(response => {
+                res.redirect(`/admin/product/edit/${req.params.id}`)
+            })
+            .catch(err => console.log(err))
+    },
+    editProduct: (req, res) => {
+        console.log(req.body)
+        console.log(req.files)
+        productHelper.editProduct(req, res)
+        .then(() => {
+            res.redirect('/admin/products')
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 }
 
 export default productController

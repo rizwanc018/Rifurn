@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="row text-center my-3">
+        <h3 class="fw-bolder mb-0">Edit Product</h3>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <form enctype="multipart/form-data" action="/admin/product/edit/{{product._id}}?_method=PUT" method="POST">
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="productName" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="productName" name="productName"
+                    value="{{product.productName}}" aria-describedby="productNameHelp">
+            </div>
+
+            <div class="col-6">
+                <label for="productCategory" class="form-label">Category</label>
+                <select id="productCategory" name="productCategory" class="form-select"
+                    aria-label="Default select example">
+                    {{#each categories }}
+                    <option value="{{category}}">{{category}}</option>
+                    {{/each}}
+                </select>
+                <script>
+                    const options = document.querySelector('#productCategory')
+                    options.value = "{{product.category}}"
+                </script>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="productPrice" class="form-label">Price</label>
+                <input type="text" class="form-control" id="productPrice" name="productPrice" value={{product.price}}
+                    aria-describedby="productPrice">
+            </div>
+            <div class="col-6">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock" name="stock" aria-describedby="Stock"
+                    value="{{product.stock}}">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="productDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="productDescription" name="productDescription"
+                rows="3">{{product.description}}</textarea>
+        </div>
+        <div class="mb-5">
+            {{#each product.images}}
+            <img src=https://res.cloudinary.com/dz9knbtwi/image/upload/h_150,w_150/{{this}} alt="" srcset=""
+                style="border: 2px solid rgba(32, 32, 32, 0.283);">
+            <a id={{this}} class="btn btn-danger btn-sm px-2" style="position:relative;right: 10%;top:70px" href=><i
+                    class="fa fa-trash"></i></a>
+            {{/each}}
+        </div>
+
+        <script>
+            let imgsId = "{{product.images}}".split(',')
+            for (const imgId of imgsId) {
+                var a = document.querySelector(`#${imgId}`)
+                a.href = `/admin/product/image/delete/{{product._id}}?img=${imgId}`
+            }
+        </script>
+        <div class="my-3">
+            <label for="image" class="form-label">Images</label>
+            <input type="file" class="form-control" id="image" name="image" aria-describedby="productImage" multiple>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+
+</div>

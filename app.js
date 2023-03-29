@@ -9,7 +9,7 @@ import userRouter from './routes/userRouter.js';
 // import twilioRouter from './routes/twilioRouter.js'
 import adminRouter from './routes/adminRouter.js';
 import session from 'express-session';
-
+import methodOverride from 'method-override'
 
 const app = express()
 const __filename = fileURLToPath(import.meta.url);
@@ -21,6 +21,7 @@ app.use(express.static('public'))
 app.set('view engine', 'hbs')
 hbs.registerPartials(__dirname + '/views/partials');
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride('_method'))
 app.listen(process.env.PORT, () => {
     console.log(`Listening on PORT : ${process.env.PORT}`);
 })
@@ -44,7 +45,6 @@ db.once('open', () => console.log('Connected to database'))
 
 //Routers
 app.use('/user', userRouter)
-// app.use('/twilio', twilioRouter)
 app.use('/admin', adminRouter)
 
 app.get('/', (req, res) => {

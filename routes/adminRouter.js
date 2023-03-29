@@ -30,7 +30,10 @@ adminRouter.get('/dashboard', verifyAdmin, adminController.showDashboard)
 adminRouter.get('/products', verifyAdmin, productController.getAllProducts)
 adminRouter.get('/product/add', verifyAdmin, productController.showAddProduct)
 adminRouter.post('/product/add',verifyAdmin,  upload.array("image", 3), productController.addProduct)
+adminRouter.get(`/product/edit/:id`, productController.getProductEditPage)
+adminRouter.put(`/product/edit/:id`, upload.array("image", 3), productController.editProduct)
 adminRouter.get(`/product/delete/:id`, productController.deleteProduct)
+adminRouter.get('/product/image/delete/:id', productController.deleteImage )
 
 adminRouter.get('/users', verifyAdmin, adminController.showUsers)
 
