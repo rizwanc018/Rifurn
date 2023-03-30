@@ -1,0 +1,80 @@
+<div class="page-banner-section section bg-image" data-bg="/images/banner.webp"
+    style="background-image: url(/images/banner.webp);">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <div class="page-banner text-center">
+                    <h2>Single Product</h2>
+                    <ul class="page-breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li>Single Product</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://unpkg.com/js-image-zoom@0.4.1/js-image-zoom.js" type="application/javascript"></script>
+<div class="container mt-5">
+    <div class="row">
+        <div id="img-container" class="col-md-6">
+            <img style="width: 100%" src="/images/Decor-1.webp" alt="">
+        </div>
+        <script>
+            var options = {
+                width: 400,
+                zoomWidth: 500,
+                zoomHeight: 300,
+                offset: { vertical: 0, horizontal: 50 },
+                zoomPosition: "left"
+            };
+            new ImageZoom(document.getElementById("img-container"), options);
+
+        </script>
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+            <h5>Aliquam lobortis est turpis mauris egestas eget</h5>
+            <span class="rating fs-6">
+                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
+                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                <i class="fa-solid fa-star-half-stroke" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                {{!-- <i class="fa-regular fa-star" style="color: #8de41b;"></i>
+                <i class="fa-solid fa-star-half-stroke" style="color: #8de41b;"></i> --}}
+            </span>
+            <p class="product-price mt-3"><span class="discounted-price fs-5">99{{price}}</span></p>
+            <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco,Proin lectus ipsum,
+                gravida et mattis vulputate, tristique ut lectus
+            </p>
+            <div class=" single-product-quantity ">
+                <form class="row add-quantity" action="#">
+                    <div class="col-2 product-quantity">
+                        <input value="1" type="number">
+                    </div>
+                    <div class="col-5 border turn-red">
+                        <button class="btn align-middle pt-3"><i class="fa-solid fa-bag-shopping"></i></i>add to
+                            cart</button>
+                    </div>
+                </form>
+                <div class="row mt-3">
+                    <div class="col-6 border turn-red">
+                        <button class="btn align-middle"><i class="fa-regular fa-heart"></i></i>add to
+                            wishlist</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-meta">
+                <span class="posted-in">
+                    Category:
+                    <a href="#">Accessories</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="mt-3 mb-5" tabindex="0"><img style="width: 140px;" src="/images/Decor-2.webp" alt=""></div>
+</div>

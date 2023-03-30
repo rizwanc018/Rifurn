@@ -1,2 +1,81 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<div class="hero">
+    <div class=" owl-carousel">
+        <div>
+            <img style="height: 80vh; object-fit:cover" src="/images/hero-1.webp" alt="" srcset="">
+        </div>
+        <div> <img style="height: 80vh; object-fit:cover" src="/images/hero-2.webp" alt="" srcset=""></div>
+    </div>
+
+    <div class="hero-content left ">
+        <h3>New Arrivals</h3>
+        <h1 class="my-3">Corporis nulla <br> luxurious <strong>Home</strong></h1>
+        <a class="btn border border-2 border-light text-light py-2 px-4 rounded-0" href="/shop" tabindex="-1">Shop
+            Now</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        {{#each products }}
+        <div class="col-sm-3" style=" display: inline-block;">
+            <!--  Single Grid product Start -->
+            <div class="single-grid-product mb-40">
+                <div class="product-image">
+                    <a href="/product/view/{{_id}}" tabindex="0">
+                        {{#each images }}
+                        <img src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{this}}.webp"
+                            class="img-fluid" alt="">
+                        {{/each}}
+                    </a>
+
+                    <div class="product-action d-flex justify-content-between align-items-center">
+                        <a class="product-btn" href="cart.html" tabindex="0">Add to Cart</a>
+                        <a href="wishlist.html" tabindex="0">
+                            <i class="add-to-wish fa-regular fa-heart"></i>
+                        </a>
+
+
+                    </div>
+                </div>
+                <div class="product-content">
+                    <div class="product-category-rating">
+                        <span class="category"><a href="shop.html" tabindex="0">{{category}}</a></span>
+                        <span class="rating">
+                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
+                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                            <i class="fa-solid fa-star-half-stroke" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                            {{!-- <i class="fa-regular fa-star" style="color: #8de41b;"></i>
+                            <i class="fa-solid fa-star-half-stroke" style="color: #8de41b;"></i> --}}
+
+                        </span>
+                    </div>
+
+                    <h3 class="title"> <a style="color: hsla(0, 0%, 0%, 0.85)" href="single-product.html"
+                            tabindex="0">{{productName}}</a></h3>
+                    <p class="product-price"><span class="discounted-price">{{price}}</span></p>
+                </div>
+            </div>
+            <!--  Single Grid product End -->
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".owl-carousel").owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplaySpeed: 4000,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: false,
+            slideTransition: 'fadeIn',
+        });
+    });
+</script>
