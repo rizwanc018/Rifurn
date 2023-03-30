@@ -1,0 +1,166 @@
+<div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center">
+                    <h4>Signup</h4>
+                </div>
+                <div class="d-flex flex-column">
+                    {{!-- Form to enter mobile for signup --}}
+                    <form id="emailForm" novalidate action="/user/signup" method="POST">
+                        <div class="row mb-3">
+                            {{#if error}}
+                            <p class="text-danger small">{{error.err}}</p>
+                            {{/if}}
+                            <div class="col-md-6">
+                                <div class="form-outline">
+                                    <label class="form-label" for="firstname">First name</label>
+                                    <input type="text" id="firstname" name="firstname" class="form-control"
+                                        value="{{error.data.firstname}}" placeholder="Firstname" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="">
+                                    <label class="form-label" for="lastname">Last name</label>
+                                    <input type="text" id="lastname" name="lastname" class="form-control"
+                                        placeholder="Lastname" value="{{error.data.lastname}}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="email">Email address</label>
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="example@mail.com" value="{{error.data.email}}"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="mobile">Mobile</label>
+                            <input type="tel" id="mobile" name="mobile" class="form-control" pattern="^[6-9]\d{9}$"
+                                placeholder="9876543210" value="" required />
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" id="password" name="password" class="form-control"
+                                placeholder="password" required />
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="repassword">Re enter Password</label>
+                            <input type="password" id="repassword" name="repassword" class="form-control"
+                                placeholder="password" required />
+                        </div>
+
+                        <p id="pmm" class="d-none text-danger small">Password mismatch</p>
+                        <!-- Submit button -->
+                        <div class="col-md-3 mt-3">
+                            <button type="submit" class="btn btn-outline-danger btn-block btn-round">Continue</button>
+                        </div>
+                    </form>
+
+                    {{!-- Form to enter OTP for signup --}}
+                    <form class="d-none" id="otpForm" novalidate action="user/signup" method="POST">
+                        <div class="form-outline ">
+                            <label class="form-label" for="otpMail">Email</label>
+                            <input type="tel" id="otpMail" name="email" class="form-control" value="" disabled />
+                        </div>
+                        <div class="form-outline my-3">
+                            <label class="form-label" for="otp">OTP</label>
+                            <input type="" id="otp" name="otp" class="form-control" pattern="^[0-9]{6}$" value=""
+                                required />
+                        </div>
+
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-outline-danger btn-block btn-round">Signup</button>
+                        </div>
+                    </form>
+                    <script>
+                        const p1 = document.querySelector('#password')
+                        const p2 = document.querySelector('#repassword')
+                        const pmm = document.querySelector('#pmm')
+                        p2.addEventListener('keyup', e => {
+                            if (p1.value !== p2.value) {
+                                e.preventDefault();
+                                pmm.classList.remove('d-none')
+                                p1.classList.add('error')
+                                p2.classList.add('error')
+                            } else {
+                                pmm.classList.add('d-none')
+                                p1.classList.remove('error')
+                                p2.classList.remove('error')
+                            }
+                        })
+                        const emailForm = document.querySelector('#emailForm');
+                        const otpForm = document.querySelector('#otpForm');
+                        const otpMail = document.querySelector('#otpMail')
+                        var url = window.location.origin
+                        emailForm.addEventListener('submit', e => {
+                            let firstname = document.querySelector('#firstname').value
+                            let lastname = document.querySelector('#lastname').value
+                            let email = document.querySelector('#email').value
+                            let mobile = document.querySelector('#mobile').value
+                            let password = document.querySelector('#password').value
+
+                            e.preventDefault();
+                            if (!emailForm.checkValidity()) {
+                            } else {
+                                emailForm.classList.add('d-none')
+                                otpForm.classList.remove('d-none')
+                                $.ajax({
+                                    url: `${url}/user/signup`,
+                                    method: "POST",
+                                    data: { firstname, lastname, email, mobile, password },
+                                    success: res => {
+                                        otpMail.value = res
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                    }
+                                })
+                            }
+                            emailForm.classList.add('was-validated');
+                        })
+
+                        otpForm.addEventListener('submit', e => {
+                            var otp = document.querySelector('#otp').value
+                            var mail =  otpMail.value
+                                e.preventDefault();
+                            if (!otpForm.checkValidity()) {
+                            } else {
+                                console.log(otp)
+                                $.ajax({
+                                    url: `${url}/user/verifyotp`,
+                                    method: "POST",
+                                    data: { mail, otp },
+                                    success: res => {
+                                        if (res.valid) {
+                                            alert(`Signup success ${res}`)
+                                            window.location.reload()
+                                        } else {
+                                            alert("invalid OTP")
+                                        }
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                    }
+                                })
+                            }
+                            otpForm.classList.add('was-validated');
+                        })
+
+
+                    </script>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <div class="signup-section small">Already member? <a href="#" data-bs-toggle="modal"
+                        data-bs-target="#loginModal" class="text-info text-danger">Login</a>.</div>
+            </div>
+        </div>
+    </div>
+</div>

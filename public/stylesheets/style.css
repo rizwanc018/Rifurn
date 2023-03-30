@@ -48,3 +48,7 @@ footer h4{
 footer img {
     width: 107px;
 }
+
+.error {
+    outline: 2px solid red;
+}

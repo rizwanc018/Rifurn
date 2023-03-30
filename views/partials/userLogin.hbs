@@ -1,0 +1,135 @@
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center">
+                    <h4>Login</h4>
+                </div>
+                <div class="d-flex flex-column text-center">
+                    <form action="user/signup">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="email1" placeholder="Your email address...">
+                        </div>
+                        <div class="my-3"></div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" id="password1" placeholder="Your password...">
+                        </div>
+                        <div class="mb-3"></div>
+                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Login</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <div class="small signup-section">Not a member yet? <a href="#" data-bs-toggle="modal"
+                        data-bs-target="#signUpModal" class="text-danger"> Sign Up</a>.</div>
+                <div class="small">Login with <a href="#" data-bs-toggle="modal" data-bs-target="#loginWithOTPModal"
+                        class="text-danger">OTP</a>.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="loginWithOTPModal" tabindex="-1" aria-labelledby="loginWithOTPModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-title text-center">
+                    <h4>Login with OTP</h4>
+                </div>
+                <div class="d-flex flex-column text-center">
+                    {{!-- Form to enter mobile number for login --}}
+                    <form id="loginMobileForm" action="" novalidate>
+                        <div class="input-group mb-1">
+                            <span class="input-group-text">+91</span>
+                            <input type="tel" id="mobileforlogin" name="mobile" class="form-control"
+                                pattern="^[6-9]\d{9}$" value="" required />
+                        </div>
+                        <div class="mb-3"></div>
+                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Continue</button>
+                    </form>
+
+                    {{!-- Form to enter OTP for login --}}
+                    <form class="d-none" id="loginOTPForm" action="user/login" novalidate>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" id="mobileforlogininotp" value="">
+                        </div>
+                        <div class="my-3"></div>
+                        <div class="form-group">
+                            <input type="number" class="form-control" id="otpforlogin" placeholder="OTP"
+                                pattern="^[0-9]{6}$" value="" required>
+                        </div>
+                        <div class="mb-3"></div>
+                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Login</button>
+                    </form>
+                    <script>
+
+                        const loginMobileForm = document.querySelector('#loginMobileForm');
+                        const loginOTPForm = document.querySelector('#loginOTPForm');
+                        const mobileforlogininotp = document.querySelector('#mobileforlogininotp')
+                        const otpforlogin = document.querySelector('#otpforlogin')
+                        var url = window.location.origin
+                        loginMobileForm.addEventListener('submit', e => {
+                            e.preventDefault();
+                            let mobileNum = document.querySelector('#mobileforlogin').value
+                            if (!loginMobileForm.checkValidity()) {
+                            } else {
+                                $.ajax({
+                                    url: `${url}/user/otplogin`,
+                                    method: "POST",
+                                    data: { mobile: mobileNum },
+                                    success: res => {
+                                        loginMobileForm.classList.add('d-none')
+                                        loginOTPForm.classList.remove('d-none')
+                                        mobileforlogininotp.value = res
+                                    },
+                                    error: err => {
+                                        alert(err.responseText)
+                                        otpforlogin.value = ""
+                                    }
+                                })
+                            }
+                            loginMobileForm.classList.add('was-validated');
+                        })
+
+
+                        loginOTPForm.addEventListener('submit', e => {
+                            var otp = document.querySelector('#otpforlogin').value
+                            e.preventDefault();
+                            if (!loginOTPForm.checkValidity()) {
+                            } else {
+                                $.ajax({
+                                    url: `${url}/user/otplogin/verification`,
+                                    method: "POST",
+                                    data: { mobile: mobileforlogininotp.value, otp: otp },
+                                    success: res => {
+                                        if (res.valid) {
+                                            console.log(res)
+                                            alert("Login succees")
+                                            window.location.reload()
+                                        }
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                        alert(err.responseText)
+                                    }
+                                })
+                            }
+                            loginOTPForm.classList.add('was-validated');
+                        })
+                    </script>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <div class="small signup-section">Not a member yet? <a href="#" data-bs-toggle="modal"
+                        data-bs-target="#signUpModal" class="text-danger"> Sign Up</a>.</div>
+            </div>
+        </div>
+    </div>
+</div>
