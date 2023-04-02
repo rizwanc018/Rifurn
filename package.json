@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -e js,hbs,css app.js"
+    "dev": "nodemon -e js,hbs,css app.js",
+    "start": "browser-sync start --server --files '**/*'"
   },
   "type": "module",
   "keywords": [],

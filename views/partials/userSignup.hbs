@@ -32,28 +32,28 @@
                         </div>
                         <div class="form-outline mb-3">
                             <label class="form-label" for="email">Email address</label>
-                            <input type="email" id="email" name="email" class="form-control"
-                                placeholder="example@mail.com" value="{{error.data.email}}"
-                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email"
+                                value="{{error.data.email}}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                required />
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="mobile">Mobile</label>
                             <input type="tel" id="mobile" name="mobile" class="form-control" pattern="^[6-9]\d{9}$"
-                                placeholder="9876543210" value="" required />
+                                placeholder="Mobile no" value="" required />
                         </div>
 
                         <!-- Password input -->
                         <div class="form-outline mb-3">
                             <label class="form-label" for="password">Password</label>
                             <input type="password" id="password" name="password" class="form-control"
-                                placeholder="password" required />
+                                placeholder="Password" required />
                         </div>
 
                         <div class="form-outline mb-3">
                             <label class="form-label" for="repassword">Re enter Password</label>
                             <input type="password" id="repassword" name="repassword" class="form-control"
-                                placeholder="password" required />
+                                placeholder="Password" required />
                         </div>
 
                         <p id="pmm" class="d-none text-danger small">Password mismatch</p>
@@ -69,20 +69,22 @@
                             <label class="form-label" for="otpMail">Email</label>
                             <input type="tel" id="otpMail" name="email" class="form-control" value="" disabled />
                         </div>
-                        <div class="form-outline my-3">
+                        <div class="form-outline">
                             <label class="form-label" for="otp">OTP</label>
                             <input type="" id="otp" name="otp" class="form-control" pattern="^[0-9]{6}$" value=""
                                 required />
                         </div>
-
-                        <div class="col-md-3">
+                        <div class="col-md-3 mt-3">
                             <button type="submit" class="btn btn-outline-danger btn-block btn-round">Signup</button>
                         </div>
                     </form>
+                    <div class="row text-center" id="msg">
+                    </div>
                     <script>
                         const p1 = document.querySelector('#password')
                         const p2 = document.querySelector('#repassword')
                         const pmm = document.querySelector('#pmm')
+                        const msg = document.querySelector('#msg')
                         p2.addEventListener('keyup', e => {
                             if (p1.value !== p2.value) {
                                 e.preventDefault();
@@ -109,13 +111,14 @@
                             e.preventDefault();
                             if (!emailForm.checkValidity()) {
                             } else {
-                                emailForm.classList.add('d-none')
-                                otpForm.classList.remove('d-none')
+
                                 $.ajax({
                                     url: `${url}/user/signup`,
                                     method: "POST",
                                     data: { firstname, lastname, email, mobile, password },
                                     success: res => {
+                                        emailForm.classList.add('d-none')
+                                        otpForm.classList.remove('d-none')
                                         otpMail.value = res
                                     },
                                     error: err => {
@@ -128,8 +131,8 @@
 
                         otpForm.addEventListener('submit', e => {
                             var otp = document.querySelector('#otp').value
-                            var mail =  otpMail.value
-                                e.preventDefault();
+                            var mail = otpMail.value
+                            e.preventDefault();
                             if (!otpForm.checkValidity()) {
                             } else {
                                 console.log(otp)
@@ -138,15 +141,11 @@
                                     method: "POST",
                                     data: { mail, otp },
                                     success: res => {
-                                        if (res.valid) {
-                                            alert(`Signup success ${res}`)
-                                            window.location.reload()
-                                        } else {
-                                            alert("invalid OTP")
-                                        }
+                                        alert(`Signup Success`)
+                                        window.location.reload()
                                     },
                                     error: err => {
-                                        console.log(err)
+                                        msg.innerHTML = '<p class="text-danger my-0">Invalid OTP<p>'
                                     }
                                 })
                             }

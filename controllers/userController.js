@@ -1,11 +1,16 @@
 import userHelper from "../helpers/userHelper.js";
-import { sendMail } from "../services/mailer.js";
+import { sendOTP } from "../services/mailer.js";
+import generateOTP from "../services/otp.js";
 
 const userController = {
-    doSignup: (req, res) => {
-        sendMail("333")
-        console.log(req.body);
-        res.send(req.body.email)
+    doSignup: async (req, res) => {
+        const otp = generateOTP()
+        const email = req.body.email
+        req.session.user = req.body
+        req.session.user.otp = otp
+        console.log(`-----------------------------otp`,otp);
+        await sendOTP(email, otp)
+        res.send(email)
         // userHelper.doSignup(req, res)
         //     .then(data => {
         //         res.send(data)
@@ -14,8 +19,15 @@ const userController = {
         //     })
     },
     doOTPVerification: (req, res) => {
-        console.log(req.body)
-        // userHelper.doOTPVerificationForSignup(req, res)
+        const status = userHelper.doOTPVerification(req, res)
+        if (status) {
+            req.session.user.otp = null
+            console.log(userHelper.createUser(req));
+            res.status(200).send(status)
+        }
+        else {
+            res.status(400).send(status)
+        }
         //     .then(data => {
         //         res.status(200).send(data)
         //     }).catch(err => {
