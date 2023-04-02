@@ -4,35 +4,34 @@ import generateOTP from "../services/otp.js";
 
 const userController = {
     doSignup: async (req, res) => {
-        const otp = generateOTP()
         const email = req.body.email
-        req.session.user = req.body
-        req.session.user.otp = otp
-        console.log(`-----------------------------otp`,otp);
-        await sendOTP(email, otp)
-        res.send(email)
-        // userHelper.doSignup(req, res)
-        //     .then(data => {
-        //         res.send(data)
-        //     }).catch(err => {
-        //         res.status(400).send(err)
-        //     })
+        const isExist = await userHelper.isEmailExist(email)
+        if(!isExist) {
+            const otp = generateOTP()
+            req.session.user = req.body
+            req.session.user.otp = otp
+            console.log(`-----------------------------otp`,otp);
+            await sendOTP(email, otp)
+            res.status(200).send(email)
+        } else {
+            res.status(400).send("Email already Exist")
+            console.log("already exist");
+        }
     },
-    doOTPVerification: (req, res) => {
+    doOTPVerification: async (req, res) => {
         const status = userHelper.doOTPVerification(req, res)
         if (status) {
-            req.session.user.otp = null
-            console.log(userHelper.createUser(req));
+            const userData = await userHelper.createUser(req);
+            req.session.user = {}
+            req.session.user.name = userData.firstname
+            req.session.user.id = userData._id
+            req.session.user.blocked = userData.blocked
+            req.session.user.loggedin = true
             res.status(200).send(status)
         }
         else {
             res.status(400).send(status)
         }
-        //     .then(data => {
-        //         res.status(200).send(data)
-        //     }).catch(err => {
-        //         res.status(400).send(err)
-        //     })
     },
     doOTPLogin: (req, res) => {
         userHelper.doOTPLogin(req, res)

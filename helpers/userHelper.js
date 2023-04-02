@@ -6,7 +6,6 @@ import { sendOTP, verifyOTP } from "../helpers/twilioHelper.js";
 const userHelper = {
     isEmailExist: async(email) => {
      const isExist  =  await UserModel.exists({ email: email })
-     console.log(`isExist ::::::::`, isExist);
      return isExist
     },
     // doSignup: (req, res) => {
