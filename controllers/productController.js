@@ -27,7 +27,7 @@ const productController = {
                 console.log(err);
             })
     },
-    getProductEditPage: async (req, res) => {
+    showProductEditPage: async (req, res) => {
         const categories = await categoryHelper.getAllCategories()
         productHelper.getSingleProduct(req, res)
             .then(data => {

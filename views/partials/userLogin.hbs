@@ -8,32 +8,66 @@
                 <div class="form-title text-center">
                     <h4>Login</h4>
                 </div>
-                <div class="d-flex flex-column text-center">
-                    <form action="user/signup">
-                        <div class="form-group">
-                            <input type="email" class="form-control" id="email1" placeholder="Your email address...">
+                <div id="loginMsg">
+                </div>
+                <div class="d-flex flex-column">
+                    <form id="loginWithPassword" novalidate action="/user/signup" method="POST">
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="loginEmail">Email address</label>
+                            <input type="email" id="loginEmail" name="email" class="form-control" placeholder="Email"
+                                value="{{error.data.email}}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                required />
                         </div>
-                        <div class="my-3"></div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="password1" placeholder="Your password...">
+                        <!-- Password input -->
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" name="password" class="form-control"
+                                placeholder="Password" required />
                         </div>
-                        <div class="mb-3"></div>
-                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Login</button>
+                        <!--Submit button -->
+                        <div class="col-md-3 mt-3">
+                            <button type="submit" class="btn btn-outline-danger btn-block btn-round">Login</button>
+                        </div>
                     </form>
+                    <script>
+                        const loginWithPasswordForm = document.querySelector('#loginWithPassword')
+                        const loginMsg = document.querySelector('#loginMsg')
+                        var url = window.location.origin
+                        loginWithPasswordForm.addEventListener('submit', e => {
+                            e.preventDefault()
+                            const loginEmail = document.querySelector('#loginEmail').value
+                            const loginPassword = document.querySelector('#loginPassword').value
+                            if (!loginWithPasswordForm.checkValidity()) {
+                            } else {
+                                $.ajax({
+                                    url: `${url}/user/login`,
+                                    method: "POST",
+                                    data: { email: loginEmail, password: loginPassword },
+                                    success: res => {
+                                        window.location.href = '/'
+                                    },
+                                    error: err => {
+                                        loginMsg.innerHTML = `<p class="text-danger my-0">${err.responseText}<p>`
+                                    }
+                                })
+                            }
+                            loginWithPasswordForm.classList.add('was-validated');
+                        })
+                    </script>
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <div class="small signup-section">Not a member yet? <a href="#" data-bs-toggle="modal"
                         data-bs-target="#signUpModal" class="text-danger"> Sign Up</a>.</div>
-                <div class="small">Login with <a href="#" data-bs-toggle="modal" data-bs-target="#loginWithOTPModal"
-                        class="text-danger">OTP</a>.</div>
+                <div class="small">Forgot <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal"
+                        class="text-danger">Password</a>.</div>
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="modal fade" id="loginWithOTPModal" tabindex="-1" aria-labelledby="loginWithOTPModal" aria-hidden="true">
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,15 +75,21 @@
             </div>
             <div class="modal-body">
                 <div class="form-title text-center">
-                    <h4>Login with OTP</h4>
+                    <h4>Forgot password</h4>
                 </div>
-                <div class="d-flex flex-column text-center">
+                <div class="d-flex flex-column text-left">
                     {{!-- Form to enter mobile number for login --}}
-                    <form id="loginMobileForm" action="" novalidate>
-                        <div class="input-group mb-1">
+                    <form id="forgotPasswordForm" action="" novalidate>
+                        {{!-- <div class="input-group mb-1">
                             <span class="input-group-text">+91</span>
                             <input type="tel" id="mobileforlogin" name="mobile" class="form-control"
                                 pattern="^[6-9]\d{9}$" value="" required />
+                        </div> --}}
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="forgotPasswordEmail">Email address</label>
+                            <input type="email" id="forgotPasswordEmail" name="email" class="form-control" placeholder="Email"
+                                value="{{error.data.email}}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                required />
                         </div>
                         <div class="mb-3"></div>
                         <button type="submit" class="btn btn-outline-danger btn-block btn-round">Continue</button>
@@ -70,22 +110,22 @@
                     </form>
                     <script>
 
-                        const loginMobileForm = document.querySelector('#loginMobileForm');
+                        const forgotPasswordForm = document.querySelector('#forgotPasswordForm');
                         const loginOTPForm = document.querySelector('#loginOTPForm');
                         const mobileforlogininotp = document.querySelector('#mobileforlogininotp')
                         const otpforlogin = document.querySelector('#otpforlogin')
                         var url = window.location.origin
-                        loginMobileForm.addEventListener('submit', e => {
+                        forgotPasswordForm.addEventListener('submit', e => {
                             e.preventDefault();
                             let mobileNum = document.querySelector('#mobileforlogin').value
-                            if (!loginMobileForm.checkValidity()) {
+                            if (!forgotPasswordForm.checkValidity()) {
                             } else {
                                 $.ajax({
                                     url: `${url}/user/otplogin`,
                                     method: "POST",
                                     data: { mobile: mobileNum },
                                     success: res => {
-                                        loginMobileForm.classList.add('d-none')
+                                        forgotPasswordForm.classList.add('d-none')
                                         loginOTPForm.classList.remove('d-none')
                                         mobileforlogininotp.value = res
                                     },
@@ -95,7 +135,7 @@
                                     }
                                 })
                             }
-                            loginMobileForm.classList.add('was-validated');
+                            forgotPasswordForm.classList.add('was-validated');
                         })
 
 

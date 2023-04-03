@@ -1,0 +1,78 @@
+<div class="container">
+    <div class="row text-center mb-1">
+        <h3 class="fw-bolder mb-0">Users</h3>
+    </div>
+</div>
+<hr>
+<div class="container">
+    {{!-- <div class="row justify-content-end mb-3">
+        <a class="btn btn-success col-3 me-3" href="/admin/product/add"><i class="fa-solid fa-plus"></i>
+            Add Product
+        </a>
+    </div> --}}
+
+    <div class="row mt-3">
+        <table id="usersTable datatables" class="table mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">FirstName</th>
+                    <th scope="col">LastName</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Blocked</th>
+                    {{!-- <th scope="col">Address</th> --}}
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each allUsers }}
+                <tr>
+                    <th scope="row" class="nr">{{inc @index}}</th>
+                    <td>{{firstname}}</td>
+                    <td>{{lastname}}</td>
+                    <td>{{email}}</td>
+                    <td>{{mobile}}</td>
+                    <td id=_{{_id}}>
+                        {{#if blocked}}
+                        <button class="btn btn-danger" onclick="toggleUserRestriction('{{_id}}')"
+                            style="width: 6.5rem">Un Block</button>
+                        {{else}}
+                        <button class="btn btn-success" onclick="toggleUserRestriction('{{_id}}')"
+                            style=" width: 6.5rem">Block</button>
+                        {{/if}}
+                    </td>
+                    <td class="small">{{address}}</td>
+                    <td>
+                        {{!-- <a href="/admin/user/edit/{{_id}}" class="btn btn-primary btn-sm px-2">
+                            <i class="fa fa-pen-to-square"></i>
+                        </a> --}}
+                        <a class="btn btn-danger btn-sm px-2"
+                            onclick="return confirm('Are you sure you want to delete {{firstname}} {{lastname}}?')"
+                            href="/admin/user/delete/{{_id}}"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <script>
+            var url = window.location.origin
+            function toggleUserRestriction(id) {
+                const cell = document.querySelector("#_" + id)
+                $.ajax({
+                    url: `${url}/admin/user/restrict/${id}`,
+                    method: "GET",
+                    success: res => {
+                        if (res) {
+                            cell.innerHTML = `<button class="btn btn-danger" onclick="toggleUserRestriction('${id}')"
+                                style="width: 6.5rem">Un Block</button>`
+                        } else {
+                            cell.innerHTML = `<button class="btn btn-success" onclick="toggleUserRestriction('${id}')"
+                                style=" width: 6.5rem">Block</button>`
+                        }
+                    }
+                })
+            }
+        </script>
+    </div>
+</div>

@@ -15,9 +15,6 @@ const adminController = {
     },
     showDashboard: (req, res) => {
         res.render('admin/dashboard', { isAdmin: req.session.isAdmin })
-    },
-    showUsers: (req, res) => {
-        res.send("Users")
     }
 }
 

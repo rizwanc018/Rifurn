@@ -74,10 +74,18 @@
                             <input type="" id="otp" name="otp" class="form-control" pattern="^[0-9]{6}$" value=""
                                 required />
                         </div>
-                        <div class="col-md-3 mt-3">
-                            <button type="submit" class="btn btn-outline-danger btn-block btn-round">Signup</button>
+                        <div class="d-flex row  align-items-center">
+                            <div class="col-md-3 mt-3">
+                                <button type="submit" class="btn btn-outline-danger btn-block btn-round">Signup</button>
+                            </div>
                         </div>
                     </form>
+                    <div class="mt-3 col-md-7 small align-bottom float-right d-none" id="resendSec"
+                        style="font-size: 12px;">
+                        <button id="resendBtn" type="submit" style="font-size: 12px;" class="btn btn-link m-0 p-0"
+                            onclick="sendOtpReq()">Resend OTP</button>
+                        Remainig : <span id="resendTime">60</span> secs
+                    </div>
                     <div class="row text-center" id="msg">
                     </div>
                     <script>
@@ -100,11 +108,15 @@
                         const emailForm = document.querySelector('#emailForm');
                         const otpForm = document.querySelector('#otpForm');
                         const otpMail = document.querySelector('#otpMail')
+                        const resendSec = document.querySelector('#resendSec')
+                        const resendBtn = document.querySelector('#resendBtn')
+                        const resendTime = document.querySelector('#resendTime')
+                        resendBtn.disabled = true
                         var url = window.location.origin
                         emailForm.addEventListener('submit', e => {
                             let firstname = document.querySelector('#firstname').value
                             let lastname = document.querySelector('#lastname').value
-                            let email = document.querySelector('#email').value
+                            let email = document.querySelector('#email')
                             let mobile = document.querySelector('#mobile').value
                             let password = document.querySelector('#password').value
                             e.preventDefault();
@@ -114,19 +126,58 @@
                                 $.ajax({
                                     url: `${url}/user/signup`,
                                     method: "POST",
-                                    data: { firstname, lastname, email, mobile, password },
+                                    data: { firstname, lastname, email: email.value, mobile, password },
                                     success: res => {
                                         emailForm.classList.add('d-none')
                                         otpForm.classList.remove('d-none')
                                         otpMail.value = res
+                                        startCountDown()
                                     },
                                     error: err => {
                                         msg.innerHTML = `<p class="text-danger my-0">${err.responseText}<p>`
+                                        email.value = ""
                                     }
                                 })
                             }
                             emailForm.classList.add('was-validated');
                         })
+
+                        //Resend button
+                        function sendOtpReq() {
+                            startTimer()
+                            $.ajax({
+                                url: `${url}/user/resendotp`,
+                                method: "GET",
+                                success: res => {
+
+                                },
+                                error: err => {
+                                    window.location.reload()
+                                }
+                            })
+                        }
+
+
+                        function startTimer() {
+                            resendBtn.disabled = true
+                            let timeLeft = 30
+                            let timerId = setInterval(countdown, 1000);
+                            function countdown() {
+                                if (timeLeft == -1) {
+                                    clearTimeout(timerId);
+                                    resendBtn.disabled = false
+                                } else {
+                                    resendTime.innerHTML = timeLeft;
+                                    timeLeft--;
+                                }
+                            }
+                        }
+
+                        function startCountDown() {
+                            resendSec.classList.remove('d-none')
+                            startTimer()
+                        }
+
 
                         otpForm.addEventListener('submit', e => {
                             var otp = document.querySelector('#otp').value

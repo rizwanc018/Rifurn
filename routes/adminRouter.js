@@ -2,6 +2,7 @@ import express from 'express';
 import adminController from '../controllers/adminController.js';
 import categoryController from '../controllers/categoryController.js';
 import productController from '../controllers/productController.js';
+import userController from '../controllers/userController.js';
 import upload from "../utils/multer.js";
 
 const adminRouter = express.Router()
@@ -30,12 +31,16 @@ adminRouter.get('/dashboard', verifyAdmin, adminController.showDashboard)
 adminRouter.get('/products', verifyAdmin, productController.getAllProducts)
 adminRouter.get('/product/add', verifyAdmin, productController.showAddProduct)
 adminRouter.post('/product/add',verifyAdmin,  upload.array("image", 3), productController.addProduct)
-adminRouter.get(`/product/edit/:id`, productController.getProductEditPage)
+adminRouter.get(`/product/edit/:id`, productController.showProductEditPage)
 adminRouter.put(`/product/edit/:id`, upload.array("image", 3), productController.editProduct)
 adminRouter.get(`/product/delete/:id`, productController.deleteProduct)
 adminRouter.get('/product/image/delete/:id', productController.deleteImage )
 
-adminRouter.get('/users', verifyAdmin, adminController.showUsers)
+adminRouter.get('/users', verifyAdmin, userController.getAllUsers)
+adminRouter.get('/user/delete/:id', userController.deleteUser)
+adminRouter.get('/user/restrict/:id', userController.toggleUserRestriction)
+
+// adminRouter.get('/user/edit/:id', userController.showUserEditPage)
 
 adminRouter.get('/categories',verifyAdmin, categoryController.showCategories)
 adminRouter.post('/addcategoty', verifyAdmin, categoryController.addCategoty)

@@ -4,9 +4,9 @@ import { sendOTP, verifyOTP } from "../helpers/twilioHelper.js";
 
 
 const userHelper = {
-    isEmailExist: async(email) => {
-     const isExist  =  await UserModel.exists({ email: email })
-     return isExist
+    isEmailExist: async (email) => {
+        const isExist = await UserModel.exists({ email: email })
+        return isExist
     },
     // doSignup: (req, res) => {
     //     return new Promise(async (resolve, reject) => {
@@ -40,6 +40,19 @@ const userHelper = {
         const userData = await UserModel.create({ firstname, lastname, email, mobile, password: hash })
         return userData
     },
+    getUser: async (email, password) => {
+        console.log(email, password)
+        const user = await UserModel.findOne({ email: email })
+        return user
+    },
+    getUSerbyId: async (id) => {
+        const user = await UserModel.findById(id)
+        return user
+    },
+    getallUsers: async () => {
+        const allUsers = await UserModel.find({})
+        if (allUsers) return allUsers
+    },
     doOTPLogin: (req, res) => {
         return new Promise(async (resolve, reject) => {
             let { mobile } = req.body
@@ -71,7 +84,15 @@ const userHelper = {
             }
         })
     },
-
+    deleteUser: async (id) => {
+        const data = await UserModel.deleteOne({ _id: id })
+        console.log(data)
+        return data
+    },
+    updateUser: async (id, blockstatus) => {
+        const status = UserModel.updateOne({ _id: id }, { blocked: blockstatus })
+        return status
+    }
 }
 
 export default userHelper
