@@ -5,7 +5,7 @@ const productController = {
     showAddProduct: (req, res) => {
         categoryHelper.getAllCategories()
             .then(categories => {
-                res.render("admin/addProduct", { isAdmin: req.session.isAdmin || true, categories: categories })
+                res.render("admin/addProduct", { isAdmin: req.session.isAdmin , categories: categories })
             }).catch(err => {
                 console.log(err);
                 res.status(400).redirect('/')
@@ -22,7 +22,7 @@ const productController = {
     getAllProducts: (req, res) => {
         productHelper.getAllProducts()
             .then(products => {
-                res.render("admin/products", { isAdmin: true, products })
+                res.render("admin/products", { isAdmin: req.session.isAdmin, products })
             }).catch(err => {
                 console.log(err);
             })
@@ -31,7 +31,7 @@ const productController = {
         const categories = await categoryHelper.getAllCategories()
         productHelper.getSingleProduct(req, res)
             .then(data => {
-                res.render("admin/editProduct", { isAdmin: true, product: data, categories: categories })
+                res.render("admin/editProduct", { isAdmin: req.session.isAdmin, product: data, categories: categories })
             }).catch(err => { console.log(err) })
     },
     deleteProduct: (req, res) => {

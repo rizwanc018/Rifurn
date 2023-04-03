@@ -8,23 +8,6 @@ const userHelper = {
         const isExist = await UserModel.exists({ email: email })
         return isExist
     },
-    // doSignup: (req, res) => {
-    //     return new Promise(async (resolve, reject) => {
-    //         let { mobile } = req.body
-    //         mobile = Number("91" + mobile)
-    //         if (mobile) {
-    //             const numberExist = await UserModel.exists({ mobile: mobile })
-    //             if (numberExist) {
-    //                 reject("Number already exist try login")
-    //             } else {
-    //                 const status = await sendOTP(mobile)
-    //                 resolve(status.to)
-    //             }
-    //         } else {
-    //             reject("Invalid mobile number")
-    //         }
-    //     })
-    // },
     doOTPVerification: (req, res) => {
         const otp = req.body.otp
         const ogOtp = req.session.user.otp
@@ -53,27 +36,26 @@ const userHelper = {
         const allUsers = await UserModel.find({})
         if (allUsers) return allUsers
     },
-    doOTPLogin: (req, res) => {
-        return new Promise(async (resolve, reject) => {
-            let { mobile } = req.body
-            mobile = Number("91" + mobile)
-            if (mobile) {
-                const numberExist = await UserModel.exists({ mobile: mobile })
-                if (numberExist) {
-                    const status = await sendOTP(mobile)
-                    resolve(status.to)
-                } else {
-                    reject("Number does not exist")
-                }
-            }
-        })
-    },
+    // doOTPLogin: (req, res) => {
+    //     return new Promise(async (resolve, reject) => {
+    //         let { email } = req.body
+    //         if (email) {
+    //             console.log(`--------------`, email);
+    //             const emailExist = await UserModel.exists({ email: email })
+    //             if (emailExist) {
+    //                 const status = await sendOTP(mobile)
+    //                 resolve(status.to)
+    //             } else {
+    //                 reject("Number does not exist")
+    //             }
+    //         }
+    //     })
+    // },
     doOTPVerificationForLogin: (req, res) => {
         const { mobile, otp } = req.body
         return new Promise(async (resolve, reject) => {
             if (otp) {
                 const status = await verifyOTP(mobile, otp)
-                console.log("user helper---------------------");
                 if (status.valid) {
                     resolve(status)
                 } else {

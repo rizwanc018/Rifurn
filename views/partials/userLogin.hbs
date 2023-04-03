@@ -80,57 +80,78 @@
                 <div class="d-flex flex-column text-left">
                     {{!-- Form to enter mobile number for login --}}
                     <form id="forgotPasswordForm" action="" novalidate>
-                        {{!-- <div class="input-group mb-1">
-                            <span class="input-group-text">+91</span>
-                            <input type="tel" id="mobileforlogin" name="mobile" class="form-control"
-                                pattern="^[6-9]\d{9}$" value="" required />
-                        </div> --}}
                         <div class="form-outline mb-3">
                             <label class="form-label" for="forgotPasswordEmail">Email address</label>
-                            <input type="email" id="forgotPasswordEmail" name="email" class="form-control" placeholder="Email"
-                                value="{{error.data.email}}" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                                required />
+                            <input type="email" id="forgotPasswordEmail" name="email" class="form-control"
+                                placeholder="Email" value="{{error.data.email}}"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required />
+                        </div>
+                        <div class="row text-danger m-0 p-0 ps-3" id="forgotPasswordMsg">
                         </div>
                         <div class="mb-3"></div>
                         <button type="submit" class="btn btn-outline-danger btn-block btn-round">Continue</button>
                     </form>
-
-                    {{!-- Form to enter OTP for login --}}
-                    <form class="d-none" id="loginOTPForm" action="user/login" novalidate>
+                    <form class="d-none" id="forgotPaswordOTPForm" action="user/login" novalidate>
                         <div class="form-group">
-                            <input type="tel" class="form-control" id="mobileforlogininotp" value="">
+                            <input type="email" class="form-control" id="emailforOTPForgotPassword" value="" disabled>
                         </div>
                         <div class="my-3"></div>
                         <div class="form-group">
                             <input type="number" class="form-control" id="otpforlogin" placeholder="OTP"
                                 pattern="^[0-9]{6}$" value="" required>
                         </div>
+                        <div class="row text-danger m-0 p-0 ps-3" id="invalidOTPMsg">
+                        </div>
                         <div class="mb-3"></div>
-                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Login</button>
+                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Continue</button>
+                    </form>
+                    <form class="d-none" id="changePasswordForm" action="user/login" novalidate>
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" id="changepassword" name="password" class="form-control"
+                                placeholder="Password" required />
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="repassword">Re enter Password</label>
+                            <input type="password" id="changepasswordre" name="repassword" class="form-control"
+                                placeholder="Password" required />
+                        </div>
+
+                        <p id="cprpmm" class="d-none text-danger small">Password mismatch</p>
+
+                        <div class="mb-3"></div>
+                        <button type="submit" class="btn btn-outline-danger btn-block btn-round">Submit</button>
                     </form>
                     <script>
 
                         const forgotPasswordForm = document.querySelector('#forgotPasswordForm');
-                        const loginOTPForm = document.querySelector('#loginOTPForm');
-                        const mobileforlogininotp = document.querySelector('#mobileforlogininotp')
+                        const forgotPaswordOTPForm = document.querySelector('#forgotPaswordOTPForm');
+                        const changePasswordForm = document.querySelector('#changePasswordForm')
+                        const emailforOTPForgotPassword = document.querySelector('#emailforOTPForgotPassword')
                         const otpforlogin = document.querySelector('#otpforlogin')
                         var url = window.location.origin
+                        const forgotPasswordMsg = document.querySelector('#forgotPasswordMsg')
+                        const invalidOTPMsg = document.querySelector('#invalidOTPMsg')
                         forgotPasswordForm.addEventListener('submit', e => {
                             e.preventDefault();
-                            let mobileNum = document.querySelector('#mobileforlogin').value
+                            let email = document.querySelector('#forgotPasswordEmail').value
                             if (!forgotPasswordForm.checkValidity()) {
                             } else {
                                 $.ajax({
-                                    url: `${url}/user/otplogin`,
+                                    url: `${url}/user/forgotpassword`,
                                     method: "POST",
-                                    data: { mobile: mobileNum },
+                                    data: { email: email },
                                     success: res => {
-                                        forgotPasswordForm.classList.add('d-none')
-                                        loginOTPForm.classList.remove('d-none')
-                                        mobileforlogininotp.value = res
+                                        if (res) {
+                                            forgotPasswordForm.classList.add('d-none')
+                                            forgotPaswordOTPForm.classList.remove('d-none')
+                                            emailforOTPForgotPassword.value = res
+                                        } else {
+                                            forgotPasswordMsg.innerHTML = "Email does not exist"
+                                        }
                                     },
                                     error: err => {
-                                        alert(err.responseText)
                                         otpforlogin.value = ""
                                     }
                                 })
@@ -139,20 +160,21 @@
                         })
 
 
-                        loginOTPForm.addEventListener('submit', e => {
+                        forgotPaswordOTPForm.addEventListener('submit', e => {
                             var otp = document.querySelector('#otpforlogin').value
                             e.preventDefault();
-                            if (!loginOTPForm.checkValidity()) {
+                            if (!forgotPaswordOTPForm.checkValidity()) {
                             } else {
                                 $.ajax({
-                                    url: `${url}/user/otplogin/verification`,
+                                    url: `${url}/user/forgotpassword/verifyotp`,
                                     method: "POST",
-                                    data: { mobile: mobileforlogininotp.value, otp: otp },
+                                    data: { email: emailforOTPForgotPassword.value, otp: otp },
                                     success: res => {
-                                        if (res.valid) {
-                                            console.log(res)
-                                            alert("Login succees")
-                                            window.location.reload()
+                                        if (res) {
+                                            forgotPaswordOTPForm.classList.add('d-none')
+                                            changePasswordForm.classList.remove('d-none')
+                                        } else {
+                                            invalidOTPMsg.innerHTML = "Invalid OTP"
                                         }
                                     },
                                     error: err => {
@@ -161,7 +183,47 @@
                                     }
                                 })
                             }
-                            loginOTPForm.classList.add('was-validated');
+                            forgotPaswordOTPForm.classList.add('was-validated');
+                        })
+
+                        const cp = document.querySelector('#changepassword')
+                        const cpr = document.querySelector('#changepasswordre')
+                        const cprpmm = document.querySelector('#cprpmm')
+                        cpr.addEventListener('keyup', e => {
+                            if (cp.value !== cpr.value) {
+                                e.preventDefault();
+                                cprpmm.classList.remove('d-none')
+                                cp.classList.add('error')
+                                cpr.classList.add('error')
+                            } else {
+                                cprpmm.classList.add('d-none')
+                                cp.classList.remove('error')
+                                cpr.classList.remove('error')
+                            }
+                        })
+
+                        changePasswordForm.addEventListener('submit', e => {
+                            e.preventDefault();
+                            if (!forgotPaswordOTPForm.checkValidity()) {
+                            } else {
+                                $.ajax({
+                                    url: `${url}/user/changepassword`,
+                                    method: "POST",
+                                    data: { password: cp.value },
+                                    success: res => {
+                                        if (res) {
+                                            window.location.reload()
+                                        } else {
+                                            console.log("Something wrong")
+                                        }
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                        alert(err.responseText)
+                                    }
+                                })
+                            }
+                            changePasswordForm.classList.add('was-validated');
                         })
                     </script>
                 </div>

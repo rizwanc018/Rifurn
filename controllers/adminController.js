@@ -2,7 +2,8 @@ import adminHelper from "../helpers/adminHelper.js"
 
 const adminController = {
     getLoginPage: (req, res) => {
-        res.render('admin/login')
+        if (req.session.isAdmin) res.redirect('/admin/dashboard')
+        else res.render('admin/login')
     },
     doLogin: (req, res) => {
         adminHelper.doLogin(req, res)
