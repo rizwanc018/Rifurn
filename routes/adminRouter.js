@@ -5,6 +5,7 @@ import productController from '../controllers/productController.js';
 import userController from '../controllers/userController.js';
 import upload from "../utils/multer.js";
 
+
 const adminRouter = express.Router()
 
 const verifyAdmin = (req, res, next) => {
@@ -17,7 +18,8 @@ const verifyAdmin = (req, res, next) => {
 
 adminRouter.get('/login', adminController.getLoginPage)
 adminRouter.post('/login', adminController.doLogin)
-adminRouter.get('/dashboard', verifyAdmin, adminController.showDashboard)
+adminRouter.get('/logout', adminController.logOut)
+adminRouter.get('/dashboard',verifyAdmin, adminController.showDashboard)
 
 adminRouter.get('/products', verifyAdmin, productController.getAllProducts)
 adminRouter.get('/product/add', verifyAdmin, productController.showAddProduct)

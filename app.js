@@ -10,6 +10,7 @@ import methodOverride from 'method-override'
 import userRouter from './routes/userRouter.js';
 import adminRouter from './routes/adminRouter.js';
 import guestRouter from './routes/guestRouter.js';
+import nocache from "nocache";
 // import twilioRouter from './routes/twilioRouter.js'
 
 const app = express()
@@ -18,6 +19,7 @@ const __dirname = dirname(__filename);
 
 dotenv.config()
 app.use(logger('dev'))
+app.use(nocache());
 app.use(express.static('public'))
 app.set('view engine', 'hbs')
 hbs.registerPartials(__dirname + '/views/partials');
