@@ -58,6 +58,11 @@ const productController = {
         }).catch(err => {
             console.log(err)
         })
+    },
+    getSingleProduct: async (req, res) => {
+       const product = await productHelper.getSingleProduct(req)
+       console.log(product);
+       res.render('singleProduct', {product})
     }
 }
 

@@ -51,6 +51,10 @@ footer img {
     width: 107px;
 }
 
+.green-circle {
+    border: 4px solid rgb(10, 124, 31);
+    border-radius: 50%;
+}
 .error {
     outline: 2px solid red;
 }

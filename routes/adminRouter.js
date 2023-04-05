@@ -18,7 +18,7 @@ const verifyAdmin = (req, res, next) => {
 
 adminRouter.get('/login', adminController.getLoginPage)
 adminRouter.post('/login', adminController.doLogin)
-adminRouter.get('/logout', adminController.logOut)
+adminRouter.get('/logout', adminController.doLogOut)
 adminRouter.get('/dashboard',verifyAdmin, adminController.showDashboard)
 
 adminRouter.get('/products', verifyAdmin, productController.getAllProducts)

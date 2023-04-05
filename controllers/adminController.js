@@ -17,7 +17,7 @@ const adminController = {
     showDashboard: (req, res) => {
         res.render('admin/dashboard', { isAdmin: req.session.isAdmin })
     },
-    logOut: (req, res) => {
+    doLogOut: (req, res) => {
         req.session.isAdmin = null
         res.redirect('/')
     }

@@ -44,7 +44,12 @@
                                     method: "POST",
                                     data: { email: loginEmail, password: loginPassword },
                                     success: res => {
-                                        window.location.href = '/'
+                                        console.log(res)
+                                        if (res.responseText == "blocked") {
+                                            loginMsg.innerHTML = `<p class="text-danger my-0">You are blocked<p>`
+                                        } else {
+                                            window.location.reload()
+                                        }
                                     },
                                     error: err => {
                                         loginMsg.innerHTML = `<p class="text-danger my-0">${err.responseText}<p>`

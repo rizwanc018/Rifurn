@@ -18,15 +18,15 @@ export async function sendOTP(email, otp) {
       to: `${email}`,
       subject: 'OTP from Rifurn',
       html: `
-        <div
-          class="container"
-          style="max-width: 90%; margin: auto; padding-top: 20px"
-        >
-          <h2>Welcome to the club.</h2>
-          <h4>Enter the OTP</h4>
-          <p style="margin-bottom: 30px;">Pleas enter the sign up OTP to get started</p>
-          <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${otp}</h1>
-     </div>
+      <div
+      class="container"
+      style="max-width: 90%; margin: auto; padding-top: 20px"
+      >
+      <h2>Welcome to the club.</h2>
+      <h4>Enter the OTP</h4>
+      <p style="margin-bottom: 30px;">Pleas enter the sign up OTP to get started</p>
+      <h1 style="font-size: 40px; letter-spacing: 2px; text-align:center;">${otp}</h1>
+      </div>
       `,
     });
     return info;

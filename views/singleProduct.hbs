@@ -8,7 +8,7 @@
                     <h2>Single Product</h2>
                     <ul class="page-breadcrumb">
                         <li><a href="/">Home</a></li>
-                        <li>Single Product</li>
+                        <li>{{product.productName}}</li>
                     </ul>
                 </div>
             </div>
@@ -19,7 +19,7 @@
 <div class="container mt-5">
     <div class="row">
         <div id="img-container" class="col-md-6">
-            <img style="width: 100%" src="/images/Decor-1.webp" alt="">
+            <img style="width: 100%" src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{product.images.[0]}}.webp" alt="">
         </div>
         <script>
             var options = {
@@ -33,7 +33,7 @@
 
         </script>
         <div class="col-md-6 d-flex flex-column justify-content-center">
-            <h5>Aliquam lobortis est turpis mauris egestas eget</h5>
+            <h5>{{product.productName}}</h5>
             <span class="rating fs-6">
                 <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
                 <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
@@ -43,12 +43,8 @@
                 {{!-- <i class="fa-regular fa-star" style="color: #8de41b;"></i>
                 <i class="fa-solid fa-star-half-stroke" style="color: #8de41b;"></i> --}}
             </span>
-            <p class="product-price mt-3"><span class="discounted-price fs-5">99{{price}}</span></p>
-            <p class="product-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco,Proin lectus ipsum,
-                gravida et mattis vulputate, tristique ut lectus
-            </p>
+            <p class="product-price mt-3"><span class="discounted-price fs-5">{{product.price}}</span></p>
+            <p class="product-description">{{product.description}}</p>
             <div class=" single-product-quantity ">
                 <form class="row add-quantity" action="#">
                     <div class="col-2 product-quantity">
@@ -69,12 +65,12 @@
             <div class="product-meta">
                 <span class="posted-in">
                     Category:
-                    <a href="#">Accessories</a>
+                    <a href="#">{{product.category}}</a>
                 </span>
             </div>
         </div>
     </div>
 </div>
 <div class="container">
-    <div class="mt-3 mb-5" tabindex="0"><img style="width: 140px;" src="/images/Decor-2.webp" alt=""></div>
+    <div class="mt-3 mb-5" tabindex="0"><img style="width: 140px;" src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{product.images.[1]}}.webp" alt=""></div>
 </div>

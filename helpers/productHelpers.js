@@ -37,8 +37,7 @@ const productHelper = {
                     console.log("imageId",imageId)
                 }
                 productModel.updateOne({_id: req.params.id},{ productName: productName, category: productCategory, price: productPrice, stock: stock, description: productDescription, $push: {images: {$each: imageId}} })
-                    .then((data) => {
-                        console.log("suceesss--------", data)
+                    .then(() => {
                         resolve("Product added successfully")
                     }).catch(() => {
                         reject("Unable to add product")
@@ -90,7 +89,7 @@ const productHelper = {
                 })
         })
     },
-    getSingleProduct: (req, res) => {
+    getSingleProduct: (req) => {
         const id = req.params.id
         return new Promise((resolve, reject) => {
             productModel.findById(id)

@@ -51,21 +51,21 @@ const userHelper = {
     //         }
     //     })
     // },
-    doOTPVerificationForLogin: (req, res) => {
-        const { mobile, otp } = req.body
-        return new Promise(async (resolve, reject) => {
-            if (otp) {
-                const status = await verifyOTP(mobile, otp)
-                if (status.valid) {
-                    resolve(status)
-                } else {
-                    reject("Invalid OTP")
-                }
-            } else {
-                reject("Invalid OTP")
-            }
-        })
-    },
+    // doOTPVerificationForLogin: (req, res) => {
+    //     const { mobile, otp } = req.body
+    //     return new Promise(async (resolve, reject) => {
+    //         if (otp) {
+    //             const status = await verifyOTP(mobile, otp)
+    //             if (status.valid) {
+    //                 resolve(status)
+    //             } else {
+    //                 reject("Invalid OTP")
+    //             }
+    //         } else {
+    //             reject("Invalid OTP")
+    //         }
+    //     })
+    // },
     deleteUser: async (id) => {
         const data = await UserModel.deleteOne({ _id: id })
         console.log(data)

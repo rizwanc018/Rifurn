@@ -2,7 +2,6 @@
     <div class="container-fluid d-flex align-items-center">
         <a class="navbar-brand" href="#">
             <img class="img-fluid" width="107" src="/images/logo.png" alt="">
-
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,9 +29,6 @@
                         <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
             </ul>
 
             <ul class="navbar-nav d-flex flex-row">
@@ -47,21 +43,29 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                    {{#if isUserLoggedin}}
+                    <a class="green-circle nav-link dropdown-toggle d-flex align-items-center" href="#"
+                        id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    {{else}}
+                    <a class=" nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-user"></i>
                     </a>
+                    {{/if}}
                     <ul class="dropdown-menu pull-right" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li><a class="dropdown-item" href="#">Another action</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
+                        {{#if isUserLoggedin}}
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                        {{else}}
                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#loginModal"
                                 href="#">Login</a></li>
-                        {{!-- <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#signUpModal"
-                                href="#">Signup</a></li> --}}
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        {{/if}}
                     </ul>
                 </li>
             </ul>
