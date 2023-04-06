@@ -36,10 +36,9 @@ const productController = {
     },
     deleteProduct: (req, res) => {
         productHelper.deleteProduct(req).then(response => {
-            res.redirect("/admin/products")
+            res.status(200).send(response)
         }).catch(err => {
-            console.log(err)
-            res.redirect("/admin/products")
+            res.status.send(err)
         })
     },
     deleteImage: (req, res) => {

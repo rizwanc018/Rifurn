@@ -6,11 +6,16 @@ const categoryHelper = {
         category = category.charAt(0).toUpperCase() + category.slice(1);
         return new Promise(async (resolve, reject) => {
             if (category) {
-                categoryModel.create({ category: category }).then(status => {
-                    resolve(status)
-                }).catch(err => {
-                    reject(err)
-                })
+                const isExist = await categoryModel.exists({ category: category })
+                if (isExist) {
+                    reject("Category alredy exist")
+                } else {
+                    categoryModel.create({ category: category }).then(status => {
+                        resolve(status)
+                    }).catch(err => {
+                        reject(err)
+                    })
+                }
             } else {
                 reject("Category not provided")
             }
@@ -26,12 +31,19 @@ const categoryHelper = {
         })
     },
     editCategory: (req) => {
+        let { category } = req.body
+        category = category.charAt(0).toUpperCase() + category.slice(1);
         return new Promise(async (resolve, reject) => {
-            categoryModel.updateOne({ _id: req.params.id }, { category: req.body.category }).then(status => {
-                resolve(status)
-            }).catch(err => {
-                reject(err)
-            })
+            const isExist = await categoryModel.exists({ category: category })
+            if (isExist) {
+                reject("Category already exist")
+            } else {
+                categoryModel.updateOne({ _id: req.params.id }, { category: category }).then(status => {
+                    resolve(status)
+                }).catch(err => {
+                    reject(err)
+                })
+            }
         })
     },
     getAllCategories: () => {

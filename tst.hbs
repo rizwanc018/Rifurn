@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SweetAlert with jQuery AJAX</title>
+	<!-- SweetAlert CSS -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+</head>
+<body>
+	<button id="btn-ajax">Make AJAX request</button>
+
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- SweetAlert JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			$('#btn-ajax').click(function() {
+				$.ajax({
+					url: 'example.php',
+					type: 'post',
+					data: {
+						name: 'John',
+						age: 30
+					},
+					success: function(response) {
+						// Display success message
+						swal({
+							title: "Success!",
+							text: "The AJAX request was successful.",
+							type: "success",
+							timer: 3000
+						});
+					},
+					error: function(xhr, status, error) {
+						// Display error message
+						swal({
+							title: "Error!",
+							text: "There was an error with the AJAX request.",
+							type: "error",
+							timer: 3000
+						});
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

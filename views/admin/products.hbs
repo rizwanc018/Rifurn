@@ -34,9 +34,9 @@
                     <td>{{category}}</td>
                     <td>{{stock}}</td>
                     <td class="small">{{description}}</td>
-                    <td> 
+                    <td>
                         {{#each images }}
-                            <img src=https://res.cloudinary.com/dz9knbtwi/image/upload/h_50,w_50/{{this}} alt="" srcset="">
+                        <img src=https://res.cloudinary.com/dz9knbtwi/image/upload/h_50,w_50/{{this}} alt="" srcset="">
                         {{/each}}
                     </td>
 
@@ -44,13 +44,45 @@
                         <a href="/admin/product/edit/{{_id}}" class="btn btn-primary btn-sm px-2">
                             <i class="fa fa-pen-to-square"></i>
                         </a>
-                        <a class="btn btn-danger btn-sm px-2"
+                        {{!-- <a class="btn btn-danger btn-sm px-2"
                             onclick="return confirm('are you sure you want to delete {{productName}}?')"
                             href="/admin/product/delete/{{_id}}?img={{images}}"><i class="fa fa-trash"></i></a>
+                        --}}
+                        <button class="btn btn-danger btn-sm px-2"
+                            onclick="deleteProduct(this,'{{_id}}', '{{productName}}', '{{images}}')">
+                            <i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
+        <script>
+            var url = window.location.origin
+            function deleteProduct(self, id, productName, images) {
+                var $tr = $(self).closest('tr')
+                swal.fire({
+                    title: "Delete?",
+                    text: `Are you sure you want to delete category: "${productName}"!`,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `${url}/admin/product/delete/${id}?img=${images}`,
+                            method: "GET",
+                            success: res => {
+                                $tr.remove()
+                            },
+                            error: err => {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+            }
+        </script>
     </div>
 </div>

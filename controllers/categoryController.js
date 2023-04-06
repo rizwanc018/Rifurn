@@ -11,16 +11,16 @@ const categoryController = {
     },
     deleteCategory: (req, res) => {
         categoryHelper.deleteCategory(req, res).then(() => {
-            res.status(200).redirect('/admin/categories')
+            res.status(200).send("Deleted Successfully")
         }).catch(err => {
-            res.redirect('/')
+            res.status(400).send(err)
         })
     },
     editCategory: (req, res) => {
         categoryHelper.editCategory(req, res).then((status) => {
             res.status(200).send(status.acknowledged)
         }).catch(err => {
-            res.redirect('/')
+            res.status(400).send(err)
         })
     },
     showCategories: (req, res) => {
