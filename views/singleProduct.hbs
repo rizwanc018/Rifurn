@@ -19,7 +19,8 @@
 <div class="container mt-5">
     <div class="row">
         <div id="img-container" class="col-md-6">
-            <img style="width: 100%" src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{product.images.[0]}}.webp" alt="">
+            <img id="imgViewer" style="width: 100%"
+                src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{product.images.[0]}}.webp" alt="">
         </div>
         <script>
             var options = {
@@ -36,10 +37,10 @@
             <h5>{{product.productName}}</h5>
             <span class="rating fs-6">
                 <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
+                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
+                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
                 <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
-                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
-                <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
-                <i class="fa-solid fa-star-half-stroke" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                <i class="fa-solid fa-star-half-stroke" style="color: hsla(0, 0%, 57%, 0.7);"></i>
                 {{!-- <i class="fa-regular fa-star" style="color: #8de41b;"></i>
                 <i class="fa-solid fa-star-half-stroke" style="color: #8de41b;"></i> --}}
             </span>
@@ -72,5 +73,17 @@
     </div>
 </div>
 <div class="container">
-    <div class="mt-3 mb-5" tabindex="0"><img style="width: 140px;" src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{product.images.[1]}}.webp" alt=""></div>
+    <div class="mt-3 mb-5" tabindex="0">
+        {{#each product.images}}            
+        <img class="productImage" style="width: 140px; border:2px solid hsla(0, 0%, 57%, 0.3)"
+            src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{this}}.webp" alt="">
+        {{/each}}
+    </div>
 </div>
+
+<script>
+    let $imgViewer = $('#imgViewer')
+    $('.productImage').on('click', function() {
+        $(imgViewer).attr('src', $(this).attr('src'))
+    })
+</script>

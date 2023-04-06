@@ -55,7 +55,7 @@
                     <h4>Add Category</h4>
                 </div>
                 <div class="d-flex flex-column text-center">
-                    <form action="">
+                    <form action="" id="addCategoryForm" novalidate>
                         <div class="form-group">
                             <input type="text" class="form-control" id="addFormcategory" placeholder="Category. . ."
                                 required value="">
@@ -126,22 +126,26 @@
         })
     })
 
-    const addCategoryform = document.querySelector('#addCategoryModal')
-    addCategoryform.addEventListener('submit', e => {
-        let category = document.querySelector('#addFormcategory')
+    const addCategoryForm = document.querySelector('#addCategoryForm')
+    addCategoryForm.addEventListener('submit', e => {
         e.preventDefault();
-        $.ajax({
-            url: `${url}/admin/addcategoty`,
-            method: "POST",
-            data: { category: category.value },
-            success: res => {
-                console.log(res)
-                window.location.reload()
-            },
-            error: err => {
-                console.log(err)
-                alert(err)
-            }
-        })
+        let category = document.querySelector('#addFormcategory')
+        if (!addCategoryForm.checkValidity()) {
+        } else {
+            $.ajax({
+                url: `${url}/admin/addcategoty`,
+                method: "POST",
+                data: { category: category.value },
+                success: res => {
+                    console.log(res)
+                    window.location.reload()
+                },
+                error: err => {
+                    console.log(err)
+                    alert(err)
+                }
+            })
+        }
+        addCategoryForm.classList.add('was-validated');
     })
 </script>

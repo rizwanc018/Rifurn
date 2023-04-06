@@ -5,42 +5,54 @@
 </div>
 
 <div class="container mt-5">
-    <form enctype="multipart/form-data" action="/admin/product/add" method="POST">
-    <div class="row mb-3">
-        <div class="col-6">
-            <label for="productName" class="form-label">Product Name</label>
-            <input type="text" class="form-control" id="productName" name="productName" aria-describedby="productNameHelp">
-        </div>
+    <form novalidate id="addProductForm" enctype="multipart/form-data" action="/admin/product/add" method="POST" >
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="productName" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="productName" name="productName"
+                    aria-describedby="productNameHelp" required>
+            </div>
 
-        <div class="col-6">
-            <label for="productCategory" class="form-label">Category</label>
-            <select id="productCategory" name="productCategory" class="form-select" aria-label="Default select example">
-                {{#each categories }}
-                <option value="{{category}}">{{category}}</option>
-                {{/each}}
-            </select>
+            <div class="col-6">
+                <label for="productCategory" class="form-label">Category</label>
+                <select id="productCategory" name="productCategory" class="form-select"
+                    aria-label="Default select example">
+                    {{#each categories }}
+                    <option value="{{category}}">{{category}}</option>
+                    {{/each}}
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-6">
-            <label for="productPrice" class="form-label">Price</label>
-            <input type="text" class="form-control" id="productPrice" name="productPrice"
-                aria-describedby="productPrice">
+        <div class="row mb-3">
+            <div class="col-6">
+                <label for="productPrice" class="form-label">Price</label>
+                <input  type="text" class="form-control" id="productPrice" name="productPrice"
+                    aria-describedby="productPrice" required>
+            </div>
+            <div class="col-6">
+                <label for="stock" class="form-label">Stock</label>
+                <input  type="number" class="form-control" id="stock" name="stock" aria-describedby="Stock" required>
+            </div>
         </div>
-        <div class="col-6">
-            <label for="stock" class="form-label">Stock</label>
-            <input type="number" class="form-control" id="stock" name="stock" aria-describedby="Stock">
+        <div class="mb-3">
+            <label for="productDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="productDescription" name="productDescription" rows="3" required></textarea>
         </div>
-    </div>
-    <div class="mb-3">
-        <label for="productDescription" class="form-label">Description</label>
-        <textarea class="form-control" id="productDescription" name="productDescription" rows="3"></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="image" class="form-label">Description</label>
-        <input type="file" class="form-control" id="image" name="image" aria-describedby="productImage" multiple>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Product</button>
-</form>
-
+        <div class="mb-3">
+            <label for="image" class="form-label">Description</label>
+            <input  type="file" class="form-control" id="image" name="image" aria-describedby="productImage"
+                multiple required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+    <script>
+        const addProductForm = document.querySelector('#addProductForm');
+        console.log(addProductForm)
+        addProductForm.addEventListener('submit', e => {
+            if (!addProductForm.checkValidity()) {
+                e.preventDefault();
+            }
+            addProductForm.classList.add('was-validated');
+        })
+    </script>
 </div>

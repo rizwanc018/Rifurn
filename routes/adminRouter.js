@@ -4,17 +4,9 @@ import categoryController from '../controllers/categoryController.js';
 import productController from '../controllers/productController.js';
 import userController from '../controllers/userController.js';
 import upload from "../utils/multer.js";
-
+import { verifyAdmin } from '../middlewares/adminMiddlewares.js';
 
 const adminRouter = express.Router()
-
-const verifyAdmin = (req, res, next) => {
-    if (req.session.isAdmin) {
-        next()
-    } else {
-        res.redirect('/')
-    }
-}
 
 adminRouter.get('/login', adminController.getLoginPage)
 adminRouter.post('/login', adminController.doLogin)
