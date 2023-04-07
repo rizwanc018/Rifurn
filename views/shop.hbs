@@ -1,0 +1,1093 @@
+{{!-- {{> individualProduct}} --}}
+
+<div class="container-fluid my-5">
+    <div class="row">
+        <div class="col-12" style="margin-left: 5vw;">
+            <div class="shop-area sb-border pb-70 pb-lg-50 pb-md-40 pb-sm-60 pb-xs-50">
+
+                <div class="row">
+                    <div class="col-lg-2 order-lg-1 order-2">
+                        <!-- Single Sidebar Start  -->
+                        <div class="common-sidebar-widget">
+                            <h3 class="sidebar-title">Product categories</h3>
+                            <ul class="sidebar-list">
+                                {{#each categories }}
+                                <li class="active">
+                                    <a href="/shop/category/{{_id}}">
+                                        <i class="fa fa-plus"></i>
+                                        {{category}}
+                                    </a>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                        <!-- Single Sidebar End  -->
+                        {{!-- <!-- Single Sidebar Start  -->
+                        <div class="common-sidebar-widget">
+                            <h3 class="sidebar-title">Filter by price</h3>
+                            <div class="sidebar-price">
+                                <div id="price-range"
+                                    class="mb-20 ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <div class="ui-slider-range ui-widget-header ui-corner-all"
+                                        style="left: 0%; width: 90%;"></div><span
+                                        class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
+                                        style="left: 0%;"></span><span
+                                        class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
+                                        style="left: 90%;"></span>
+                                </div>
+                                <button type="button" class="btn">Filter</button>
+                                <input type="text" id="price-amount" class="price-amount" readonly="">
+                            </div>
+                        </div>
+                        <!-- Single Sidebar End  --> --}}
+                        <!-- Single Sidebar Start  -->
+                        <div class="common-sidebar-widget">
+                            <h3 class="sidebar-title">Filter by</h3>
+                            <ul class="sidebar-list">
+                                <li><a href="#"><i class="ion-plus"></i>Gold</a></li>
+                                <li><a href="#"><i class="ion-plus"></i>Green</a></li>
+                                <li><a href="#"><i class="ion-plus"></i>White</a></li>
+                            </ul>
+                        </div>
+                        <!-- Single Sidebar End  -->
+
+                        <!-- Single Sidebar Start  -->
+                        <div class="common-sidebar-widget">
+                            <h3 class="sidebar-title">Product tags</h3>
+                            <ul class="sidebar-tag">
+                                {{#each categories }}
+                                <li>
+                                    <a href="/shop/category/{{_id}}">
+                                        {{category}}
+                                    </a>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                        <!-- Single Sidebar End  -->
+                    </div>
+                    <div class="col-lg-9 order-lg-2 order-1">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="shop-product">
+                                    <div id="myTabContent-2" class="tab-content">
+                                        {{!-- <div id="grid" class="tab-pane fade active show" role="tabpanel">
+                                            <div class="product-grid-view">
+                                                <div class="row">
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/1_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Decor</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore lorem ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$100.00</span> <span
+                                                                        class="main-price discounted">$120.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/2-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/2_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Decor</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">lorem
+                                                                        ipsum cillium dolore decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$64.00</span> <span
+                                                                        class="main-price discounted">$78.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/3-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/3_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Vase</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore lorem ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$180.00</span> <span
+                                                                        class="main-price discounted">$200.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/4-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/4_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Vase</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">lorem
+                                                                        ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$40.00</span> <span
+                                                                        class="main-price discounted">$59.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/5-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/5_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Vase</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore lorem ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$17.00</span> <span
+                                                                        class="main-price discounted">$39.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/6-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/6_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Decor</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Auctor
+                                                                        gravida enim pellentesque quam ut risus</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$85.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/7-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/7_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Sports</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore tortor nisl fermentum quam</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$70.00</span> <span
+                                                                        class="main-price discounted">$80.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/8-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/8_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Furniture</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a
+                                                                        href="single-product.html">Consequuntur magni
+                                                                        risus tincidunt convallis scelerisque</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$30.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/9-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/9_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Toy</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">lorem
+                                                                        ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$40.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/10-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/10_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Storage</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Auctor
+                                                                        gravida enim pellentesque quam ut risus</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$190.00</span> <span
+                                                                        class="main-price discounted">$230.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/11-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/11_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Lighting</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a
+                                                                        href="single-product.html">Convallis quam sit
+                                                                        vitae sodales neque ornare</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$59.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/12-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/12_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Accessories</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cras
+                                                                        neque honcus consectetur magna imperdiet</a>
+                                                                </h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$96.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/13-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/13_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Outdoor</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore lorem ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$180.00</span> <span
+                                                                        class="main-price discounted">$200.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/14-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/14_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Lighting</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">lorem
+                                                                        ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$53.00</span> <span
+                                                                        class="main-price discounted">$59.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/3-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/3_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Lighting</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore lorem ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$17.00</span> <span
+                                                                        class="main-price discounted">$39.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/9-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/9_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Vase</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore lorem ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$180.00</span> <span
+                                                                        class="main-price discounted">$200.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="new">New</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/4-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/4_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Vase</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">lorem
+                                                                        ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$40.00</span> <span
+                                                                        class="main-price discounted">$59.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                                        <!--  Single Grid product Start -->
+                                                        <div class="single-grid-product mb-30">
+                                                            <div class="product-image">
+                                                                <div class="product-label">
+                                                                    <span class="sale">-20%</span>
+                                                                </div>
+                                                                <a href="single-product.html">
+                                                                    <img src="./assets/images/product/5-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                    <img src="./assets/images/product/5_1-600x800.jpg"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+
+                                                                <div
+                                                                    class="product-action d-flex justify-content-between">
+                                                                    <a class="product-btn" href="cart.html">Add to
+                                                                        Cart</a>
+                                                                    <ul class="d-flex">
+                                                                        <li><a href="wishlist.html"><i
+                                                                                    class="ion-android-favorite-outline"></i></a>
+                                                                        </li>
+                                                                        <li><a href="compare.html"><i
+                                                                                    class="ion-ios-shuffle"></i></a>
+                                                                        </li>
+                                                                        <li><a href="#quick-view-modal-container"
+                                                                                data-bs-toggle="modal"
+                                                                                title="Quick View"><i
+                                                                                    class="ion-ios-search-strong"></i></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-content">
+                                                                <div class="product-category-rating">
+                                                                    <span class="category"><a
+                                                                            href="shop.html">Vase</a></span>
+                                                                    <span class="rating">
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star active"></i>
+                                                                        <i class="ion-android-star-outline"></i>
+                                                                    </span>
+                                                                </div>
+
+                                                                <h3 class="title"> <a href="single-product.html">Cillum
+                                                                        dolore lorem ipsum decoration item</a></h3>
+                                                                <p class="product-price"><span
+                                                                        class="discounted-price">$17.00</span> <span
+                                                                        class="main-price discounted">$39.00</span></p>
+                                                            </div>
+                                                        </div>
+                                                        <!--  Single Grid product End -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> --}}
+                                        {{> individualProduct}}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

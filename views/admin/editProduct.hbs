@@ -18,12 +18,12 @@
                 <select id="productCategory" name="productCategory" class="form-select"
                     aria-label="Default select example">
                     {{#each categories }}
-                    <option value="{{category}}">{{category}}</option>
+                    <option value="{{_id}}">{{category}}</option>
                     {{/each}}
                 </select>
                 <script>
                     const options = document.querySelector('#productCategory')
-                    options.value = "{{product.category}}"
+                    options.value = "{{product.category._id}}"
                 </script>
             </div>
         </div>

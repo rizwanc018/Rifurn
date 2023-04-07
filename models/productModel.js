@@ -2,7 +2,10 @@ import mongoose from "mongoose"
 
 const productSchema = new mongoose.Schema({
     productName: String,
-    category: String,
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category"
+    },
     price: Number,
     stock: Number,
     images: Array,

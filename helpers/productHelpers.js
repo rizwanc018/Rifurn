@@ -1,11 +1,13 @@
 import cloudinary from "../utils/cloudinary.js";
 import productModel from "../models/productModel.js";
 import fs from 'fs'
-import { resolve } from "path";
+import mongoose from "mongoose";
+
 
 const productHelper = {
     addProduct: (req, res) => {
         const imageId = []
+        console.log(req.body);
         const { productName, productCategory, productPrice, stock, productDescription } = req.body
         return new Promise(async (resolve, reject) => {
             try {
@@ -34,9 +36,9 @@ const productHelper = {
                     const result = await cloudinary.uploader.upload(file.path);
                     fs.unlinkSync(file.path)
                     imageId.push(result.public_id)
-                    console.log("imageId",imageId)
+                    console.log("imageId", imageId)
                 }
-                productModel.updateOne({_id: req.params.id},{ productName: productName, category: productCategory, price: productPrice, stock: stock, description: productDescription, $push: {images: {$each: imageId}} })
+                productModel.updateOne({ _id: req.params.id }, { productName: productName, category: productCategory, price: productPrice, stock: stock, description: productDescription, $push: { images: { $each: imageId } } })
                     .then(() => {
                         resolve("Product added successfully")
                     }).catch(() => {
@@ -84,15 +86,26 @@ const productHelper = {
     getAllProducts: () => {
         return new Promise((resolve, reject) => {
             productModel.find({})
+                .populate('category')
                 .then(products => {
                     resolve(products)
                 })
         })
     },
+    getAllProductsByCategory: async (req) => {
+        const id = new mongoose.Types.ObjectId(req.params.id)
+        try {
+            const products =  await productModel.find({category: id})
+            return products
+        } catch (err) {
+            
+        }
+    },
     getSingleProduct: (req) => {
         const id = req.params.id
         return new Promise((resolve, reject) => {
             productModel.findById(id)
+                .populate("category")
                 .then(data => {
                     resolve(data)
                 }).catch(err => reject(err))

@@ -5,7 +5,7 @@ const productController = {
     showAddProduct: (req, res) => {
         categoryHelper.getAllCategories()
             .then(categories => {
-                res.render("admin/addProduct", { isAdmin: req.session.isAdmin , categories: categories })
+                res.render("admin/addProduct", { isAdmin: req.session.isAdmin, categories: categories })
             }).catch(err => {
                 console.log(err);
                 res.status(400).redirect('/')
@@ -31,6 +31,7 @@ const productController = {
         const categories = await categoryHelper.getAllCategories()
         productHelper.getSingleProduct(req, res)
             .then(data => {
+                console.log("🚀 ~ file: productController.js:34 ~ showProductEditPage: ~ data:", data)
                 res.render("admin/editProduct", { isAdmin: req.session.isAdmin, product: data, categories: categories })
             }).catch(err => { console.log(err) })
     },
@@ -52,16 +53,16 @@ const productController = {
         console.log(req.body)
         console.log(req.files)
         productHelper.editProduct(req, res)
-        .then(() => {
-            res.redirect('/admin/products')
-        }).catch(err => {
-            console.log(err)
-        })
+            .then(() => {
+                res.redirect('/admin/products')
+            }).catch(err => {
+                console.log(err)
+            })
     },
     getSingleProduct: async (req, res) => {
-       const product = await productHelper.getSingleProduct(req)
-       console.log(product);
-       res.render('singleProduct', {product})
+        const product = await productHelper.getSingleProduct(req)
+        console.log(product);
+        res.render('singleProduct', { product })
     }
 }
 
