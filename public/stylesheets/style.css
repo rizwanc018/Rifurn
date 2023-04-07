@@ -141,7 +141,7 @@ footer img {
 .single-grid-product .product-image .product-action .product-btn {
     font-size: 14px;
     font-weight: 600;
-    line-height: 45px;
+    line-height: 35px;
     color: #292929;
     text-align: center;
     position: relative;
@@ -574,9 +574,7 @@ footer img {
   }
 
   /* ------------------------------------------------------- */
-  *---------------------------------------
-    18. Sidebar CSS
------------------------------------------*/
+
 /*-- Sidebar --*/
 .common-sidebar-widget {
   border-bottom: 1px solid #ebebeb;

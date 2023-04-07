@@ -1,5 +1,7 @@
 import express from 'express';
 import userController from '../controllers/userController.js';
+import { isUserLoggedin } from '../middlewares/userMiddlewares.js';
+import cartController from '../controllers/cartController.js';
 
 const userRouter = express.Router()
 
@@ -12,5 +14,7 @@ userRouter.get('/logout', userController.doLogOut)
 userRouter.post('/forgotpassword', userController.forgotPassword)
 userRouter.post('/forgotpassword/verifyotp', userController.doOTPVerificationForPasswordChange)
 userRouter.post('/changepassword', userController.changePassword)
+
+userRouter.post('/addtocart', isUserLoggedin, cartController.addtoCart)
 
 export default userRouter;

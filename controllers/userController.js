@@ -57,7 +57,7 @@ const userController = {
                     req.session.user.loggedin = true
                     const products = await productHelper.getAllProducts()
                     res.render('index', { products, isUserLoggedin: req.session.user.loggedin })
-                    res.redirect('/')
+                    // res.redirect('/')
                 } else {
                     res.status(400).send("Invalid credentials")
                 }
@@ -141,11 +141,7 @@ const userController = {
     doLogOut: (req, res) => {
         req.session.user = null
         res.redirect('/')
-    }
-    // showUserEditPage: async (req, res) => {
-    //     const id = req.params.id
-    //     const user = await userHelper.getUSerbyId(id)
-    // }
+    },
 }
 
 export default userController
