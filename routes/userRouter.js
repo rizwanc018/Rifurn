@@ -16,5 +16,6 @@ userRouter.post('/forgotpassword/verifyotp', userController.doOTPVerificationFor
 userRouter.post('/changepassword', userController.changePassword)
 
 userRouter.post('/addtocart', isUserLoggedin, cartController.addtoCart)
+userRouter.get('/cart', isUserLoggedin, cartController.showCart)
 
 export default userRouter;

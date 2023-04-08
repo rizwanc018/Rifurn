@@ -1,0 +1,151 @@
+<div class="page-banner-section section bg-image" data-bg="./assets/images/bg/breadcrumb.jpg"
+    style="background-image: url(/images/banner.webp);">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <div class="page-banner text-center">
+                    <h2>Shopping Cart</h2>
+                    <ul class="page-breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li>Shopping Cart</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="cart-section section pt-100 pt-lg-80 pt-md-70 pt-sm-60 pt-xs-50 ">
+    <div class="container sb-border pb-70 pb-lg-50 pb-md-40 pb-sm-30 pb-xs-20">
+        <div class="row">
+
+            <div class="col-12">
+                <!-- Cart Table -->
+                <div class="cart-table table-responsive mb-30">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="pro-thumbnail">Image</th>
+                                <th class="pro-title">Product</th>
+                                <th class="pro-price">Price</th>
+                                <th class="pro-quantity">Quantity</th>
+                                <th class="pro-subtotal">Total</th>
+                                <th class="pro-remove">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each cartItems }}
+                            <tr>
+                                <td class="pro-thumbnail"><a href="#"><img
+                                            src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{image}}.webp"
+                                            alt="Product"></a></td>
+                                <td class="pro-title"><a href="#"></a>{{product}}</td>
+                                <td class="pro-price"><span>Rs 4000</span></td>
+                                <td class="pro-quantity">
+                                    <div class="pro-qty"><button class="dec qtybtn">-</button><input type="number"
+                                            value={{quantity}}><button class="inc qtybtn">+</button></div>
+                                </td>
+                                <td class="pro-subtotal"><span>Rs {{subTotal}}</span></td>
+                                <td class="pro-remove"><a href="#"><i class="fa fa-trash"></i></a></td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-6 col-12 my-5">
+                        {{!-- <!-- Calculate Shipping -->
+                        <div class="calculate-shipping">
+                            <h4>Calculate Shipping</h4>
+                            <form action="#">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 mb-25">
+                                        <select class="nice-select" style="display: none;">
+                                            <option>Bangladesh</option>
+                                            <option>China</option>
+                                            <option>country</option>
+                                            <option>India</option>
+                                            <option>Japan</option>
+                                        </select>
+                                        <div class="nice-select" tabindex="0"><span class="current">Bangladesh</span>
+                                            <ul class="list">
+                                                <li data-value="Bangladesh" class="option selected">Bangladesh</li>
+                                                <li data-value="China" class="option">China</li>
+                                                <li data-value="country" class="option">country</li>
+                                                <li data-value="India" class="option">India</li>
+                                                <li data-value="Japan" class="option">Japan</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-25">
+                                        <select class="nice-select" style="display: none;">
+                                            <option>Dhaka</option>
+                                            <option>Barisal</option>
+                                            <option>Khulna</option>
+                                            <option>Comilla</option>
+                                            <option>Chittagong</option>
+                                        </select>
+                                        <div class="nice-select" tabindex="0"><span class="current">Dhaka</span>
+                                            <ul class="list">
+                                                <li data-value="Dhaka" class="option selected">Dhaka</li>
+                                                <li data-value="Barisal" class="option">Barisal</li>
+                                                <li data-value="Khulna" class="option">Khulna</li>
+                                                <li data-value="Comilla" class="option">Comilla</li>
+                                                <li data-value="Chittagong" class="option">Chittagong</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-25">
+                                        <input type="text" placeholder="Postcode / Zip">
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-25">
+                                        <button class="btn">Estimate</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> --}}
+                        <!-- Discount Coupon -->
+                        <div class="discount-coupon">
+                            <h4>Discount Coupon Code</h4>
+                            <form action="#">
+                                <div class="row">
+                                    <div class="col-md-6 col-12 mb-25">
+                                        <input type="text" placeholder="Coupon Code">
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-25">
+                                        <button class="btn">Apply Code</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary -->
+                    <div class="col-lg-6 col-12 mb-30 d-flex">
+                        <div class="cart-summary">
+                            <div class="cart-summary-wrap">
+                                <h4>Cart Summary</h4>
+                                <p>Total <span>Rs {{total}}</span></p>
+                                <p>Shipping Cost <span>$00.00</span></p>
+                                <h2>Grand Total <span>Rs {{total}}</span></h2>
+                            </div>
+                            <div class="cart-summary-button mb-5">
+                                <button class="btn">Checkout</button>
+                                <button class="btn">Update Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<hr class="mb-5">
