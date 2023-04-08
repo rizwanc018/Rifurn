@@ -3,7 +3,8 @@
         <div>
             <img class="image-fluid" style="height: 80vh; object-fit:cover" src="/images/hero-1.webp" alt="" srcset="">
         </div>
-        <div> <img class="image-fluid" style="height: 80vh; object-fit:cover" src="/images/hero-2.webp" alt="" srcset=""></div>
+        <div> <img class="image-fluid" style="height: 80vh; object-fit:cover" src="/images/hero-2.webp" alt=""
+                srcset=""></div>
     </div>
 
     <div class="hero-content left ">
@@ -30,4 +31,32 @@
             slideTransition: 'fadeIn',
         });
     });
+
+    var url = window.location.origin
+    function addtoCart(self) {
+        const productId = $(self).attr('data-productId')
+        $.ajax({
+            url: `${url}/user/addtocart`,
+            method: "POST",
+            data: { productId: productId },
+            success: res => {
+                if (res == "Out of stock") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Sorry...',
+                        text: 'Product out of stock!',
+                    })
+                }
+                if (res == "Product added to cart") {
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Product added to cart!',
+                    })
+                }
+            },
+            error: err => {
+                alert("Product didn't added to cart")
+            }
+        })
+    }
 </script>

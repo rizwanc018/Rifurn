@@ -36,7 +36,6 @@ const productHelper = {
                     const result = await cloudinary.uploader.upload(file.path);
                     fs.unlinkSync(file.path)
                     imageId.push(result.public_id)
-                    console.log("imageId", imageId)
                 }
                 productModel.updateOne({ _id: req.params.id }, { productName: productName, category: productCategory, price: productPrice, stock: stock, description: productDescription, $push: { images: { $each: imageId } } })
                     .then(() => {
@@ -110,7 +109,16 @@ const productHelper = {
                     resolve(data)
                 }).catch(err => reject(err))
         })
+    },
+    getProductQuantity: async (productId) => {
+        const quantity = await productModel.findOne({_id: productId}, 'stock')
+        return quantity.stock   
+    },
+    updateProductQuantity: async(productId, quantity) =>  {
+        quantity = -1 * quantity
+        const status = await productModel.updateOne({_id: productId}, {$inc: {stock: quantity}})
     }
+    
 }
 
 export default productHelper

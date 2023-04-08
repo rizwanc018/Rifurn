@@ -1,5 +1,9 @@
 {{!-- {{> individualProduct}} --}}
-
+<style>
+    .product-btn {
+        font-size: 12px !important;
+    }
+</style>
 <div class="container-fluid my-5">
     <div class="row">
         <div class="col-12" style="margin-left: 5vw;">
@@ -1078,6 +1082,35 @@
                                             </div>
                                         </div> --}}
                                         {{> individualProduct}}
+                                        <script>
+                                            var url = window.location.origin
+                                            function addtoCart(self) {
+                                                const productId = $(self).attr('data-productId')
+                                                $.ajax({
+                                                    url: `${url}/user/addtocart`,
+                                                    method: "POST",
+                                                    data: { productId: productId },
+                                                    success: res => {
+                                                        if (res == "Out of stock") {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Sorry...',
+                                                                text: 'Product out of stock!',
+                                                            })
+                                                        }
+                                                        if (res == "Product added to cart") {
+                                                            Swal.fire({
+                                                                icon: 'success',
+                                                                text: 'Product added to cart!',
+                                                            })
+                                                        }
+                                                    },
+                                                    error: err => {
+                                                        alert("Product didn't added to cart")
+                                                    }
+                                                })
+                                            }
+                                        </script>
 
                                     </div>
                                 </div>

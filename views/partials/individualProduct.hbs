@@ -20,22 +20,7 @@
                             <i class="add-to-wish fa-regular fa-heart"></i>
                         </a>
                     </div>
-                    <script>
-                        var url = window.location.origin
-                        function addtoCart(self) {
-                            const productId = $(self).attr('data-productId')
-                            $.ajax({
-                                url: `${url}/user/addtocart`,
-                                method: "POST",
-                                data: { productId: productId },
-                                success: res => {
-                                },
-                                error: err => {
-                                    alert("Product didn't added to cart")
-                                }
-                            })
-                        }
-                    </script>
+ 
                 </div>
                 <div class="product-content">
                     <div class="product-category-rating">
