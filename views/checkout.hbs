@@ -24,7 +24,7 @@
             <div class="col-12">
 
                 <!-- Checkout Form Start-->
-                <form action="/user/placeorder" class="checkout-form" method="POST">
+                <form id="placeOrderForm" action="/user/placeorder" class="checkout-form" method="POST" novalidate>
                     <div class="row row-40">
                         <div class="col-lg-7">
                             <!-- Billing Address -->
@@ -33,44 +33,50 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>First Name*</label>
-                                        <input type="text" placeholder="First Name" disabled name="firstname"
-                                            value="{{userData.firstname}}">
+                                        <input class="form-control" required type="text" placeholder="First Name"
+                                            disabled name="firstname" value="{{userData.firstname}}">
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Last Name*</label>
-                                        <input type="text" placeholder="Last Name" disabled name="lastname"
-                                            value="{{userData.lastname}}">
+                                        <input class="form-control" required type="text" placeholder="Last Name"
+                                            disabled name="lastname" value="{{userData.lastname}}">
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Email Address*</label>
-                                        <input type="email" placeholder="Email Address" disabled
-                                            value={{userData.email}}>
+                                        <input class="form-control" required type="email" placeholder="Email Address"
+                                            disabled value={{userData.email}}>
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Phone no*</label>
-                                        <input type="tel" placeholder="Phone number" name="mobile"
-                                            value={{userData.mobile}}>
+                                        <input class="form-control" required type="tel" placeholder="Phone number"
+                                            name="mobile" value={{userData.mobile}}>
                                     </div>
                                     <div class="col-12 mb-20">
                                         <label>Address*</label>
-                                        <input type="text" name="addr1" placeholder="Address line 1" value={{userData.address.addr1}}>
-                                        <input type="text" name="addr2" placeholder="Address line 2" value={{userData.address.addr2}}>
+                                        <input class="form-control" required type="text" name="addr1"
+                                            placeholder="Address line 1" value={{userData.address.addr1}}>
+                                        <input class="form-control" required type="text" name="addr2"
+                                            placeholder="Address line 2" value={{userData.address.addr2}}>
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Country</label>
-                                        <input type="text" name="country" placeholder="Country" value={{userData.address.country}}>
+                                        <input class="form-control" required type="text" name="country"
+                                            placeholder="Country" value={{userData.address.country}}>
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Town/City</label>
-                                        <input type="text" name="town" placeholder="Town/City" value={{userData.address.town}}>
+                                        <input class="form-control" required type="text" name="town"
+                                            placeholder="Town/City" value={{userData.address.town}}>
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>State</label>
-                                        <input type="text" name="state" placeholder="State" value={{userData.address.state}}>
+                                        <input class="form-control" required type="text" name="state"
+                                            placeholder="State" value={{userData.address.state}}>
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Zip Code</label>
-                                        <input type="text" name="zip" placeholder="Zip Code" value={{userData.address.zip}}>
+                                        <input class="form-control" required type="text" name="zip"
+                                            placeholder="Zip Code" value={{userData.address.zip}}>
                                     </div>
                                 </div>
                             </div>
@@ -109,32 +115,30 @@
                                     <h4 class="checkout-title mt-5">Payment Method</h4>
 
                                     <div class="checkout-payment-method">
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_cash" name="paymentMethod" value="COD">
-                                            <label for="payment_cash">Cash on Delivery</label>
+                                        <div class="form-check single-method">
+                                            <input class="form-check-input" required type="radio" id="payment_cash"
+                                                name="paymentMethod" value="COD">
+                                            <label class="form-check-label" for="payment_cash">Cash on Delivery</label>
                                             <p data-method="cash">Please send a Check to Store name with Store Street,
                                                 Store Town, Store State, Store Postcode, Store Country.</p>
                                         </div>
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_paypal" name="paymentMethod"
-                                                value="paypal">
-                                            <label for="payment_paypal">Paypal</label>
+                                        <div class="form-check single-method">
+                                            <input class=" form-check-input" required type="radio" id="payNow"
+                                                name="paymentMethod" value="payNow">
+                                            <label class="form-check-label" for="payNow">Pay Now</label>
                                             <p data-method="paypal">Please send a Check to Store name with Store Street,
                                                 Store Town, Store State, Store Postcode, Store Country.</p>
                                         </div>
-                                        <div class="single-method">
-                                            <input type="radio" id="payment_payoneer" name="paymentMethod"
-                                                value="payoneer">
-                                            <label for="payment_payoneer">Payoneer</label>
-                                            <p data-method="payoneer">Please send a Check to Store name with Store
-                                                Street, Store Town, Store State, Store Postcode, Store Country.</p>
-                                        </div>
-                                        <div class="single-method">
-                                            <input type="checkbox" id="accept_terms" name="accepTerms">
-                                            <label for="accept_terms">I’ve read and accept the terms &amp;
+
+                                        <div class="single-method form-check">
+                                            <input class="form-check-input" required type="checkbox" id="accept_terms"
+                                                name="accepTerms">
+                                            <label class="form-check-label" for="accept_terms">I’ve read and accept the
+                                                terms &amp;
                                                 conditions</label>
                                         </div>
                                     </div>
+
                                     <button class="place-order btn btn-lg btn-round py-2">Place order</button>
 
                                 </div>
@@ -144,6 +148,16 @@
 
                     </div>
                 </form>
+                <script>
+                    const placeOrderForm = document.querySelector('#placeOrderForm');
+                    placeOrderForm.addEventListener('submit', e => {
+                        console.log(placeOrderForm)
+                        if (!placeOrderForm.checkValidity()) {
+                            e.preventDefault();
+                        }
+                        placeOrderForm.classList.add('was-validated');
+                    })
+                </script>
 
             </div>
         </div>
