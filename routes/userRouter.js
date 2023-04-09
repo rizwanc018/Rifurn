@@ -19,4 +19,8 @@ userRouter.post('/addtocart', isUserLoggedin, cartController.addtoCart)
 userRouter.get('/cart', isUserLoggedin, cartController.showCart)
 
 userRouter.post('/change/product/quantity', cartController.changeQuantity)
+userRouter.delete('/cart/item/delete', cartController.deleteItemfromCart)
+
+userRouter.get('/checkout', isUserLoggedin, userController.showCheckoutPage)
+
 export default userRouter;

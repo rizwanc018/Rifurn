@@ -38,7 +38,7 @@
                         </thead>
                         <tbody>
                             {{#each cartItems }}
-                            <tr data-productId="{{productId}}">
+                            <tr data-productId="{{productId}}" data-cartId={{_id}}>
                                 <td class="pro-thumbnail"><a href="#"><img
                                             src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{image}}.webp"
                                             alt="Product"></a></td>
@@ -75,12 +75,15 @@
                         function deleteFromCart(self) {
                             const $tr = $(self).closest('tr')
                             const productId = $($tr).attr('data-productId')
+                            const cartId = $($tr).attr('data-cartId')
+
                             $.ajax({
                                 type: "DELETE",
                                 url: `${url}/user/cart/item/delete`,
-                                data: { productId: productId },
+                                data: { productId: productId, cartId: cartId },
                                 success: res => {
                                     console.log(res)
+                                    $tr.remove()
                                 },
                                 error: err => {
                                     console.log(err)
@@ -89,8 +92,8 @@
                         }
                     </script>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6 col-12 my-5">
+                <div class="row my-5">
+                    <div class="col-lg-6 col-12">
                         {{!-- <!-- Calculate Shipping -->
                         <div class="calculate-shipping">
                             <h4>Calculate Shipping</h4>
@@ -143,14 +146,14 @@
                         </div> --}}
                         <!-- Discount Coupon -->
                         <div class="discount-coupon">
-                            <h4>Discount Coupon Code</h4>
+                            <h4 class="text-dark"> Discount Coupon Code</h4>
                             <form action="#">
                                 <div class="row">
                                     <div class="col-md-6 col-12 mb-25">
                                         <input type="text" placeholder="Coupon Code">
                                     </div>
                                     <div class="col-md-6 col-12 mb-25">
-                                        <button class="btn">Apply Code</button>
+                                        <button class="btn py-3">Apply Code</button>
                                     </div>
                                 </div>
                             </form>
@@ -167,7 +170,7 @@
                                 <h2>Grand Total <span class="total">Rs {{total}}</span></h2>
                             </div>
                             <div class="cart-summary-button mb-5">
-                                <button class="btn">Proceed</button>
+                                <button class="btn"><a class="checkout-btn" href="/user/checkout">Checkout</a></button>
                                 {{!-- <button class="btn">Update Cart</button> --}}
                             </div>
                         </div>

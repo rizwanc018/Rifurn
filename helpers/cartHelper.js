@@ -106,7 +106,12 @@ const cartHelper = {
     //             }
     //         }
     //     ])
-    // } 
+    // },
+    deleteItemfromCart: async (cartId) => {
+        const data = await cartModel.findByIdAndDelete(cartId)
+        return data
+    }
+
 }
 
 export default cartHelper

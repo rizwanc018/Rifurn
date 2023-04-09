@@ -117,6 +117,7 @@ const productHelper = {
     updateProductQuantity: async(productId, quantity) =>  {
         quantity = -1 * quantity
         const status = await productModel.updateOne({_id: productId}, {$inc: {stock: quantity}})
+        return status
     }
     
 }

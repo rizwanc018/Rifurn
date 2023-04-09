@@ -142,6 +142,9 @@ const userController = {
         req.session.user = null
         res.redirect('/')
     },
+    showCheckoutPage: (req, res) => {
+        res.render('checkout')
+    }
 }
 
 export default userController
