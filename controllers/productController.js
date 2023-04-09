@@ -61,8 +61,7 @@ const productController = {
     },
     getSingleProduct: async (req, res) => {
         const product = await productHelper.getSingleProduct(req)
-        console.log(product);
-        res.render('singleProduct', { product })
+        res.render('singleProduct', { product, isUserLoggedin: req.session.user?.loggedin })
     }
 }
 

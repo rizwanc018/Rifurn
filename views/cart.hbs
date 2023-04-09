@@ -38,26 +38,58 @@
                         </thead>
                         <tbody>
                             {{#each cartItems }}
-                            <tr>
+                            <tr data-productId="{{productId}}">
                                 <td class="pro-thumbnail"><a href="#"><img
                                             src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{image}}.webp"
                                             alt="Product"></a></td>
                                 <td class="pro-title"><a href="#"></a>{{product}}</td>
-                                <td class="pro-price"><span>Rs 4000</span></td>
+                                <td class="pro-price"><span>Rs {{price}}</span></td>
                                 <td class="pro-quantity">
-                                    <div class="pro-qty"><button class="dec qtybtn">-</button><input type="number"
-                                            value={{quantity}}><button class="inc qtybtn">+</button></div>
+                                    <div class="pro-qty">
+                                        {{#gt quantity 1}}
+                                        <button id="decBtn" onclick="changeQuantity(this, -1)"
+                                            class="dec qtybtn">-</button>
+                                        {{/gt}}
+
+                                        {{#lt quantity 2}}
+                                        <button id="decBtn" onclick="changeQuantity(this, -1)" style="display: none"
+                                            class="dec qtybtn">-</button>
+                                        {{/lt}}
+                                        <input class="qty" type="text" value={{quantity}}>
+                                        <button id="incBtn" onclick="changeQuantity(this, 1)"
+                                            class="inc qtybtn">+</button>
+                                    </div>
                                 </td>
-                                <td class="pro-subtotal"><span>Rs {{subTotal}}</span></td>
-                                <td class="pro-remove"><a href="#"><i class="fa fa-trash"></i></a></td>
+                                <td class="pro-subtotal"><span class="subTotal">Rs {{subTotal}}</span></td>
+                                <td class="pro-remove">
+                                    <button class="dlt-btn" onclick="deleteFromCart(this)"
+                                        style="border: none; padding: 0; background: transparent;">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
                             </tr>
                             {{/each}}
                         </tbody>
                     </table>
+                    <script>
+                        function deleteFromCart(self) {
+                            const $tr = $(self).closest('tr')
+                            const productId = $($tr).attr('data-productId')
+                            $.ajax({
+                                type: "DELETE",
+                                url: `${url}/user/cart/item/delete`,
+                                data: { productId: productId },
+                                success: res => {
+                                    console.log(res)
+                                },
+                                error: err => {
+                                    console.log(err)
+                                }
+                            })
+                        }
+                    </script>
                 </div>
-
                 <div class="row">
-
                     <div class="col-lg-6 col-12 my-5">
                         {{!-- <!-- Calculate Shipping -->
                         <div class="calculate-shipping">
@@ -130,13 +162,13 @@
                         <div class="cart-summary">
                             <div class="cart-summary-wrap">
                                 <h4>Cart Summary</h4>
-                                <p>Total <span>Rs {{total}}</span></p>
+                                <p>Total <span class="total">Rs {{total}}</span></p>
                                 <p>Shipping Cost <span>$00.00</span></p>
-                                <h2>Grand Total <span>Rs {{total}}</span></h2>
+                                <h2>Grand Total <span class="total">Rs {{total}}</span></h2>
                             </div>
                             <div class="cart-summary-button mb-5">
-                                <button class="btn">Checkout</button>
-                                <button class="btn">Update Cart</button>
+                                <button class="btn">Proceed</button>
+                                {{!-- <button class="btn">Update Cart</button> --}}
                             </div>
                         </div>
                     </div>
@@ -149,3 +181,33 @@
     </div>
 </div>
 <hr class="mb-5">
+<script>
+    var url = window.location.origin
+    const $total = $('.total')
+    function changeQuantity(self, qty) {
+        const $tr = $(self).closest('tr')
+        const productId = $($tr).attr('data-productId')
+        const $qtyField = $tr.find('input.qty')
+        const $subTotalField = $tr.find('.subTotal')
+        $.ajax({
+            type: "POST",
+            url: `${url}/user/change/product/quantity`,
+            data: { productId: productId, quantity: qty },
+            success: res => {
+                console.log(res)
+                if (res.item.quantity === 1) {
+                    $tr.find('#decBtn').hide()
+                } else {
+                    $tr.find('#decBtn').show()
+                }
+                $qtyField.val(res.item.quantity)
+                $subTotalField.html(`Rs ${res.item.subTotal}`)
+                $total.text(`Rs ${res.total}`)
+
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
+</script>

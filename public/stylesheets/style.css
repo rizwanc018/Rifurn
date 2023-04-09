@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* @import url("https://fonts.googleapis.com/css?family=Karla:700|Poppins:400,500,600,700"); */
+
 
 :root {
     --txt-pr: #292929;
@@ -67,10 +69,23 @@ footer img {
     position: absolute;
     top: 20%;
     z-index: 2;
-    color: white;
+    color: white !important;
     padding-left: 10rem;
 }
-
+.btn {
+  background-color: transparent;
+  border: 2px solid #ebebeb;
+  font-size: 15px;
+  /* height: 55px; */
+  /* line-height: 51px; */
+  font-weight: 500;
+  padding: 0px 35px;
+  text-transform: capitalize;
+  border-radius: 0px;
+  position: relative;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
 /* ------------------------------------------------------------- */
 .single-grid-product {
     -webkit-transition: 0.6s;
@@ -1404,7 +1419,7 @@ footer img {
   line-height: 19px;
 }
 
-@charset "UTF-8";
+
 /*-----------------------------------------------------------------------------------
 
     Template Name: Ginza - Furniture eCommerce Bootstrap 5 Template
@@ -1471,7 +1486,7 @@ body[data-rtl=rtl] {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Poppins", sans-serif;
-  color: #292929;
+  /* color: #292929; */
   font-weight: 400;
   margin-top: 0;
   line-height: 1.2;
@@ -1660,7 +1675,7 @@ img {
 }
 
 .row > * {
-  position: relative;
+  /* position: relative; */
   padding-right: calc(var(--bs-gutter-x) * .6);
   padding-left: calc(var(--bs-gutter-x) * .6);
 }
@@ -2038,21 +2053,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 /*-- 
     - Button
 ------------------------------------------*/
-.btn {
-  background-color: transparent;
-  color: #292929;
-  border: 2px solid #ebebeb;
-  font-size: 15px;
-  height: 55px;
-  line-height: 51px;
-  font-weight: 500;
-  padding: 0px 35px;
-  text-transform: capitalize;
-  border-radius: 0px;
-  position: relative;
-  -webkit-transition: all 0.3s ease 0s;
-  transition: all 0.3s ease 0s;
-}
+
 .btn:focus {
   -webkit-box-shadow: none;
           box-shadow: none;
@@ -4066,9 +4067,7 @@ ul.cart-items li {
 }
 
 /*-- Slide Content In Animation --*/
-.slick-active {
-  /*-- Hero Content Two For Hero Slider --*/
-}
+
 .slick-active .hero-content-2 > *, .slick-active .hero-content-3 > * {
   -webkit-animation-name: fadeInUp;
           animation-name: fadeInUp;

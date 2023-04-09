@@ -19,7 +19,7 @@ const cartHelper = {
             return "Out of Stock"
         }
     },
-    showCart: async (userId) => {
+    getCartData: async (userId) => {
         const cartItems = await cartModel.aggregate([
             { $match: { userId: new mongoose.Types.ObjectId(userId) } },
             {
@@ -35,17 +35,78 @@ const cartHelper = {
             },
             {
                 $project: {
+                    productId: "$result._id",
                     product: "$result.productName",
-                    image:{$first: "$result.images"},
+                    image: { $first: "$result.images" },
                     price: "$result.price",
                     "quantity": 1,
-                    subTotal: {$multiply : ["$result.price", "$quantity"]}
+                    subTotal: { $multiply: ["$result.price", "$quantity"] }
                 }
             }
         ])
         return cartItems
-    }
-
+    },
+    // getSingleProductDataFromCart: async (userId, productId) => {
+    //     const productData = await cartModel.aggregate([
+    //         {
+    //             $match: {
+    //                 userId: new mongoose.Types.ObjectId(userId),
+    //                 productId: new mongoose.Types.ObjectId(productId)
+    //             }
+    //         },
+    //         {
+    //             $lookup: {
+    //                 from: "products",
+    //                 localField: 'productId',
+    //                 foreignField: '_id',
+    //                 as: "result"
+    //             }
+    //         },
+    //         {
+    //             $unwind: "$result"
+    //         },
+    //         {
+    //             $project: {
+    //                 productId: "$result._id",
+    //                 product: "$result.productName",
+    //                 image: { $first: "$result.images" },
+    //                 price: "$result.price",
+    //                 "quantity": 1,
+    //                 subTotal: { $multiply: ["$result.price", "$quantity"] }
+    //             }
+    //         }
+    //     ])
+    //     return productData
+    // },
+    // getGrandTotal: async (userId) => {
+    //     const getGrandTotal = await cartModel.aggregate([
+    //         {
+    //             $match: { userId: new mongoose.Types.ObjectId(userId) }
+    //         },
+    //         {
+    //             $lookup: {
+    //                 from: "products",
+    //                 localField: 'productId',
+    //                 foreignField: '_id',
+    //                 as: "result"
+    //             }
+    //         },
+    //         {
+    //             $unwind: "$result"
+    //         },
+    //         {
+    //             $project: {
+    //                 subTotal: { $multiply: ["$result.price", "$quantity"] }
+    //             }
+    //         },
+    //         {
+    //             $group: {
+    //                 _id: null,
+    //                 grandTotal: {$sum : '$subTotal'}
+    //             }
+    //         }
+    //     ])
+    // } 
 }
 
 export default cartHelper

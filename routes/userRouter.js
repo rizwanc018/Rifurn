@@ -18,4 +18,5 @@ userRouter.post('/changepassword', userController.changePassword)
 userRouter.post('/addtocart', isUserLoggedin, cartController.addtoCart)
 userRouter.get('/cart', isUserLoggedin, cartController.showCart)
 
+userRouter.post('/change/product/quantity', cartController.changeQuantity)
 export default userRouter;

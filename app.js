@@ -39,6 +39,12 @@ app.use(session({
 hbs.registerHelper("inc", function (value, options) {
     return parseInt(value) + 1;
 });
+hbs.registerHelper('gt', function (a, b, options) {
+    if (a > b) return options.fn(this)
+});
+hbs.registerHelper('lt', function (a, b, options) {
+    if (a < b) return options.fn(this)
+});
 
 // DB
 mongoose.connect(process.env.DATABASE_URL)
