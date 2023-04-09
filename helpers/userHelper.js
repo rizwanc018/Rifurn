@@ -74,6 +74,9 @@ const userHelper = {
     updateUser: async (id, blockstatus) => {
         const status = UserModel.updateOne({ _id: id }, { blocked: blockstatus })
         return status
+    },
+    updateAddress: async (userId, address) => {
+        const status = await UserModel.updateOne({_id: userId}, {address: address}) 
     }
 }
 

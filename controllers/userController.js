@@ -4,6 +4,8 @@ import generateOTP from "../services/otp.js";
 import bcrypt from "bcrypt";
 import UserModel from "../models/userModel.js";
 import productHelper from "../helpers/productHelpers.js";
+import cartHelper from "../helpers/cartHelper.js";
+import orderHelper from "../helpers/orderHelper.js";
 
 
 const userController = {
@@ -109,14 +111,6 @@ const userController = {
         if (user) res.status(200).send(true)
         else res.status(400).send("Something wrong")
     },
-    // doOTPVerificationForLogin: (req, res) => {
-    //     userHelper.doOTPVerificationForLogin(req, res)
-    //         .then(data => {
-    //             res.status(200).send(data)
-    //         }).catch(err => {
-    //             res.status(400).send(err)
-    //         })
-    // },
     getAllUsers: async (req, res) => {
         const allUsers = await userHelper.getallUsers()
         if (allUsers) { res.render('admin/users', { isAdmin: req.session.isAdmin, allUsers }) }
@@ -142,8 +136,34 @@ const userController = {
         req.session.user = null
         res.redirect('/')
     },
-    showCheckoutPage: (req, res) => {
-        res.render('checkout')
+    showCheckoutPage: async (req, res) => {
+        const userId = req.session.user.id
+        const cartItems = await cartHelper.getCartData(userId)
+        const total = cartItems.reduce((total, item) => {
+            return total + item.subTotal
+        }, 0)
+        const userData = await userHelper.getUSerbyId(userId)
+        console.log("🚀 ~ file: userController.js:153 ~ showCheckoutPage: ~ userData:", userData)
+        res.render('checkout', { cartItems, total, userData })
+    },
+    placeOrder: async (req, res) => {
+        const userId = req.session.user.id
+        let { mobile, addr1, addr2, country, town, state, zip, paymentMethod, accepTerms } = req.body
+        country = country.charAt(0).toUpperCase() + country.slice(1)
+        state = state.charAt(0).toUpperCase() + state.slice(1)
+        town = town.charAt(0).toUpperCase() + town.slice(1)
+        const address = {
+            addr1: addr1,
+            addr2: addr2,
+            town: town,
+            state: state,
+            country: country,
+            zip: zip
+        }
+        const updateAddressStatus = await userHelper.updateAddress(userId, address)
+        const cartData = await cartHelper.getItemsAndDeleteCart(userId)
+        const orderdata = await orderHelper.createOrder(userId, cartData, address, mobile)
+        console.log("🚀 ~ file: userController.js:166 ~ placeOrder: ~ orderdata:", orderdata)
     }
 }
 

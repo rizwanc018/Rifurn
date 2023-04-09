@@ -15,7 +15,6 @@ const cartController = {
     showCart: async (req, res) => {
         const userId = req.session.user.id
         const cartItems = await cartHelper.getCartData(userId)
-        console.log("🚀 ~ file: cartController.js:17 ~ showCart: ~ cartItems:", cartItems)
         const total = cartItems.reduce((total, item) => {
             return total + item.subTotal
         }, 0)

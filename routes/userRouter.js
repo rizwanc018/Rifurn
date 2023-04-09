@@ -22,5 +22,6 @@ userRouter.post('/change/product/quantity', cartController.changeQuantity)
 userRouter.delete('/cart/item/delete', cartController.deleteItemfromCart)
 
 userRouter.get('/checkout', isUserLoggedin, userController.showCheckoutPage)
+userRouter.post('/placeorder', userController.placeOrder)
 
 export default userRouter;
