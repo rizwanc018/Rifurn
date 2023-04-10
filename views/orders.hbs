@@ -40,11 +40,23 @@
                                 <td class="pro-thumbnail"><a href=""><img
                                             src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{image}}.webp"
                                             alt="Product"></a></td>
-                                <td class="pro-title"><a href="#">{{result.productName}}</a></td>
+                                <td class="pro-title"><span>{{result.productName}}</span></td>
                                 <td class="pro-quantity"><span>{{items.quantity}}</span></td>
                                 {{!-- <td class="pro-price"><span>$25.00</span></td> --}}
-                                <td class="pro-status"><span class="text-capitalize text-info">{{orderStatus}}</span></td>
-                                <td class="pro-remove"><a href="#"><i class="fa fa-close"></i></a></td>
+                                <td class="pro-status"><span
+                                        class="text-capitalize text-primary status">{{items.orderStatus}}</span>
+                                </td>
+                                {{#noteq items.orderStatus "cancelled"}}
+                                <td class="pro-remove">
+                                    <button data-productId={{items.productId}} onclick="cancelOrder(this)"
+                                        class="btn px-1">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </td>
+                                {{else}}
+                                <td class="pro-remove">
+                                </td>
+                                {{/noteq}}
                             </tr>
                             {{/each}}
                         </tbody>
@@ -54,3 +66,48 @@
         </div>
     </div>
 </div>
+<script>
+    $('.status').each(function () {
+        if (this.innerHTML === "cancelled") {
+            this.classList.add('text-danger')
+        }
+        else if (this.innerHTML === "dispatched") {
+            this.classList.add('text-success')
+        }
+    })
+
+    var url = window.location.origin
+    function cancelOrder(self) {
+        const $tr = $(self).closest('tr')
+        const orderId = $tr.attr('data-orderId')
+        const prodId = $(self).attr('data-productId')
+        const status = $($tr).find('.status')
+        swal.fire({
+            title: "Delete?",
+            text: `Are you sure you want to cancel order`,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: false
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `${url}/user/cancel/order`,
+                    method: 'POST',
+                    data: { orderId, prodId },
+                    success: res => {
+                        status.html("Cancelled")
+                        status.addClass('text-danger')
+                        self.remove()
+                        console.log(res)
+                    },
+                    error: err => {
+                        console.log(err)
+                    }
+                })
+
+            }
+        })
+    }
+</script>

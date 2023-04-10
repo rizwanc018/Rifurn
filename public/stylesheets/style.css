@@ -74,7 +74,8 @@ footer img {
   padding-left: 10rem;
 }
 
-.btn {
+/* .btn { */
+  .bttn{
   background-color: transparent;
   border: 2px solid #ebebeb;
   font-size: 15px;
@@ -2264,7 +2265,7 @@ textarea:-ms-input-placeholder {
   outline: none;
 }
 
-.btn:hover {
+.bttn:hover {
   color: #ffffff;
   background-color: #ee3333;
   border-color: #ee3333;
@@ -6813,7 +6814,7 @@ a.popup-img {
   background-color: #f6f7f8;
 }
 
-.cart-table td.pro-title a, .pro-date {
+.cart-table td.pro-title span, .pro-date {
   font-size: 16px;
   font-weight: 600;
   color: #929292;

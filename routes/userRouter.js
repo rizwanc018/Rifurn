@@ -28,5 +28,6 @@ userRouter.get('/checkout', isUserLoggedin, userController.showCheckoutPage)
 userRouter.post('/placeorder', upload.array(), userController.placeOrder)
 
 userRouter.get('/orders', isUserLoggedin, orderController.getUserOrders)
+userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
 
 export default userRouter;

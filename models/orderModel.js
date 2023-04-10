@@ -5,7 +5,11 @@ const itemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product"
     },
-    quantity: Number
+    quantity: Number,
+    orderStatus: {
+        type: String,
+        default: "placed"
+    },
 })
 
 const orderSchema = new mongoose.Schema({
@@ -14,14 +18,13 @@ const orderSchema = new mongoose.Schema({
         ref: "User"
     },
     items: [itemSchema],
-    orderStatus: {
-        type: String,
-        default: "placed"
-    },
     address: Object,
     contact: Number,
     paymentMode: String,
-    paymentId: String,
+    paymentId: {
+        type: String,
+        default: "COD"
+    },
 },
     {
         timestamps: true

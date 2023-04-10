@@ -23,6 +23,7 @@
         <div class="row">
 
             <div class="col-12">
+                            {{#if cartItems}}
                 <!-- Cart Table -->
                 <div class="cart-table table-responsive mb-30">
                     <table class="table">
@@ -69,6 +70,8 @@
                                 </td>
                             </tr>
                             {{/each}}
+
+
                         </tbody>
                     </table>
                     <script>
@@ -170,15 +173,18 @@
                                 <h2>Grand Total <span class="total">Rs {{total}}</span></h2>
                             </div>
                             <div class="cart-summary-button mb-5">
-                                <button class="btn"><a class="checkout-btn" href="/user/checkout">Checkout</a></button>
-                                {{!-- <button class="btn">Update Cart</button> --}}
+                                <button class="btn bttn"><a class="checkout-btn"
+                                        href="/user/checkout">Checkout</a></button>
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
+            {{else}}
+            <div class="row text-center my-5">
+                <h1 class="my-5 text-dark">Cart Empty</h1>
+            </div>
+            {{/if}}
 
         </div>
     </div>

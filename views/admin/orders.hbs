@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="row text-center mb-1">
+        <h3 class="fw-bolder mb-0">Orders</h3>
+    </div>
+</div>
+<hr>
+<div class="container">
+    {{!-- <div class="row justify-content-end mb-3">
+        <a class="btn btn-success col-3 me-3" href="/admin/product/add"><i class="fa-solid fa-plus"></i>
+            Add Product
+        </a>
+    </div> --}}
+
+    <div class="row">
+        <table id="usersTable datatables" class="table mb-0">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Payment-ID</th>
+                    <th scope="col">Qty</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Updated On</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders }}
+                <tr data-id="orderId">
+                    <td scope="row">{{createdAt}}</td>
+                    <td>{{email}}</td>
+                    <td>{{product}}</td>
+                    <td>{{paymentId}}</td>
+                    <td>{{qty}}</td>
+                    <td>{{orderStatus}}</td>
+                    <td class="small">{{user}},
+                        {{address.addr1}},{{address.addr2}},{{address.town}},
+                        {{address.state}},{{address.country}},{{address.zip}}
+                    </td>
+                    <td>{{updatedAt}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <script>
+            var url = window.location.origin
+            function deleteProduct(self, id, productName, images) {
+                var $tr = $(self).closest('tr')
+                swal.fire({
+                    title: "Delete?",
+                    text: `Are you sure you want to delete category: "${productName}"!`,
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Yes, delete it!",
+                    closeOnConfirm: false
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: `${url}/admin/product/delete/${id}?img=${images}`,
+                            method: "GET",
+                            success: res => {
+                                $tr.remove()
+                            },
+                            error: err => {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+            }
+        </script>
+    </div>
+</div>

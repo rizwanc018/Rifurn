@@ -116,9 +116,9 @@
 
                                     <div class="checkout-payment-method">
                                         <div class="form-check single-method">
-                                            <input class="form-check-input" required type="radio" id="payment_cash"
+                                            <input class="form-check-input" required type="radio" id="cod"
                                                 name="paymentMethod" value="COD">
-                                            <label class="form-check-label" for="payment_cash">Cash on Delivery</label>
+                                            <label class="form-check-label" for="cod">Cash on Delivery</label>
                                             <p data-method="cash">Please send a Check to Store name with Store Street,
                                                 Store Town, Store State, Store Postcode, Store Country.</p>
                                         </div>
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
 
-                                    <button class="place-order btn btn-lg btn-round py-2">Place order</button>
+                                    <button class="place-order btn bttn btn-lg btn-round py-2">Place order</button>
 
                                 </div>
 
@@ -155,22 +155,29 @@
                         e.preventDefault()
                         if (!placeOrderForm.checkValidity()) {
                         } else {
-                            //var formData = $('#placeOrderForm').serialize()
                             var formData = new FormData(placeOrderForm)
-                            console.log(formData)
-                            $.ajax({
-                                url: `${url}/user/placeorder`,
-                                method: 'POST',
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: res => {
-                                    console.log(res)
-                                },
-                                error: err => {
-                                    console.log(err)
-                                }
-                            })
+                            if ($('input[name="paymentMethod"]:checked').val() === 'COD') {
+                                $.ajax({
+                                    url: `${url}/user/placeorder`,
+                                    method: 'POST',
+                                    data: formData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: res => {
+                                        window.location.href = `${url}/user/orders`
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                    }
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Sorry',
+                                    text: 'Only COD allowed',
+                                    footer: '<a href="">Why do I have this issue?</a>'
+                                })
+                            }
                         }
                         placeOrderForm.classList.add('was-validated');
                     })

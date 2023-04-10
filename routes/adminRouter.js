@@ -5,6 +5,7 @@ import productController from '../controllers/productController.js';
 import userController from '../controllers/userController.js';
 import upload from "../utils/multer.js";
 import { verifyAdmin } from '../middlewares/adminMiddlewares.js';
+import orderController from '../controllers/orderController.js';
 
 const adminRouter = express.Router()
 
@@ -29,5 +30,7 @@ adminRouter.get('/categories',verifyAdmin, categoryController.showCategories)
 adminRouter.post('/addcategoty', verifyAdmin, categoryController.addCategoty)
 adminRouter.get('/category/delete/:id', verifyAdmin, categoryController.deleteCategory)
 adminRouter.put('/category/edit/:id',categoryController.editCategory)
+
+adminRouter.get('/orders',verifyAdmin, orderController.getAllOrders)
 
 export default adminRouter;

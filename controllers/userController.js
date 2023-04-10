@@ -143,11 +143,10 @@ const userController = {
             return total + item.subTotal
         }, 0)
         const userData = await userHelper.getUSerbyId(userId)
-        console.log("🚀 ~ file: userController.js:153 ~ showCheckoutPage: ~ userData:", userData)
         res.render('checkout', { cartItems, total, userData })
     },
     placeOrder: async (req, res) => {
-        const userId = req.session.user.id        
+        const userId = req.session.user.id
         let { mobile, addr1, addr2, country, town, state, zip, paymentMethod, accepTerms } = req.body
         country = country.charAt(0).toUpperCase() + country.slice(1)
         state = state.charAt(0).toUpperCase() + state.slice(1)
@@ -162,9 +161,20 @@ const userController = {
         }
         const updateAddressStatus = await userHelper.updateAddress(userId, address)
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
-        const orderdata = await orderHelper.createOrder(userId, cartData, address, mobile)
-        res.status(200).send("Order Placed Successfully")
-    }
+        if (paymentMethod === 'COD') {
+            const orderdata = await orderHelper.createOrder(userId, cartData, address, mobile)
+            res.status(200).send("Order Placed Successfully")
+        } else {
+            res.status(400).send("Only COD Allowed")
+        }
+    },
+    cancelOrder: async (req, res) => {
+        const { orderId, prodId} = req.body
+        const status = await orderHelper.updateStatus(orderId, prodId, "cancelled")
+        // if (status.modifiedCount === 1) res.status(200).send("Order Cancelled")
+        // else res.status(400).send("Something wrong")
+        res.status(200).send("Order Cancelled")
+    } 
 }
 
 export default userController
