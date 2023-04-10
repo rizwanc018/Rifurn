@@ -6787,7 +6787,7 @@ a.popup-img {
 .cart-table td.pro-thumbnail {
   max-width: 120px;
   min-width: 100px;
-  width: 120px;
+  width: 100px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -6800,7 +6800,7 @@ a.popup-img {
 
 .cart-table th.pro-title,
 .cart-table td.pro-title {
-  min-width: 200px;
+  min-width: 170px;
 }
 
 .cart-table td.pro-thumbnail a {
@@ -6813,7 +6813,7 @@ a.popup-img {
   background-color: #f6f7f8;
 }
 
-.cart-table td.pro-title a {
+.cart-table td.pro-title a, .pro-date {
   font-size: 16px;
   font-weight: 600;
   color: #929292;
@@ -6825,6 +6825,20 @@ a.popup-img {
 
 .cart-table td.pro-price span {
   display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #929292;
+}
+
+.cart-table td.pro-quantity {
+  width: 80px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #929292;
+}
+
+.cart-table td.pro-status {
+  min-width: 120px;
   font-size: 15px;
   font-weight: 600;
   color: #929292;
@@ -10034,7 +10048,8 @@ only screen and (max-width: 767px) {
 }
 
 
-.single-grid-product .product-image .product-action .product-btn:hover, .checkout-btn:hover {
+.single-grid-product .product-image .product-action .product-btn:hover,
+.checkout-btn:hover {
   background-color: #ee3333;
   color: #ffffff
 }

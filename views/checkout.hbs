@@ -24,7 +24,7 @@
             <div class="col-12">
 
                 <!-- Checkout Form Start-->
-                <form id="placeOrderForm" action="/user/placeorder" class="checkout-form" method="POST" novalidate>
+                <form id="placeOrderForm" action="" class="checkout-form" method="" novalidate>
                     <div class="row row-40">
                         <div class="col-lg-7">
                             <!-- Billing Address -->
@@ -133,7 +133,7 @@
                                         <div class="single-method form-check">
                                             <input class="form-check-input" required type="checkbox" id="accept_terms"
                                                 name="accepTerms">
-                                            <label class="form-check-label" for="accept_terms">I’ve read and accept the
+                                            <label class="form-check-label" for="accept_terms">I've read and accept the
                                                 terms &amp;
                                                 conditions</label>
                                         </div>
@@ -149,11 +149,28 @@
                     </div>
                 </form>
                 <script>
+                    var url = window.location.origin
                     const placeOrderForm = document.querySelector('#placeOrderForm');
                     placeOrderForm.addEventListener('submit', e => {
-                        console.log(placeOrderForm)
+                        e.preventDefault()
                         if (!placeOrderForm.checkValidity()) {
-                            e.preventDefault();
+                        } else {
+                            //var formData = $('#placeOrderForm').serialize()
+                            var formData = new FormData(placeOrderForm)
+                            console.log(formData)
+                            $.ajax({
+                                url: `${url}/user/placeorder`,
+                                method: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: res => {
+                                    console.log(res)
+                                },
+                                error: err => {
+                                    console.log(err)
+                                }
+                            })
                         }
                         placeOrderForm.classList.add('was-validated');
                     })

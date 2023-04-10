@@ -1,0 +1,56 @@
+<div class="page-banner-section section bg-image" data-bg="./assets/images/bg/breadcrumb.jpg"
+    style="background-image: url(/images/banner.webp);">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <div class="page-banner text-center">
+                    <h2>Orders</h2>
+                    <ul class="page-breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li>Orders</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cart-section section pt-100 pt-lg-80 pt-md-70 pt-sm-60 pt-xs-50 ">
+    <div class="container sb-border pb-70 pb-lg-50 pb-md-40 pb-sm-30 pb-xs-20">
+        <div class="row">
+            <div class="col-12 my-5">
+                <!-- Cart Table -->
+                <div class="cart-table table-responsive mb-30">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="pro-date">Date</th>
+                                <th class="pro-thumbnail">Image</th>
+                                <th class="pro-title">Product</th>
+                                <th class="pro-quantity">Quantity</th>
+                                <th class="pro-status">Status</th>
+                                <th class="pro-remove">Cancel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each orderData }}
+                            <tr data-orderId="{{_id}}">
+                                <td class="pro-date"><span>{{createdAt}}</span></td>
+                                <td class="pro-thumbnail"><a href=""><img
+                                            src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{image}}.webp"
+                                            alt="Product"></a></td>
+                                <td class="pro-title"><a href="#">{{result.productName}}</a></td>
+                                <td class="pro-quantity"><span>{{items.quantity}}</span></td>
+                                {{!-- <td class="pro-price"><span>$25.00</span></td> --}}
+                                <td class="pro-status"><span class="text-capitalize text-info">{{orderStatus}}</span></td>
+                                <td class="pro-remove"><a href="#"><i class="fa fa-close"></i></a></td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,14 +13,15 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    Items: [itemSchema],
+    items: [itemSchema],
     orderStatus: {
         type: String,
-        default: "pending"
+        default: "placed"
     },
     address: Object,
     contact: Number,
-    paymenMode: String
+    paymentMode: String,
+    paymentId: String,
 },
     {
         timestamps: true

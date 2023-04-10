@@ -113,7 +113,8 @@ const cartHelper = {
     },
     getItemsAndDeleteCart: async (userId) => {
         const data = await cartModel.find({ userId: userId }, { _id: 0, productId: 1, quantity: 1 })
-        // const deleteCartStatus = cartModel.deleteMany({userId: userId})
+        const deleteCartStatus = await cartModel.deleteMany({userId: userId})
+        console.log("🚀 ~ file: cartHelper.js:117 ~ getItemsAndDeleteCart: ~ deleteCartStatus:", deleteCartStatus)
         return data
     }
 

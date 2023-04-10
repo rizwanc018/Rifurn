@@ -147,7 +147,7 @@ const userController = {
         res.render('checkout', { cartItems, total, userData })
     },
     placeOrder: async (req, res) => {
-        const userId = req.session.user.id
+        const userId = req.session.user.id        
         let { mobile, addr1, addr2, country, town, state, zip, paymentMethod, accepTerms } = req.body
         country = country.charAt(0).toUpperCase() + country.slice(1)
         state = state.charAt(0).toUpperCase() + state.slice(1)
@@ -163,7 +163,7 @@ const userController = {
         const updateAddressStatus = await userHelper.updateAddress(userId, address)
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
         const orderdata = await orderHelper.createOrder(userId, cartData, address, mobile)
-        console.log("🚀 ~ file: userController.js:166 ~ placeOrder: ~ orderdata:", orderdata)
+        res.status(200).send("Order Placed Successfully")
     }
 }
 
