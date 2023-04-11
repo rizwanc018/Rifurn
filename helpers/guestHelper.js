@@ -6,7 +6,12 @@ const guestHelper = {
     showHomePage: (req, res) => {
         productHelper.getAllProducts()
             .then(products => {
-                res.render("index", { products, isUserLoggedin: req.session.user?.loggedin })
+                if(req.session.user?.loggedin) {
+                    res.render("index", { products, isUserLoggedin: req.session.user.loggedin})
+
+                } else {
+                    res.render("index", { products, showLogin: true})
+                }
             }).catch(err => {
                 console.log(err);
             })

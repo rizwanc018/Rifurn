@@ -32,5 +32,8 @@ adminRouter.get('/category/delete/:id', verifyAdmin, categoryController.deleteCa
 adminRouter.put('/category/edit/:id',categoryController.editCategory)
 
 adminRouter.get('/orders',verifyAdmin, orderController.getAllOrders)
+adminRouter.post('/order/changestatus',verifyAdmin, adminController.changeOrderStatus)
+
+
 
 export default adminRouter;

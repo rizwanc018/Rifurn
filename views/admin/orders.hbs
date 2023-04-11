@@ -1,3 +1,9 @@
+<style>
+    select {
+        border: 1px solid hsl(0, 0%, 67%);
+    }
+</style>
+
 <div class="container">
     <div class="row text-center mb-1">
         <h3 class="fw-bolder mb-0">Orders</h3>
@@ -27,49 +33,101 @@
             </thead>
             <tbody>
                 {{#each orders }}
-                <tr data-id="orderId">
+                <tr data-orderId="{{orderId}}" data-productId="{{productId}}">
                     <td scope="row">{{createdAt}}</td>
                     <td>{{email}}</td>
                     <td>{{product}}</td>
                     <td>{{paymentId}}</td>
                     <td>{{qty}}</td>
-                    <td>{{orderStatus}}</td>
+                    <td>
+                        {{!-- {{orderStatus}} --}}
+                        <select class="statusChange" name="orderStatus" id=_{{productId}}{{orderId}}>
+                            <option value="placed">Placed</option>
+                            <option value="dispatched">Dispatched</option>
+                            <option value="cancelled">Canclled</option>
+                        </select>
+                    </td>
+                    <script>
+                        $(function () {
+                            var status = {
+                                placed: 0,
+                                dispatched: 1,
+                                cancelled: 2
+                            }
+                            $('#_{{productId}}{{orderId}}').val($('#_{{productId}}{{orderId}} option').eq(status.{{ orderStatus }}).val())
+                        $('#_{{productId}}{{orderId}}').val() === 'placed' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'blue', 'color': 'white' }) :
+                            $('#_{{productId}}{{orderId}}').val() === 'dispatched' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                                $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'red', 'color': 'white' }) 
+                        })
+                      //  options.value = "{{product.category._id}}"
+                    </script>
                     <td class="small">{{user}},
                         {{address.addr1}},{{address.addr2}},{{address.town}},
                         {{address.state}},{{address.country}},{{address.zip}}
                     </td>
-                    <td>{{updatedAt}}</td>
+                    <td class="date">{{updatedAt}}</td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
-        <script>
-            var url = window.location.origin
-            function deleteProduct(self, id, productName, images) {
-                var $tr = $(self).closest('tr')
-                swal.fire({
-                    title: "Delete?",
-                    text: `Are you sure you want to delete category: "${productName}"!`,
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, delete it!",
-                    closeOnConfirm: false
-                }).then(function (result) {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: `${url}/admin/product/delete/${id}?img=${images}`,
-                            method: "GET",
-                            success: res => {
-                                $tr.remove()
-                            },
-                            error: err => {
-                                console.log(err)
-                            }
-                        })
+    </div>
+</div>
+<script>
+    var url = window.location.origin
+    document.body.addEventListener('change', e => {
+        if (e.target.classList.contains('statusChange')) {
+            const select = e.target
+            const tr = select.closest('tr')
+            const orderId = $(tr).attr('data-orderId')
+            const prodId = $(tr).attr('data-productId')
+            const orderNewStatus = select.value
+            const updatedDate = new Date().toLocaleDateString()
+            const dateCell = $(tr).find('.date')
+            
+            $.ajax({
+                url: `${url}/admin/order/changestatus`,
+                method: "POST",
+                data: { orderId, prodId, orderNewStatus },
+                success: res => {
+                    orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
+                        orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                            $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
+                            dateCell.text(updatedDate)
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+        }
+    })
+</script>
+
+{{!--
+<script>
+    var url = window.location.origin
+    function deleteProduct(self, id, productName, images) {
+        var $tr = $(self).closest('tr')
+        swal.fire({
+            title: "Delete?",
+            text: `Are you sure you want to delete category: "${productName}"!`,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete it!",
+            closeOnConfirm: false
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `${url}/admin/product/delete/${id}?img=${images}`,
+                    method: "GET",
+                    success: res => {
+                        $tr.remove()
+                    },
+                    error: err => {
+                        console.log(err)
                     }
                 })
             }
-        </script>
-    </div>
-</div>
+        })
+    }
+</script> --}}

@@ -44,7 +44,6 @@
                                     method: "POST",
                                     data: { email: loginEmail, password: loginPassword },
                                     success: res => {
-                                        console.log(res)
                                         if (res.responseText == "blocked") {
                                             loginMsg.innerHTML = `<p class="text-danger my-0">You are blocked<p>`
                                         } else {
@@ -128,8 +127,9 @@
                         <div class="mb-3"></div>
                         <button type="submit" class="btn btn-outline-danger btn-block btn-round">Submit</button>
                     </form>
-                    <script>
 
+
+                    <script>
                         const forgotPasswordForm = document.querySelector('#forgotPasswordForm');
                         const forgotPaswordOTPForm = document.querySelector('#forgotPaswordOTPForm');
                         const changePasswordForm = document.querySelector('#changePasswordForm')

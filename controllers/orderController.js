@@ -7,6 +7,7 @@ const orderController = {
             order.createdAt = new Date(order.createdAt).toLocaleDateString()
             order.updatedAt = new Date(order.updatedAt).toLocaleDateString()
         })
+        console.log("🚀 ~ file: orderController.js:6 ~ getAllOrders: ~ orders:", orders)
         res.render('admin/orders', { orders, isAdmin: req.session.isAdmin })
     },
     getUserOrders: async (req, res) => {

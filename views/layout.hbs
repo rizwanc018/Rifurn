@@ -12,10 +12,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css"
         integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    {{!-- <link rel="stylesheet" href="sweetalert2.min.css"> --}}
+    {{!--
+    <link rel="stylesheet" href="sweetalert2.min.css"> --}}
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
 </head>
 
@@ -26,27 +28,11 @@
     {{> header }}
     {{/if}}
 
-    {{!-- {{#if isAdmin}}
-    {{>adminHeader}}
-    {{/if}}
-    {{#if isUserLoggedin}}
-    {{> header }}
-    {{/if}} --}}
-
 
 
     {{{body}}}
 
-    {{!-- <script>
-        $(function () {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Do you want to continue',
-                icon: 'error',
-                confirmButtonText: 'Cool'
-            })
-        })
-    </script> --}}
+
 
     {{#if isAdmin}}
     {{else}}

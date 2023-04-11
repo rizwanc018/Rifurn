@@ -77,5 +77,13 @@
 {{!-- Login modal --}}
 {{> userLogin}}
 
+{{#if showLogin }}
+<script>
+    $(document).ready(function () {
+        $('#loginModal').modal('show');
+    })
+</script>
+{{/if}}
+
 {{!-- Signup Modal --}}
 {{> userSignup}}

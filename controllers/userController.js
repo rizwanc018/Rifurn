@@ -45,12 +45,14 @@ const userController = {
     doPasswordLogin: async (req, res) => {
         const { email, password } = req.body
         const user = await userHelper.getUser(email, password)
+        console.log("🚀 ~ file: userController.js:48 ~ doPasswordLogin: ~ user:", user)
         // console.log(user.blocked);
         if (user) {
             if (user.blocked) {
                 res.status(400).send("You are blocked")
             } else {
                 const status = await bcrypt.compare(password, user.password)
+                console.log("🚀 ~ file: userController.js:54 ~ doPasswordLogin: ~ status:", status)
                 if (status) {
                     req.session.user = {}
                     req.session.user.name = user.firstname

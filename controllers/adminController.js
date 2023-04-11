@@ -1,4 +1,5 @@
 import adminHelper from "../helpers/adminHelper.js"
+import orderHelper from "../helpers/orderHelper.js"
 
 const adminController = {
     getLoginPage: (req, res) => {
@@ -20,6 +21,11 @@ const adminController = {
     doLogOut: (req, res) => {
         req.session.isAdmin = null
         res.redirect('/')
+    },
+    changeOrderStatus: async (req, res) => {
+        const { orderId, prodId, orderNewStatus } = req.body
+        const status = await orderHelper.updateStatus(orderId, prodId, orderNewStatus)
+        res.status(200).send("Status changed")
     }
 }
 
