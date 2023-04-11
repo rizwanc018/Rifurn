@@ -43,8 +43,8 @@
                                 <td class="pro-thumbnail"><a href="#"><img
                                             src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{image}}.webp"
                                             alt="Product"></a></td>
-                                <td class="pro-title"><a href="#"></a>{{product}}</td>
-                                <td class="pro-price"><span>Rs {{price}}</span></td>
+                                <td class="pro-title"><span>{{product}}</span></td>
+                                <td class="pro-price"><span>₹ {{price}}</span></td>
                                 <td class="pro-quantity">
                                     <div class="pro-qty">
                                         {{#gt quantity 1}}
@@ -61,7 +61,7 @@
                                             class="inc qtybtn">+</button>
                                     </div>
                                 </td>
-                                <td class="pro-subtotal"><span class="subTotal">Rs {{subTotal}}</span></td>
+                                <td class="pro-subtotal"><span class="subTotal">₹ {{subTotal}}</span></td>
                                 <td class="pro-remove">
                                     <button class="dlt-btn" onclick="deleteFromCart(this)"
                                         style="border: none; padding: 0; background: transparent;">
@@ -168,9 +168,9 @@
                         <div class="cart-summary">
                             <div class="cart-summary-wrap">
                                 <h4>Cart Summary</h4>
-                                <p>Total <span class="total">Rs {{total}}</span></p>
-                                <p>Shipping Cost <span>$00.00</span></p>
-                                <h2>Grand Total <span class="total">Rs {{total}}</span></h2>
+                                <p>Total <span class="total">₹ {{total}}</span></p>
+                                <p>Shipping Cost <span>₹ 00.00</span></p>
+                                <h2>Grand Total <span class="total">₹ {{total}}</span></h2>
                             </div>
                             <div class="cart-summary-button mb-5">
                                 <button class="btn bttn"><a class="checkout-btn"
@@ -211,8 +211,8 @@
                     $tr.find('#decBtn').show()
                 }
                 $qtyField.val(res.item.quantity)
-                $subTotalField.html(`Rs ${res.item.subTotal}`)
-                $total.text(`Rs ${res.total}`)
+                $subTotalField.html(`₹ ${res.item.subTotal}`)
+                $total.text(`₹ ${res.total}`)
 
             },
             error: err => {

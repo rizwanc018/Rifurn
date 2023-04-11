@@ -83,19 +83,33 @@
             const orderNewStatus = select.value
             const updatedDate = new Date().toLocaleDateString()
             const dateCell = $(tr).find('.date')
-            
-            $.ajax({
-                url: `${url}/admin/order/changestatus`,
-                method: "POST",
-                data: { orderId, prodId, orderNewStatus },
-                success: res => {
-                    orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
-                        orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
-                            $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
+
+            swal.fire({
+                title: "Change status?",
+                html: `You are going to change status to <h3><b> ${orderNewStatus} </b></h2>`,
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Proceed",
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    console.log(running)
+                    $.ajax({
+                        url: `${url}/admin/order/changestatus`,
+                        method: "POST",
+                        data: { orderId, prodId, orderNewStatus },
+                        success: res => {
+                            orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
+                                orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                                    $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
                             dateCell.text(updatedDate)
-                },
-                error: err => {
-                    console.log(err)
+                        },
+                        error: err => {
+                            console.log(err)
+                        }
+                    })
+                } else {
+                    window.location.reload()
                 }
             })
         }

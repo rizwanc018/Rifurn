@@ -30,4 +30,6 @@ userRouter.post('/placeorder', upload.array(), userController.placeOrder)
 userRouter.get('/orders', isUserLoggedin, orderController.getUserOrders)
 userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
 
+userRouter.get('/profile',isUserLoggedin, userController.showProfilePage)
+
 export default userRouter;
