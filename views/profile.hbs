@@ -13,22 +13,23 @@
 </div> --}}
 
 <section style="background-color: #eee;">
-        <div class="page-banner-section section bg-image" data-bg="./assets/images/bg/breadcrumb.jpg"
-            style="background-image: url(/images/banner.webp);">
-            {{!-- <div class="container"> --}}
-                <div class="row">
-                    <div class="col">
-                        <div class="page-banner text-center">
-                            <h2>Checkout Items</h2>
-                            <ul class="page-breadcrumb">
-                                <li><a href="/">Home</a></li>
-                                <li>Profile</li>
-                            </ul>
-                        </div>
+    <div class="page-banner-section section bg-image" data-bg="./assets/images/bg/breadcrumb.jpg"
+        style="background-image: url(/images/banner.webp);">
+        {{!-- <div class="container"> --}}
+            <div class="row">
+                <div class="col">
+                    <div class="page-banner text-center">
+                        <h2>Checkout Items</h2>
+                        <ul class="page-breadcrumb">
+                            <li><a href="/">Home</a></li>
+                            <li>Profile</li>
+                        </ul>
                     </div>
                 </div>
-            {{!-- </div> --}}
-        </div>
+            </div>
+            {{!--
+        </div> --}}
+    </div>
 
 
     <div class="container py-5">
@@ -39,7 +40,7 @@
                         <img class="_3X2gOt" height="50px" width="50px" src="/svgs/profile.svg">
                         <div class="DxGiT2 text-dark strong pt-1">
                             <div class="_2QZ3Er ">Hello,</div>
-                            <div class="_1ruvv2 fw-bold fs-6">Rizwan C</div>
+                            <div class="_1ruvv2 fw-bold fs-6">{{userData.firstname}} {{userData.lastname}}</div>
                         </div>
                     </div>
                 </div>
@@ -79,20 +80,79 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Full Name</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">Johnatan Smith</p>
+                            <div class="editProfile row">
+                                <h4 class="col-auto">Name</h4>
+                                <button class="btn bttn col-auto noedit" onclick="showEdit(this)">Edit</button>
+                                <button class="btn bttn col-auto edit" onclick="cancelEdit(this)">Cancel</button>
+
+                                <form id="editName" class="profile-form" novalidate>
+                                    <div class="row my-2">
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" disabled name="fname"
+                                                placeholder="First name" value="{{userData.firstname}}" required>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" disabled name="lname"
+                                                placeholder="Last name" value="{{userData.lastname}}" required>
+                                        </div>
+                                        <button type="submit" class="btn bttn col-auto edit">Save</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <hr>
+                        <script>
+                            var url = window.location.origin
+                            function showEdit(self) {
+                                const div = $(self).closest('div')
+                                div.addClass('edit')
+                                $('input').prop("disabled", false)
+                            }
+
+                            function cancelEdit(self) {
+                                const div = $(self).closest('div')
+                                div.removeClass('edit')
+                                $('input').prop("disabled", true)
+                            }
+
+                            $('#editName').on('submit', function (e) {
+                                e.preventDefault()
+                                const div = $(e.target).closest('div')
+                                const fname = $("[name='fname']").val()
+                                const lname = $("[name='lname']").val()
+
+                                $.ajax({
+                                    url: `${url}/user/edit/name`,
+                                    method: 'PUT',
+                                    data: { fname, lname },
+                                    success: res => {
+                                        window.location.reload()
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                    }
+                                })
+
+                            })
+
+                        </script>
+
+
                         <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Email</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">example@example.com</p>
+                            <div class="editProfile row">
+                                <h4 class="col-auto">Mobile</h4>
+                                <button class="btn bttn col-auto noedit" onclick="showEdit(this)">Edit</button>
+                                <button class="btn bttn col-auto edit" onclick="cancelEdit(this)">Cancel</button>
+
+                                <form id="editMobile" class="profile-form" novalidate>
+                                    <div class="row my-2">
+                                        <div class="col-sm-5">
+                                            <input type="tel" class="form-control" disabled name="mobile"
+                                                placeholder="First name" value="{{userData.mobile}}" required>
+                                        </div>
+                                        <button type="submit" class="btn bttn col-auto edit">Save</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <hr>
@@ -122,9 +182,9 @@
                                 <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
-                <div class="row">
+                {{!-- <div class="row">
                     <div class="col-md-6">
                         <div class="card mb-4 mb-md-0">
                             <div class="card-body">
@@ -193,7 +253,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

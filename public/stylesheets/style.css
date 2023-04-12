@@ -7188,7 +7188,7 @@ a.popup-img {
   margin-bottom: 15px;
 }
 
-.checkout-form input {
+.checkout-form input, .profile-form input {
   width: 100%;
   background-color: transparent;
   border: 1px solid #999999;
@@ -7197,6 +7197,10 @@ a.popup-img {
   padding: 10px 20px;
   font-size: 14px;
   color: hsl(0, 0%, 37%);
+  margin-bottom: 15px;
+}
+
+.profile-form  .bttn {
   margin-bottom: 15px;
 }
 
@@ -10058,4 +10062,16 @@ only screen and (max-width: 767px) {
 .single-grid-product .product-image .product-action .product-btn {
   font-size: 12px !important;
   line-height: 35px !important;
+}
+
+.editProfile .edit {
+  display: none;
+}
+
+.editProfile.edit .edit {
+  display: initial;
+}
+
+.editProfile.edit .noedit {
+  display: none;
 }

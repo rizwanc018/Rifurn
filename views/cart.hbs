@@ -23,7 +23,7 @@
         <div class="row">
 
             <div class="col-12">
-                            {{#if cartItems}}
+                {{#if cartItems}}
                 <!-- Cart Table -->
                 <div class="cart-table table-responsive mb-30">
                     <table class="table">
@@ -74,26 +74,10 @@
 
                         </tbody>
                     </table>
+                    {{!--
                     <script>
-                        function deleteFromCart(self) {
-                            const $tr = $(self).closest('tr')
-                            const productId = $($tr).attr('data-productId')
-                            const cartId = $($tr).attr('data-cartId')
 
-                            $.ajax({
-                                type: "DELETE",
-                                url: `${url}/user/cart/item/delete`,
-                                data: { productId: productId, cartId: cartId },
-                                success: res => {
-                                    console.log(res)
-                                    $tr.remove()
-                                },
-                                error: err => {
-                                    console.log(err)
-                                }
-                            })
-                        }
-                    </script>
+                    </script> --}}
                 </div>
                 <div class="row my-5">
                     <div class="col-lg-6 col-12">
@@ -214,6 +198,29 @@
                 $subTotalField.html(`₹ ${res.item.subTotal}`)
                 $total.text(`₹ ${res.total}`)
 
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
+
+    function deleteFromCart(self) {
+        const $tr = $(self).closest('tr')
+        const productId = $($tr).attr('data-productId')
+        const cartId = $($tr).attr('data-cartId')
+        const subTotal = $($tr).find('.pro-subtotal')
+        const subTotalValue = Number(subTotal.text().split(" ")[1])
+        let totalValue = Number($total.html().split(" ")[1])
+        $.ajax({
+            type: "DELETE",
+            url: `${url}/user/cart/item/delete`,
+            data: { productId: $($tr).attr('data-productId'), cartId: cartId },
+            success: res => {
+                console.log(res)
+                $tr.remove()
+                totalValue = totalValue - subTotalValue
+                $total.text(`₹ ${totalValue}`)
             },
             error: err => {
                 console.log(err)

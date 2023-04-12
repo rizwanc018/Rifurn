@@ -175,8 +175,23 @@ const userController = {
         // else res.status(400).send("Something wrong")
         res.status(200).send("Order Cancelled")
     },
-    showProfilePage: (req, res) => {
-        res.render('profile', { isUserLoggedin: req.session.user.loggedin })
+    showProfilePage: async (req, res) => {
+        const userId = req.session.user.id
+        const userData = await userHelper.getUSerbyId(userId)
+        console.log("🚀 ~ file: userController.js:181 ~ showProfilePage: ~ userData:", userData)
+        res.render('profile', { userData, isUserLoggedin: req.session.user.loggedin })
+    },
+    editName: async (req, res) => {
+        const userId = req.session.user.id
+        const { fname, lname } = req.body
+        const status = await UserModel.updateOne({ _id: userId }, { firstname: fname, lastname: lname })
+        console.log("🚀 ~ file: userController.js:188 ~ editName: ~ status:", status)
+        if (status.modifiedCount == 1) {
+            console.log('---------------------');
+            res.status(200).send("success")
+        } else {
+            res.status(400).send("Something wrong")
+        }
     }
 }
 

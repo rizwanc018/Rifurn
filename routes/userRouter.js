@@ -32,4 +32,6 @@ userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
 
 userRouter.get('/profile',isUserLoggedin, userController.showProfilePage)
 
+userRouter.put('/edit/name', isUserLoggedin, userController.editName)
+
 export default userRouter;
