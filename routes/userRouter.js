@@ -3,8 +3,9 @@ import userController from '../controllers/userController.js';
 import { isUserLoggedin } from '../middlewares/userMiddlewares.js';
 import cartController from '../controllers/cartController.js';
 import orderController from '../controllers/orderController.js';
-import upload from "../utils/multer.js";
-
+// import upload from "../utils/multer.js";
+import multer from "multer";
+const upload = multer()
 
 const userRouter = express.Router()
 
@@ -25,7 +26,7 @@ userRouter.post('/change/product/quantity', cartController.changeQuantity)
 userRouter.delete('/cart/item/delete', cartController.deleteItemfromCart)
 
 userRouter.get('/checkout', isUserLoggedin, userController.showCheckoutPage)
-userRouter.post('/placeorder', upload.array(), userController.placeOrder)
+userRouter.post('/placeorder', upload.none(), userController.placeOrder)
 
 userRouter.get('/orders', isUserLoggedin, orderController.getUserOrders)
 userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
@@ -33,5 +34,7 @@ userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
 userRouter.get('/profile',isUserLoggedin, userController.showProfilePage)
 
 userRouter.put('/edit/name', isUserLoggedin, userController.editName)
+userRouter.put('/edit/moblie', isUserLoggedin, userController.editMobile)
+
 
 export default userRouter;

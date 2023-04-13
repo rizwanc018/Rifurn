@@ -147,7 +147,7 @@
                                 <form id="editMobile" class="profile-form" novalidate>
                                     <div class="row my-2">
                                         <div class="col-sm-5">
-                                            <input type="tel" class="form-control" disabled name="mobile"
+                                            <input type="tel" class="form-control" disabled name="editMobile"
                                                 placeholder="First name" value="{{userData.mobile}}" required>
                                         </div>
                                         <button type="submit" class="btn bttn col-auto edit">Save</button>
@@ -155,6 +155,29 @@
                                 </form>
                             </div>
                         </div>
+                        <script>
+                            $('#editMobile').on('submit', function (e) {
+                                alert("clicked")
+                                e.preventDefault()
+                                const div = $(e.target).closest('div')
+                                const mobile = $("[name='editMobile']").val()
+                                console.log(mobile)
+                                $.ajax({
+                                    url: `${url}/user/edit/mobile`,
+                                    method: 'PUT',
+                                    data: { mobile },
+                                    success: res => {
+                                        console.log(res)
+                                     //   window.location.reload()
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                    }
+                                })
+
+                            })
+                        </script>
+
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">

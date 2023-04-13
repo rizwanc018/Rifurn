@@ -192,6 +192,12 @@ const userController = {
         } else {
             res.status(400).send("Something wrong")
         }
+    },
+    editMobile: async (req, res) => {
+        const userId = req.session.user.id
+        const { mobile } = req.body
+        console.log("🚀 ~ file: userController.js:199 ~ editMobile: ~ mobile:", req.body)
+        res.status(200).send("Yesss")
     }
 }
 
