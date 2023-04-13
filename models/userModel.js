@@ -1,6 +1,9 @@
 import mongoose from "mongoose"
 
 const addressSchema = new mongoose.Schema({
+    firstname: String,
+    lastname: String,
+    mobile: Number,
     addr1: String,
     addr2: String,
     town: String,
@@ -22,7 +25,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
     },
-    address: addressSchema,
+    address: [addressSchema],
     blocked: {
         type: Boolean,
         default: false

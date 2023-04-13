@@ -109,7 +109,6 @@ const cartHelper = {
     // },
     deleteItemfromCart: async (cartId) => {
         const data = await cartModel.findByIdAndDelete(cartId)
-        console.log("🚀 ~ file: cartHelper.js:112 ~ deleteItemfromCart: ~ data:", data)
         return data
     },
     getItemsAndDeleteCart: async (userId) => {

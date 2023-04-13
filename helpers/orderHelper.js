@@ -92,7 +92,6 @@ const orderHelper = {
                 }
             }
         ])
-        console.log('🚀 ~ file: orderHelper.js:47 ~ getUserOrders: ~ userOrders:', userOrders)
         return userOrders
     },
     updateStatus: async (orderId, prodId, action) => {

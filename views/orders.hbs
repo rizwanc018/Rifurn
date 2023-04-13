@@ -22,7 +22,7 @@
             <div class="col-12 my-5">
                 <!-- Cart Table -->
                 <div class="cart-table table-responsive mb-30">
-                    <table class="table">
+                    <table id="orderTable" class="table">
                         <thead>
                             <tr>
                                 <th class="pro-date">Date</th>
@@ -67,6 +67,13 @@
     </div>
 </div>
 <script>
+
+    $(document).ready(function () {
+    $('#orderTable').DataTable({
+        order: [[0, 'desc']],
+    });
+});
+
     $('.status').each(function () {
         if (this.innerHTML === "cancelled") {
             this.classList.add('text-danger')

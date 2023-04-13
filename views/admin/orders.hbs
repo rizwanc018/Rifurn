@@ -18,61 +18,75 @@
     </div> --}}
 
     <div class="row">
-        <table id="usersTable datatables" class="table mb-0">
-            <thead>
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Customer</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Payment-ID</th>
-                    <th scope="col">Qty</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Updated On</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each orders }}
-                <tr data-orderId="{{orderId}}" data-productId="{{productId}}">
-                    <td scope="row">{{createdAt}}</td>
-                    <td>{{email}}</td>
-                    <td>{{product}}</td>
-                    <td>{{paymentId}}</td>
-                    <td>{{qty}}</td>
-                    <td>
-                        {{!-- {{orderStatus}} --}}
-                        <select class="statusChange" name="orderStatus" id=_{{productId}}{{orderId}}>
-                            <option value="placed">Placed</option>
-                            <option value="dispatched">Dispatched</option>
-                            <option value="cancelled">Canclled</option>
-                        </select>
-                    </td>
-                    <script>
-                        $(function () {
-                            var status = {
-                                placed: 0,
-                                dispatched: 1,
-                                cancelled: 2
-                            }
-                            $('#_{{productId}}{{orderId}}').val($('#_{{productId}}{{orderId}} option').eq(status.{{ orderStatus }}).val())
-                        $('#_{{productId}}{{orderId}}').val() === 'placed' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'blue', 'color': 'white' }) :
-                            $('#_{{productId}}{{orderId}}').val() === 'dispatched' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'green', 'color': 'white' }) :
-                                $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'red', 'color': 'white' }) 
+        {{!-- <table id="usersTable datatables" class="table mb-0"> --}}
+            <table id="orderTable" class="table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Payment-ID</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Updated On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each orders }}
+                    <tr data-orderId="{{orderId}}" data-productId="{{productId}}">
+                        <td scope="row">{{createdAt}}</td>
+                        <td>{{email}}</td>
+                        <td>{{product}}</td>
+                        <td>{{paymentId}}</td>
+                        <td>{{qty}}</td>
+                        <td>
+                            {{!-- {{orderStatus}} --}}
+                            <select class="statusChange" name="orderStatus" id=_{{productId}}{{orderId}}>
+                                <option value="placed">Placed</option>
+                                <option value="dispatched">Dispatched</option>
+                                <option value="cancelled">Canclled</option>
+                                <option value="delivered">Delivered</option>
+
+                            </select>
+                        </td>
+                        <script>
+                            $(function () {
+
+                                var status = {
+                                    placed: 0,
+                                    dispatched: 1,
+                                    cancelled: 2,
+                                    delivered: 3
+                                    
+                                }
+                                $('#_{{productId}}{{orderId}}').val($('#_{{productId}}{{orderId}} option').eq(status.{{ orderStatus }}).val())
+                            $('#_{{productId}}{{orderId}}').val() === 'placed' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'blue', 'color': 'white' }) :
+                                $('#_{{productId}}{{orderId}}').val() === 'dispatched' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                                    $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'red', 'color': 'white' }) 
                         })
                       //  options.value = "{{product.category._id}}"
-                    </script>
-                    <td class="small">{{user}},
-                        {{address.addr1}},{{address.addr2}},{{address.town}},
-                        {{address.state}},{{address.country}},{{address.zip}}
-                    </td>
-                    <td class="date">{{updatedAt}}</td>
-                </tr>
-                {{/each}}
-            </tbody>
-        </table>
+                        </script>
+                        <td class="small">{{user}},
+                            {{address.addr1}},{{address.addr2}},{{address.town}},
+                            {{address.state}},{{address.country}},{{address.zip}}
+                        </td>
+                        <td class="date">{{updatedAt}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
     </div>
 </div>
 <script>
+
+    $(function () {
+        $('#orderTable').DataTable({
+            order: [[0, 'desc']],
+        });
+    })
+
+
     var url = window.location.origin
     document.body.addEventListener('change', e => {
         if (e.target.classList.contains('statusChange')) {
@@ -93,12 +107,12 @@
                 confirmButtonText: "Proceed",
             }).then(function (result) {
                 if (result.isConfirmed) {
-                    console.log(running)
                     $.ajax({
                         url: `${url}/admin/order/changestatus`,
                         method: "POST",
                         data: { orderId, prodId, orderNewStatus },
                         success: res => {
+                            console.log(orderNewStatus)
                             orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
                                 orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
                                     $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
@@ -115,33 +129,3 @@
         }
     })
 </script>
-
-{{!--
-<script>
-    var url = window.location.origin
-    function deleteProduct(self, id, productName, images) {
-        var $tr = $(self).closest('tr')
-        swal.fire({
-            title: "Delete?",
-            text: `Are you sure you want to delete category: "${productName}"!`,
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete it!",
-            closeOnConfirm: false
-        }).then(function (result) {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: `${url}/admin/product/delete/${id}?img=${images}`,
-                    method: "GET",
-                    success: res => {
-                        $tr.remove()
-                    },
-                    error: err => {
-                        console.log(err)
-                    }
-                })
-            }
-        })
-    }
-</script> --}}

@@ -143,15 +143,20 @@ const userController = {
             return total + item.subTotal
         }, 0)
         const userData = await userHelper.getUSerbyId(userId)
+        console.log("🚀 ~ file: userController.js:146 ~ showCheckoutPage: ~ userData:", userData)
         res.render('checkout', { cartItems, total, userData })
     },
     placeOrder: async (req, res) => {
         const userId = req.session.user.id
-        let { mobile, addr1, addr2, country, town, state, zip, paymentMethod, accepTerms } = req.body
+        let { firstname, lastname, mobile, addr1, addr2, country, town, state, zip, paymentMethod, saveAddress, accepTerms } = req.body
+        // saveAddress = Boolean(saveAddress)
         country = country.charAt(0).toUpperCase() + country.slice(1)
         state = state.charAt(0).toUpperCase() + state.slice(1)
         town = town.charAt(0).toUpperCase() + town.slice(1)
         const address = {
+            firstname: firstname,
+            lastname: lastname,
+            mobile: mobile,
             addr1: addr1,
             addr2: addr2,
             town: town,
@@ -159,8 +164,12 @@ const userController = {
             country: country,
             zip: zip
         }
-        const updateAddressStatus = await userHelper.updateAddress(userId, address)
+        if (saveAddress == 'true') {
+            console.log("🚀 ~ file: userController.js:152 ~ placeOrder: ~ saveAddress:", saveAddress)
+            const updateAddressStatus = await userHelper.updateAddress(userId, address)
+        }
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
+        console.log("🚀 ~ file: userController.js:172 ~ placeOrder: ~ cartData:", cartData)
         if (paymentMethod === 'COD') {
             const orderdata = await orderHelper.createOrder(userId, cartData, address, mobile)
             res.status(200).send("Order Placed Successfully")

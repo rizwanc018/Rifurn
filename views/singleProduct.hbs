@@ -93,7 +93,6 @@
     var url = window.location.origin
     function addtoCart(self) {
         const productId = $(self).attr('data-productId')
-        alert("clicked")
         $.ajax({
             url: `${url}/user/addtocart`,
             method: "POST",

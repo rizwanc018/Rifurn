@@ -29,23 +29,19 @@
                         <div class="col-lg-7">
                             <!-- Billing Address -->
                             <div id="billing-form" class="mb-10">
-                                <h4 class="checkout-title">Billing Address</h4>
+                                <h4 class="checkout-title text-dark">Billing Address</h4>
                                 <div class="row">
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>First Name*</label>
                                         <input class="form-control" required type="text" placeholder="First Name"
-                                            disabled name="firstname" value="{{userData.firstname}}">
+                                            name="firstname" value="{{userData.firstname}}">
                                     </div>
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Last Name*</label>
                                         <input class="form-control" required type="text" placeholder="Last Name"
-                                            disabled name="lastname" value="{{userData.lastname}}">
+                                            name="lastname" value="{{userData.lastname}}">
                                     </div>
-                                    <div class="col-md-6 col-12 mb-20">
-                                        <label>Email Address*</label>
-                                        <input class="form-control" required type="email" placeholder="Email Address"
-                                            disabled value={{userData.email}}>
-                                    </div>
+
                                     <div class="col-md-6 col-12 mb-20">
                                         <label>Phone no*</label>
                                         <input class="form-control" required type="tel" placeholder="Phone number"
@@ -87,7 +83,7 @@
 
                                 <!-- Cart Total -->
                                 <div class="col-12 mb-60">
-                                    <h4 class="checkout-title">Cart Total</h4>
+                                    <h4 class="checkout-title text-dark">Cart Total</h4>
                                     <div class="checkout-cart-total">
                                         <h4>Product <span>Total</span></h4>
                                         <ul>
@@ -129,6 +125,8 @@
                                                 terms &amp;
                                                 conditions</label>
                                         </div>
+                                        {{!-- svaAddress --}}
+                                        <input class="form-control"  hidden type="text" name="saveAddress" value="true">
                                     </div>
 
                                     <button class="place-order btn bttn btn-lg btn-round py-2">Place order</button>
@@ -140,7 +138,39 @@
 
                     </div>
                 </form>
+
+                <div class="text-dark my-3">
+                    <h4 class="checkout-title mb-3">Choose Address</h4>
+                    {{#if userData.address }}
+                    {{#each userData.address }}
+                    <input class="addressInput" type="radio" name="address" id="{{_id}}"
+                        value="{{firstname}}, {{lastname}}, {{mobile}}, {{addr1}}, {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}">
+                    <label class="ps-2 form-check-label" for="{{_id}}">{{firstname}}, {{lastname}}, {{mobile}},
+                        {{addr1}},
+                        {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}</label>
+                    <br>
+                    {{/each}}
+                    {{else}}
+                    <h6 class="checkout-title">No Addresses</h6>
+                    {{/if}}
+                </div>
+
                 <script>
+                    $('.addressInput').click(e => {
+                        const [fname, lname, mobile, addr1, addr2, town, state, country, zip] = e.target.value.split(",")
+
+                        $('[name="firstname"]').val(fname)
+                        $('[name="lastname"]').val(lname)
+                        $('[name="mobile"]').val(mobile)
+                        $('[name="addr1"]').val(addr1)
+                        $('[name="addr2"]').val(addr2)
+                        $('[name="town"]').val(town)
+                        $('[name="country"]').val(country)
+                        $('[name="state"]').val(state)
+                        $('[name="zip"]').val(zip)
+                        $('[name="saveAddress"]').val(false)
+                    })
+
                     var url = window.location.origin
                     const placeOrderForm = document.querySelector('#placeOrderForm');
                     placeOrderForm.addEventListener('submit', e => {
