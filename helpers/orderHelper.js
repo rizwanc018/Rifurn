@@ -19,46 +19,45 @@ const orderHelper = {
             {
                 $unwind: '$user'
             },
-            {
-                $unwind: '$items'
-            },
-            {
-                $lookup: {
-                    from: 'products',
-                    localField: 'items.productId',
-                    foreignField: '_id',
-                    as: 'result'
-                }
-            },
-            {
-                $unwind: '$result'
-            },
-            {
-                $project: {
-                    orderId: '$_id',
-                    user: '$user.firstname',
-                    email: '$user.email',
-                    mobile: '$contact',
-                    address: '$address',
-                    product: '$result.productName',
-                    productId: '$items.productId',
-                    qty: '$items.quantity',
-                    orderStatus: '$items.orderStatus',
-                    paymentId: 1,
-                    createdAt: 1,
-                    updatedAt: 1
-                }
-            }
+            // {
+            //     $unwind: '$items'
+            // },
+            // {
+            //     $lookup: {
+            //         from: 'products',
+            //         localField: 'items.productId',
+            //         foreignField: '_id',
+            //         as: 'result'
+            //     }
+            // },
+            // {
+            //     $unwind: '$result'
+            // },
+            // {
+            //     $project: {
+            //         orderId: '$_id',
+            //         user: '$user.firstname',
+            //         email: '$user.email',
+            //         mobile: '$contact',
+            //         address: '$address',
+            //         product: '$result.productName',
+            //         productId: '$items.productId',
+            //         qty: '$items.quantity',
+            //         orderStatus: '$items.orderStatus',
+            //         paymentId: 1,
+            //         createdAt: 1,
+            //         updatedAt: 1
+            //     }
+            // }
         ])
-        // console.log('🚀 ~ file: orderHelper.js:12 ~ orders:', orders)
+        console.log("🚀 ~ file: orderHelper.js:53 ~ getAllOrders: ~ orders:", orders)
         return orders
     },
-    createOrder: async (userId, cartData, address, mobile) => {
+    createOrder: async (userId, cartData, address) => {
         const status = await orderModel.create({
             userId: userId,
             items: cartData,
             address: address,
-            contact: mobile
         })
         return status
     },
@@ -94,13 +93,48 @@ const orderHelper = {
         ])
         return userOrders
     },
-    updateStatus: async (orderId, prodId, action) => {
+    updateStatus: async (orderId, action) => {
         const status = await orderModel.updateOne(
-            { _id: orderId, items: { $elemMatch: { productId: prodId } } },
+            { _id: orderId },
             {
-                $set: { 'items.$.orderStatus': action }
+                orderStatus: action
             })
         return status
+    },
+    getSingleOrderdetails: async (orderId) => {
+        const orderDetails = await orderModel.aggregate([
+            {
+                $match: { _id: new mongoose.Types.ObjectId(orderId) }
+            },
+            {
+                $unwind: '$items'
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items.productId',
+                    foreignField: '_id',
+                    as: 'result'
+                }
+            },
+            {
+                $project: {
+                    address: 1,
+                    paymentId: 1,
+                    createdAt: 1,
+                    quantity: '$items.quantity',
+                    productName: "$result.productName",
+                    price: "$result.price",
+                    orderStatus: 1,
+                    //         // amount: {$multiply : ['$items.quantity', "$result.price.0"]},
+                    image: { $first: "$result.images" },
+                }
+            }
+            // {
+            //     $unwind: '$result'
+            // },
+        ])
+        return orderDetails
     }
 
 }

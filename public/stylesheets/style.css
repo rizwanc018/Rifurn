@@ -10075,3 +10075,8 @@ only screen and (max-width: 767px) {
 .editProfile.edit .noedit {
   display: none;
 }
+
+.paginate_button a{
+  font-size: 12px;
+  padding: 2px 7px;
+}

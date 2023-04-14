@@ -171,7 +171,7 @@ const userController = {
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
         console.log("🚀 ~ file: userController.js:172 ~ placeOrder: ~ cartData:", cartData)
         if (paymentMethod === 'COD') {
-            const orderdata = await orderHelper.createOrder(userId, cartData, address, mobile)
+            const orderdata = await orderHelper.createOrder(userId, cartData, address)
             res.status(200).send("Order Placed Successfully")
         } else {
             res.status(400).send("Only COD Allowed")

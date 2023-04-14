@@ -23,8 +23,8 @@ const adminController = {
         res.redirect('/')
     },
     changeOrderStatus: async (req, res) => {
-        const { orderId, prodId, orderNewStatus } = req.body
-        const status = await orderHelper.updateStatus(orderId, prodId, orderNewStatus)
+        const { orderId, orderNewStatus } = req.body
+        const status = await orderHelper.updateStatus(orderId, orderNewStatus)
         res.status(200).send("Status changed")
     }
 }

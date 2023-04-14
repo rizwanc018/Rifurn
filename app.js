@@ -29,7 +29,7 @@ app.listen(process.env.PORT, () => {
     console.log(`Listening on PORT : ${process.env.PORT}`);
 })
 app.use(session({
-    secret: 'my-secret-key',
+    secret: process.env.SESSION_SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 6000000 }

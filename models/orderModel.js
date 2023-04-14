@@ -6,10 +6,6 @@ const itemSchema = new mongoose.Schema({
         ref: "Product"
     },
     quantity: Number,
-    orderStatus: {
-        type: String,
-        default: "placed"
-    },
 })
 
 const orderSchema = new mongoose.Schema({
@@ -18,6 +14,10 @@ const orderSchema = new mongoose.Schema({
         ref: "User"
     },
     items: [itemSchema],
+    orderStatus: {
+        type: String,
+        default: "placed"
+    },
     address: Object,
     contact: Number,
     paymentMode: String,

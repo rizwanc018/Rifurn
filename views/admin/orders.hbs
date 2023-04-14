@@ -24,54 +24,36 @@
                     <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Customer</th>
-                        <th scope="col">Product</th>
+                        <th scope="col">Order-Id</th>
                         <th scope="col">Payment-ID</th>
-                        <th scope="col">Qty</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Address</th>
                         <th scope="col">Updated On</th>
+                        <th class"w-auto" scope="col">Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each orders }}
-                    <tr data-orderId="{{orderId}}" data-productId="{{productId}}">
+                    <tr data-orderId="{{_id}}">
                         <td scope="row">{{createdAt}}</td>
-                        <td>{{email}}</td>
-                        <td>{{product}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{_id}}</td>
                         <td>{{paymentId}}</td>
-                        <td>{{qty}}</td>
                         <td>
                             {{!-- {{orderStatus}} --}}
-                            <select class="statusChange" name="orderStatus" id=_{{productId}}{{orderId}}>
+                            <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
                                 <option value="placed">Placed</option>
                                 <option value="dispatched">Dispatched</option>
-                                <option value="cancelled">Canclled</option>
                                 <option value="delivered">Delivered</option>
-
+                                <option value="cancelled">Canclled</option>
                             </select>
                         </td>
                         <script>
-                            $(function () {
 
-                                var status = {
-                                    placed: 0,
-                                    dispatched: 1,
-                                    cancelled: 2,
-                                    delivered: 3
-                                    
-                                }
-                                $('#_{{productId}}{{orderId}}').val($('#_{{productId}}{{orderId}} option').eq(status.{{ orderStatus }}).val())
-                            $('#_{{productId}}{{orderId}}').val() === 'placed' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'blue', 'color': 'white' }) :
-                                $('#_{{productId}}{{orderId}}').val() === 'dispatched' ? $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'green', 'color': 'white' }) :
-                                    $('#_{{productId}}{{orderId}}').css({ 'backgroundColor': 'red', 'color': 'white' }) 
-                        })
                       //  options.value = "{{product.category._id}}"
                         </script>
-                        <td class="small">{{user}},
-                            {{address.addr1}},{{address.addr2}},{{address.town}},
-                            {{address.state}},{{address.country}},{{address.zip}}
-                        </td>
                         <td class="date">{{updatedAt}}</td>
+                        <td class"w-auto"><button class="btn btn-primary p-0 px-1 ms-3" onclick="viewOrderDetails(this)"><i
+                                    class="fas fa-circle-info"></i></button></td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -81,9 +63,31 @@
 <script>
 
     $(function () {
+
+        var statusObj = {
+            placed: 0,
+            dispatched: 1,
+            cancelled: 2,
+            delivered: 3
+
+        }
         $('#orderTable').DataTable({
             order: [[0, 'desc']],
         });
+
+        //$('.statusChange').each((i, e) => {
+        //  console.log(e.find(':selected').text())
+        //})
+        const selectElements = document.querySelectorAll('.statusChange');
+        selectElements.forEach(select => {
+            const status = select.getAttribute('data-status')
+            select.value = status
+            select.value === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
+                select.value === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
+                    select.value === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                        $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
+        });
+
     })
 
 
@@ -93,10 +97,11 @@
             const select = e.target
             const tr = select.closest('tr')
             const orderId = $(tr).attr('data-orderId')
-            const prodId = $(tr).attr('data-productId')
             const orderNewStatus = select.value
             const updatedDate = new Date().toLocaleDateString()
             const dateCell = $(tr).find('.date')
+            console.log("🚀 ~ file: orders.hbs:132 ~ orderNewStatus:", orderNewStatus)
+            console.log("🚀 ~ file: orders.hbs:132 ~ orderId:", orderId)
 
             swal.fire({
                 title: "Change status?",
@@ -110,12 +115,13 @@
                     $.ajax({
                         url: `${url}/admin/order/changestatus`,
                         method: "POST",
-                        data: { orderId, prodId, orderNewStatus },
+                        data: { orderId, orderNewStatus },
                         success: res => {
                             console.log(orderNewStatus)
                             orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
-                                orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
-                                    $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
+                                orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
+                                    orderNewStatus === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                                        $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
                             dateCell.text(updatedDate)
                         },
                         error: err => {
@@ -128,4 +134,165 @@
             })
         }
     })
+</script>
+
+{{!-- Modal --}}
+<div class="modal fade" id="orderDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="container mb-5 mt-3">
+                <div class="row d-flex align-items-baseline">
+                    <div class="col-xl-9">
+                        <p style="color: #7e8d9f;font-size: 14px;">Invoice >> <strong class="paymentId">ID:
+                                #123-123</strong></p>
+                    </div>
+                    <div class="col-xl-3 float-end">
+                        <a class="btn btn-light text-capitalize border-0 p-0 me-3" data-mdb-ripple-color="dark"><i
+                                class="fas fa-print text-primary"></i></a>
+                        <a class="btn btn-light text-capitalize p-0" data-mdb-ripple-color="dark"><i
+                                class="far fa-file-pdf text-danger"></i></a>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="container">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <img width="100" src="/images/logo.png" alt="">
+                            <p class="pt-0">Rifurn.com</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <ul class="list-unstyled">
+                                <li class="text-muted"><span id="name" style="color:hsl(202, 7%, 50%) ;">John
+                                        Lorem</span>
+                                </li>
+                                <li class="text-muted" id="addr">Street, City</li>
+                                <li class="text-muted" id="sc">State, Country</li>
+                                <li class="text-muted" id="mobile"><i class="fas fa-phone"></i> 123-456-789</li>
+                            </ul>
+                        </div>
+                        <div class="col-xl-4">
+                            <p class="text-muted mb-0 fw-bold">Invoice</p>
+                            <ul class="list-unstyled mt-0">
+                                <li class="text-muted"><span class="fw-bold">ID: </span><span
+                                        class="paymentId">#123-456</span></li>
+                                <li class="text-muted"> <span class="fw-bold">Date: </span> <span id="date">Jun 23,2021
+                                </li>
+                                <li class="text-muted"> <span class="me-1 fw-bold">Status:</span><span
+                                        class="text-capitalize" id="status">
+                                        Unpaid</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row my-2 mx-1 justify-content-center">
+                        <table class="table table-striped table-borderless">
+                            <thead style="background-color:#0b0c0c ;" class="text-white">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Qty</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-8">
+                            {{!-- <p class="ms-3">Billing address</p> --}}
+
+                        </div>
+                        <div class="col-xl-4">
+                            <ul class="list-unstyled">
+                                <li class="text-muted"><span class="text-black me-3">SubTotal</span> <span
+                                        class="subTotal">1110</span></li>
+                                {{!-- <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(15%)</span>$111
+                                </li> --}}
+                            </ul>
+                            <p class="text-black float-start">
+                                <span class="text-black me-3"> Total</span><span class=" ms-4 total">$1221</span>
+                            </p>
+                        </div>
+                    </div>
+                    {{!--
+                    <hr>
+                    <div class="row">
+                        <div class="col-xl-10">
+                            <p>Thank you for your purchase</p>
+                        </div>
+                        <div class="col-xl-2">
+                            <button type="button" class="btn btn-primary text-capitalize"
+                                style="background-color:#60bdf3 ;">Pay Now</button>
+                        </div>
+                    </div> --}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function viewOrderDetails(self) {
+        $('#orderDetails').modal('show')
+        const tr = $(self).closest('tr')
+        const orderId = $(tr).attr('data-orderId')
+        $.ajax({
+            url: `${url}/admin/order/details`,
+            method: "POST",
+            data: { orderId: orderId },
+            success: res => {
+                console.log(res[0])
+                $('#name').text(res[0].address.firstname + " " + res[0].address.lastname)
+                $('#addr').text(res[0].address.addr1 + ", " + res[0].address.addr2)
+                $('#sc').text(res[0].address.state + ", " + res[0].address.country)
+                $('#sc').text(res[0].address.state + ", " + res[0].address.country)
+                $('#mobile').html('<i class="fas fa-phone"></i>' + res[0].address.mobile)
+                $('.paymentId').text(res[0].paymentId)
+                let date = new Date(res[0].createdAt)
+                date = date.toLocaleDateString()
+                $('#date').text(date)
+                $('#status').text(res[0].orderStatus)
+
+                let total = 0
+                res.forEach((data, index) => {
+                    $('#tableBody').append(`
+                                <tr>
+                                    <th scope="row">${index + 1}</th>
+                                    <td>
+                                        <img src=https://res.cloudinary.com/dz9knbtwi/image/upload/h_50,w_50/${data.image[0]} alt="" srcset="">
+                                    </td>
+                                    <td>${data.productName}</td>
+                                    <td>${data.quantity}</td>
+                                    <td>${data.price}</td>
+                                    <td>${data.quantity * data.price[0]}</td>
+                                </tr>
+                    `)
+                    total += data.quantity * data.price[0]
+                })
+                $('.subTotal').text(total)
+                $('.total').text(total)
+
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
+
+    $('#orderDetails').on('hide.bs.modal', function () {
+        $('#tableBody').text('')
+    });
 </script>
