@@ -26,31 +26,29 @@
                         <thead>
                             <tr>
                                 <th class="pro-date">Date</th>
-                                <th class="pro-thumbnail">Image</th>
-                                <th class="pro-title">Product</th>
-                                <th class="pro-quantity">Quantity</th>
-                                <th class="pro-status">Status</th>
+                                <th class="pro-thumbnail">Order-Id</th>
+                                <th class="pro-title">Amount</th>
+                                <th class="pro-quantity">Status</th>
+                                <th class="pro-status">Details</th>
                                 <th class="pro-remove">Cancel</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each orderData }}
-                            <tr data-orderId="{{_id}}">
-                                <td class="pro-date"><span>{{createdAt}}</span></td>
-                                <td class="pro-thumbnail"><a href=""><img
-                                            src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{image}}.webp"
-                                            alt="Product"></a></td>
-                                <td class="pro-title"><span>{{result.productName}}</span></td>
-                                <td class="pro-quantity"><span>{{items.quantity}}</span></td>
+                            <tr data-orderId="{{id}}">
+                                <td class="pro-date"><span>{{date}}</span></td>
+                                <td class="pro-title"><span>{{id}}</span></td>
+                                <td class="pro-title"><span>{{amount}}</span></td>
+
+                                <td class="pro-status"><span class="status text-capitalize text-primary">{{status}}</span></td>
                                 {{!-- <td class="pro-price"><span>$25.00</span></td> --}}
-                                <td class="pro-status"><span
-                                        class="text-capitalize text-primary status">{{items.orderStatus}}</span>
+                                <td class="pro-status">
+                                    <button class="py-2 bttn">Details</button>
                                 </td>
-                                {{#noteq items.orderStatus "cancelled"}}
+                                {{#noteq status "cancelled"}}
                                 <td class="pro-remove">
-                                    <button data-productId={{items.productId}} onclick="cancelOrder(this)"
-                                        class="btn px-1">
-                                        <i class="fa fa-close"></i>
+                                    <button data-productId={{id}} onclick="cancelOrder(this)" class="btn px-1">
+                                        <i class="fa fa-trash"></i>
                                     </button>
                                 </td>
                                 {{else}}
@@ -69,16 +67,19 @@
 <script>
 
     $(document).ready(function () {
-    $('#orderTable').DataTable({
-        order: [[0, 'desc']],
+        $('#orderTable').DataTable({
+            order: [[0, 'desc']],
+        });
+
+        $('table tr:last').remove()
     });
-});
 
     $('.status').each(function () {
         if (this.innerHTML === "cancelled") {
             this.classList.add('text-danger')
-        }
-        else if (this.innerHTML === "dispatched") {
+        } else if (this.innerHTML === "dispatched") {
+            this.classList.add('text-warning')
+        } else if (this.innerHTML === "delivered") {
             this.classList.add('text-success')
         }
     })
@@ -102,7 +103,7 @@
                 $.ajax({
                     url: `${url}/user/cancel/order`,
                     method: 'POST',
-                    data: { orderId, prodId },
+                    data: { orderId },
                     success: res => {
                         status.html("Cancelled")
                         status.addClass('text-danger')

@@ -12,10 +12,29 @@ const orderController = {
     getUserOrders: async (req, res) => {
         const userId = req.session.user.id
         const orderData = await orderHelper.getUserOrders(userId)
+        let id = 1
+        let orderDataObj = {}
+        let orderDataArr = []
         orderData.forEach(order => {
-            order.createdAt = new Date(order.createdAt).toLocaleDateString()
+            let tmp = order._id.toString()
+            if (id == tmp) {
+                orderDataObj.amount += order.items.quantity * order.result.price
+            } else {
+                id = tmp
+                orderDataArr.push(orderDataObj)
+                orderDataObj = {}
+                orderDataObj.id = order._id,
+                    orderDataObj.status = order.orderStatus,
+                    orderDataObj.amount = order.items.quantity * order.result.price
+                orderDataObj.date = new Date(order.createdAt).toLocaleDateString()
+            }
         })
-        res.render('orders', { orderData, isUserLoggedin: req.session.user?.loggedin, })
+        orderDataArr.push(orderDataObj)
+        console.log("🚀 ~ file: orderController.js:33 ~ getUserOrders: ~ orderDataArr:", orderDataArr)
+        // orderData.forEach(order => {
+        //     order.createdAt = new Date(order.createdAt).toLocaleDateString()
+        // })
+        res.render('orders', { orderData: orderDataArr, isUserLoggedin: req.session.user?.loggedin, })
     },
     getSingleOrderdetails: async (req, res) => {
         const { orderId } = req.body

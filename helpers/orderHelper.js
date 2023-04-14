@@ -80,16 +80,14 @@ const orderHelper = {
             {
                 $unwind: '$result'
             },
-            {
-                $project: {
-                    createdAt: 1,
-                    image: { $first: '$result.images' },
-                    'result.productName': 1,
-                    'items.quantity': 1,
-                    'items.orderStatus': 1,
-                    'items.productId': 1
-                }
-            }
+            // {
+            //     $project: {
+            //         createdAt: 1,
+            //         orderId: '$_id',
+            //         orderStatus: 1,
+            //         'result.price': 1,
+            //     }
+            // }
         ])
         return userOrders
     },

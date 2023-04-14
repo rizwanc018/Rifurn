@@ -178,8 +178,8 @@ const userController = {
         }
     },
     cancelOrder: async (req, res) => {
-        const { orderId, prodId } = req.body
-        const status = await orderHelper.updateStatus(orderId, prodId, "cancelled")
+        const { orderId } = req.body
+        const status = await orderHelper.updateStatus(orderId, "cancelled")
         // if (status.modifiedCount === 1) res.status(200).send("Order Cancelled")
         // else res.status(400).send("Something wrong")
         res.status(200).send("Order Cancelled")
