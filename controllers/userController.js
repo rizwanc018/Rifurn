@@ -149,7 +149,6 @@ const userController = {
     placeOrder: async (req, res) => {
         const userId = req.session.user.id
         let { firstname, lastname, mobile, addr1, addr2, country, town, state, zip, paymentMethod, saveAddress, accepTerms } = req.body
-        // saveAddress = Boolean(saveAddress)
         country = country.charAt(0).toUpperCase() + country.slice(1)
         state = state.charAt(0).toUpperCase() + state.slice(1)
         town = town.charAt(0).toUpperCase() + town.slice(1)
@@ -169,7 +168,6 @@ const userController = {
             const updateAddressStatus = await userHelper.updateAddress(userId, address)
         }
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
-        console.log("🚀 ~ file: userController.js:172 ~ placeOrder: ~ cartData:", cartData)
         if (paymentMethod === 'COD') {
             const orderdata = await orderHelper.createOrder(userId, cartData, address)
             res.status(200).send("Order Placed Successfully")
@@ -192,9 +190,7 @@ const userController = {
         const userId = req.session.user.id
         const { fname, lname } = req.body
         const status = await UserModel.updateOne({ _id: userId }, { firstname: fname, lastname: lname })
-        console.log("🚀 ~ file: userController.js:188 ~ editName: ~ status:", status)
         if (status.modifiedCount == 1) {
-            console.log('---------------------');
             res.status(200).send("success")
         } else {
             res.status(400).send("Something wrong")
@@ -203,8 +199,61 @@ const userController = {
     editMobile: async (req, res) => {
         const userId = req.session.user.id
         const { mobile } = req.body
-        console.log("🚀 ~ file: userController.js:199 ~ editMobile: ~ mobile:", req.body)
-        res.status(200).send("Yesss")
+        const status = await UserModel.updateOne({ _id: userId }, { mobile: mobile })
+        if (status.modifiedCount == 1) {
+            res.status(200).send("success")
+        } else {
+            res.status(400).send("Something wrong")
+        }
+    },
+    editEmail: async (req, res) => {
+        const userId = req.session.user.id
+        const { email, OTP } = req.body
+        if (OTP) {
+            if (email === req.session.user.newEmail && OTP === req.session.user.otp) {
+                const status = await UserModel.updateOne({ _id: userId }, { email: email })
+                if (status.modifiedCount == 1) {
+                    res.status(200).send("success")
+                } else {
+                    res.status(400).send("Something wrong")
+                }
+            }
+        } else {
+            const otp = generateOTP()
+            console.log('------------------------', otp)
+            req.session.user.otp = otp
+            req.session.user.newEmail = email
+            console.log(req.session.user)
+            const status = await sendOTP(email, otp)
+            res.status(200).send({ newEmail: email, msg: 'otpSend' })
+        }
+    },
+    addToWishlist: async (req, res) => {
+        const userId = req.session.user.id
+        const prodId = req.params.id
+        const status = await UserModel.updateOne({ _id: userId }, {
+            $addToSet:
+            {
+                wishlist: prodId
+            }
+        })
+    },
+    showWishlist: async (req, res) => {
+        const userId = req.session.user.id
+        const products = await productHelper.getProductsFromWishlist(userId)
+        res.render('wishlist', { products })
+    },
+    removeFromWishlist: async (req, res) => {
+        const userId = req.session.user.id
+        const prodId = req.params.id
+        const status = await UserModel.updateOne({ _id: userId }, {
+            $pull: { wishlist: prodId }
+        })
+        if (status.modifiedCount === 1) {
+            res.status(200).send('Removed')
+        } else {
+            res.status(400).send('something wrong')
+        }
     }
 }
 

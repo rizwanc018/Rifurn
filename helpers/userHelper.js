@@ -30,7 +30,6 @@ const userHelper = {
     },
     getUSerbyId: async (id) => {
         const user = await UserModel.findById(id)
-        console.log("🚀 ~ file: userHelper.js:33 ~ getUSerbyId: ~ user:", user)
         return user
     },
     getallUsers: async () => {
@@ -77,22 +76,22 @@ const userHelper = {
         return status
     },
     updateAddress: async (userId, address) => {
+        const data = {
+            firstname: address.firstname,
+            lastname: address.lastname,
+            mobile: address.mobile,
+            addr1: address.addr1,
+            addr2: address.addr2,
+            town: address.town,
+            state: address.state,
+            country: address.country,
+            zip: address.zip,
+        }
         const status = await UserModel.updateOne({ _id: userId },
             {
                 $addToSet:
                 {
-                    address:
-                    {
-                        firstname: address.firstname,
-                        lastname: address.lastname,
-                        mobile: address.mobile,
-                        addr1: address.addr1,
-                        addr2: address.addr2,
-                        town: address.town,
-                        state: address.state,
-                        country: address.country,
-                        zip: address.zip,
-                    }
+                    address: address
                 }
             })
     }

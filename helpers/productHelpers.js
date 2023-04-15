@@ -1,5 +1,6 @@
 import cloudinary from "../utils/cloudinary.js";
 import productModel from "../models/productModel.js";
+import UserModel from "../models/userModel.js";
 import fs from 'fs'
 import mongoose from "mongoose";
 
@@ -94,10 +95,10 @@ const productHelper = {
     getAllProductsByCategory: async (req) => {
         const id = new mongoose.Types.ObjectId(req.params.id)
         try {
-            const products =  await productModel.find({category: id})
+            const products = await productModel.find({ category: id })
             return products
         } catch (err) {
-            
+
         }
     },
     getSingleProduct: (req) => {
@@ -111,15 +112,51 @@ const productHelper = {
         })
     },
     getProductQuantity: async (productId) => {
-        const quantity = await productModel.findOne({_id: productId}, 'stock')
-        return quantity.stock   
+        const quantity = await productModel.findOne({ _id: productId }, 'stock')
+        return quantity.stock
     },
-    updateProductQuantity: async(productId, quantity) =>  {
+    updateProductQuantity: async (productId, quantity) => {
         quantity = -1 * quantity
-        const status = await productModel.updateOne({_id: productId}, {$inc: {stock: quantity}})
+        const status = await productModel.updateOne({ _id: productId }, { $inc: { stock: quantity } })
         return status
+    },
+    getProductsFromWishlist: async (userId) => {
+        const products = await UserModel.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+            {
+                $unwind: '$wishlist'
+            },
+            {
+                $project: { wishlist: 1, _id: 0 }
+            },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: 'wishlist',
+                    foreignField: '_id',
+                    as: "result"
+                }
+            },
+            {
+                $unwind: '$result'
+            },
+            {
+                $lookup: {
+                    from: "categories",
+                    localField: 'result.category',
+                    foreignField: '_id',
+                    as: "categoryName"
+                }
+            },
+            {
+                $unwind: '$categoryName'
+            },
+
+        ])
+        console.log("🚀 ~ file: productHelpers.js:125 ~ getProductsFromWishlist:async ~ products:", products)
+        return products
     }
-    
+
 }
 
 export default productHelper

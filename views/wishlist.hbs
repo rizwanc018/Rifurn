@@ -1,12 +1,33 @@
-<div class="container">
+<div class="page-banner-section section bg-image" data-bg="./assets/images/bg/breadcrumb.jpg"
+    style="background-image: url(/images/banner.webp);">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <div class="page-banner text-center">
+                    <h2>Wishlist</h2>
+                    <ul class="page-breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li>Wishlist</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container my-3">
     <div class="row">
+        {{#if products }}
         {{#each products }}
-        <div class="col-md-3" style=" display: inline-block;">
+        <div class="col-md-3 prod-box" style=" display: inline-block;">
             <!--  Single Grid product Start -->
             <div class="single-grid-product mb-40">
                 <div class="product-image">
-                    <a href="/product/view/{{_id}}" tabindex="0">
-                        {{#each images }}
+                    <a href="/product/view/{{wishlist}}" tabindex="0">
+                        {{#each result.images }}
                         <img src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/{{this}}.webp"
                             class="img-fluid" alt="">
                         {{/each}}
@@ -16,15 +37,16 @@
                         <button class="btn btn-link product-btn text-decoration-none py-0 px-2" data-productId="{{_id}}"
                             onclick="addtoCart(this)" tabindex="0">Add to
                             Cart</button>
-                        <button class="btn btn-link p-0" onclick="addtowishlist('{{_id}}')"  tabindex="0">
-                            <i class="add-to-wish fa-regular fa-heart"></i>
+                        <button class="btn btn-link p-0" onclick="removeFromWishlist(this, '{{wishlist}}')"
+                            tabindex="0">
+                            <i class="add-to-wish fa fa-trash"></i>
                         </button>
                     </div>
 
                 </div>
                 <div class="product-content">
                     <div class="product-category-rating">
-                        <span class="category"><a href="/shop" tabindex="0">{{category.category}}</a></span>
+                        <span class="category"><a href="/shop" tabindex="0">{{categoryName.category}}</a></span>
                         <span class="rating">
                             <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
                             <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
@@ -38,12 +60,34 @@
                     </div>
 
                     <h3 class="title"> <a style="color: hsla(0, 0%, 0%, 0.85)" href="single-product.html"
-                            tabindex="0">{{productName}}</a></h3>
-                    <p class="product-price"><span class="discounted-price">{{price}}</span></p>
+                            tabindex="0">{{result.productName}}</a></h3>
+                    <p class="product-price"><span class="discounted-price">{{result.price}}</span></p>
                 </div>
             </div>
             <!--  Single Grid product End -->
         </div>
         {{/each}}
+        {{else}}
+        <div class="row text-center my-5">
+            <h1 class="mt-5 text-dark">Wishlist Empty</h1>
+            <a href="/shop" class="col-2 btn bttn my-3 mx-auto py-3">Shop Now</a>
+        </div>
+        {{/if}}
     </div>
 </div>
+<script>
+    function removeFromWishlist(self, id) {
+        const div = $(self).closest('.prod-box')
+        $.ajax({
+            url: `${url}/user/delete/wishlist/${id}`,
+            method: "DELETE",
+            success: res => {
+                console.log(res)
+                div.remove()
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
+</script>

@@ -198,7 +198,7 @@
                         <div class="col-xl-8">
                             {{!-- <p class="ms-3">Billing address</p> --}}
                         </div>
-                        <div class="col-xl-4 ">
+                        <div class="col-xl-4" style="font-size: 14px;">
                             <p class="text-black mb-1">
                                 <span class="text-black me-auto ms-3"> SubTotal</span>
                                 <span class="ms-auto total float-end">$1221</span>
@@ -255,14 +255,14 @@
                                     </td>
                                     <td>${data.productName}</td>
                                     <td>${data.quantity}</td>
-                                    <td>${data.price}</td>
-                                    <td>${data.quantity * data.price[0]}</td>
+                                    <td>₹${data.price}</td>
+                                    <td>₹${data.quantity * data.price[0]}</td>
                                 </tr>
                     `)
                     total += data.quantity * data.price[0]
                 })
-                $('.subTotal').text(total)
-                $('.total').text(total)
+                $('.subTotal').text(`₹${total}`)
+                $('.total').text(`₹${total}`)
 
             },
             error: err => {

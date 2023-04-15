@@ -29,7 +29,11 @@ const userSchema = new mongoose.Schema({
     blocked: {
         type: Boolean,
         default: false
-    }
+    },
+    wishlist: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product'
+    }]
 })
 
 const UserModel = mongoose.model('User', userSchema)
