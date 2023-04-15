@@ -38,12 +38,13 @@
                             <tr data-orderId="{{id}}">
                                 <td class="pro-date"><span>{{date}}</span></td>
                                 <td class="pro-title"><span>{{id}}</span></td>
-                                <td class="pro-title"><span>{{amount}}</span></td>
+                                <td class="pro-title"><span>₹{{amount}}</span></td>
 
-                                <td class="pro-status"><span class="status text-capitalize text-primary">{{status}}</span></td>
+                                <td class="pro-status"><span
+                                        class="status text-capitalize text-primary">{{status}}</span></td>
                                 {{!-- <td class="pro-price"><span>$25.00</span></td> --}}
                                 <td class="pro-status">
-                                    <button class="py-2 bttn">Details</button>
+                                    <button class="py-2 bttn" onclick="viewOrderDetails(this)">Details</button>
                                 </td>
                                 {{#noteq status "cancelled"}}
                                 <td class="pro-remove">
@@ -71,7 +72,7 @@
             order: [[0, 'desc']],
         });
 
-        $('table tr:last').remove()
+        $('#orderTable tr:last').remove()
     });
 
     $('.status').each(function () {
@@ -118,4 +119,159 @@
             }
         })
     }
+</script>
+
+<div class="modal fade" id="orderDetails" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-0">
+            <div class="container mb-5 mt-3">
+                <div class="row d-flex align-items-baseline">
+                    <div class="col-xl-9">
+                        <p style="color: #7e8d9f;font-size: 14px;">Invoice >> <strong class="paymentId">ID:
+                                #123-123</strong></p>
+                    </div>
+                    <div class="col-xl-3 float-end">
+                        <a class="btn btn-light text-capitalize border-0 p-0 me-3" data-mdb-ripple-color="dark"><i
+                                class="fas fa-print text-primary"></i></a>
+                        <a class="btn btn-light text-capitalize p-0" data-mdb-ripple-color="dark"><i
+                                class="far fa-file-pdf text-danger"></i></a>
+                    </div>
+                    <hr>
+                </div>
+
+                <div class="container">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <img width="100" src="/images/logo.png" alt="">
+                            <p class="pt-0">Rifurn.com</p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <ul class="list-unstyled">
+                                <li class="text-muted"><span id="name" style="color:hsl(202, 7%, 50%) ;">John
+                                        Lorem</span>
+                                </li>
+                                <li class="text-muted" id="addr">Street, City</li>
+                                <li class="text-muted" id="sc">State, Country</li>
+                                <li class="text-muted" id="mob">
+                                    <i class="fas fa-phone"></i> 123-456-789
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-xl-4">
+                            <p class="text-muted mb-0 fw-bold">Invoice</p>
+                            <ul class="list-unstyled mt-0">
+                                <li class="text-muted"><span class="fw-bold">ID: </span><span
+                                        class="paymentId">#123-456</span></li>
+                                <li class="text-muted"> <span class="fw-bold">Date: </span> <span id="date">Jun 23,2021
+                                </li>
+                                <li class="text-muted"> <span class="me-1 fw-bold">Status:</span><span
+                                        class="text-capitalize" id="status">
+                                        Unpaid</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row my-2 mx-1 justify-content-center">
+                        <table class="table table-striped table-borderless">
+                            <thead style="background-color:#0b0c0c ;" class="text-white">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Qty</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-8">
+                            {{!-- <p class="ms-3">Billing address</p> --}}
+                        </div>
+                        <div class="col-xl-4 ">
+                            <p class="text-black mb-1">
+                                <span class="text-black me-auto ms-3"> SubTotal</span>
+                                <span class="ms-auto total float-end">$1221</span>
+                            </p>
+                            <p class="text-black fw-bold">
+                                <span class="text-black me-auto ms-3"> Total</span>
+                                <span class="ms-auto total float-end">$1221</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="row mx-auto">
+                        <div class="col-xl-10 ">
+                            <p>Thank you for your purchase</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function viewOrderDetails(self) {
+        $('#orderDetails').modal('show')
+        const tr = $(self).closest('tr')
+        const orderId = $(tr).attr('data-orderId')
+        $.ajax({
+            url: `${url}/admin/order/details`,
+            method: "POST",
+            data: { orderId: orderId },
+            success: res => {
+                console.log(res[0].address.mobile)
+                $('#name').text(res[0].address.firstname + " " + res[0].address.lastname)
+                $('#addr').text(res[0].address.addr1 + ", " + res[0].address.addr2)
+                $('#sc').text(res[0].address.state + ", " + res[0].address.country)
+                $('#mob').html('<i class="fas fa-phone"></i>' + res[0].address.mobile)
+                $('.paymentId').text(res[0].paymentId)
+                let date = new Date(res[0].createdAt)
+                date = date.toLocaleDateString()
+                $('#date').text(date)
+                $('#status').text(res[0].orderStatus)
+
+                let total = 0
+                res.forEach((data, index) => {
+                    $('#tableBody').append(`
+                                <tr>
+                                    <th scope="row">${index + 1}</th>
+                                    <td>
+                                        <img src=https://res.cloudinary.com/dz9knbtwi/image/upload/h_100,w_75/${data.image[0]} alt="" srcset="">
+                                    </td>
+                                    <td>${data.productName}</td>
+                                    <td>${data.quantity}</td>
+                                    <td>${data.price}</td>
+                                    <td>${data.quantity * data.price[0]}</td>
+                                </tr>
+                    `)
+                    total += data.quantity * data.price[0]
+                })
+                $('.subTotal').text(total)
+                $('.total').text(total)
+
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
+
+    $('#orderDetails').on('hide.bs.modal', function () {
+        $('#tableBody').text('')
+    });
 </script>
