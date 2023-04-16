@@ -52,8 +52,8 @@
                       //  options.value = "{{product.category._id}}"
                         </script>
                         <td class="date">{{updatedAt}}</td>
-                        <td class"w-auto"><button class="btn btn-primary p-0 px-1 ms-3" onclick="viewOrderDetails(this)"><i
-                                    class="fas fa-circle-info"></i></button></td>
+                        <td class"w-auto"><button class="btn btn-primary p-0 px-1 ms-3"
+                                onclick="viewOrderDetails(this)"><i class="fas fa-circle-info"></i></button></td>
                     </tr>
                     {{/each}}
                 </tbody>
@@ -209,19 +209,32 @@
                         </table>
                     </div>
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-8">
                             {{!-- <p class="ms-3">Billing address</p> --}}
 
                         </div>
-                        <div class="col-xl-4">
+                        {{!-- <div class="col-xl-4">
                             <ul class="list-unstyled">
                                 <li class="text-muted"><span class="text-black me-3">SubTotal</span> <span
                                         class="subTotal">1110</span></li>
-                                {{!-- <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(15%)</span>$111
-                                </li> --}}
+
                             </ul>
                             <p class="text-black float-start">
                                 <span class="text-black me-3"> Total</span><span class=" ms-4 total">$1221</span>
+                            </p>
+                        </div> --}}
+                        <div class="col-4" style="font-size: 12px;">
+                            <p class="text-black mb-1">
+                                <span class="text-black me-auto ms-3"> SubTotal</span>
+                                <span class="ms-auto subTotal float-end">$1221</span>
+                            </p>
+                            <p class="text-black mb-1">
+                                <span class="text-black me-auto ms-3"> Discount</span>
+                                <span class="ms-auto discount float-end">$0</span>
+                            </p>
+                            <p class="text-black fw-bold">
+                                <span class="text-black me-auto ms-3"> Total</span>
+                                <span class="ms-auto total float-end">$1221</span>
                             </p>
                         </div>
                     </div>
@@ -254,7 +267,6 @@
             method: "POST",
             data: { orderId: orderId },
             success: res => {
-                console.log(res[0])
                 $('#name').text(res[0].address.firstname + " " + res[0].address.lastname)
                 $('#addr').text(res[0].address.addr1 + ", " + res[0].address.addr2)
                 $('#sc').text(res[0].address.state + ", " + res[0].address.country)
@@ -283,7 +295,9 @@
                     total += data.quantity * data.price[0]
                 })
                 $('.subTotal').text(total)
-                $('.total').text(total)
+                $('.discount').text(`₹${res[0].discount}`)
+                $('.total').text(`₹${total - res[0].discount}`)
+
 
             },
             error: err => {

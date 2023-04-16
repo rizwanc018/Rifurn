@@ -25,15 +25,12 @@ const orderController = {
                 orderDataObj = {}
                 orderDataObj.id = order._id,
                     orderDataObj.status = order.orderStatus,
-                    orderDataObj.amount = order.items.quantity * order.result.price
+                    orderDataObj.amount = (order.items.quantity * order.result.price) - order.discount
                 orderDataObj.date = new Date(order.createdAt).toLocaleDateString()
             }
         })
         orderDataArr.push(orderDataObj)
-        console.log("🚀 ~ file: orderController.js:33 ~ getUserOrders: ~ orderDataArr:", orderDataArr)
-        // orderData.forEach(order => {
-        //     order.createdAt = new Date(order.createdAt).toLocaleDateString()
-        // })
+        orderDataArr.shift()
         res.render('orders', { orderData: orderDataArr, isUserLoggedin: req.session.user?.loggedin, })
     },
     getSingleOrderdetails: async (req, res) => {

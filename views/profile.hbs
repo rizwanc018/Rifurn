@@ -173,7 +173,7 @@
                             <div class="editProfile row">
                                 <h4 class="col-auto">Email</h4>
                                 <button class="btn bttn col-auto noedit" onclick="showEdit(this)">Edit</button>
-                                <button class="btn bttn col-auto edit" onclick="cancelEdit(this)">Cancel</button>
+                                <button class="btn bttn col-auto edit mb-2" onclick="cancelEdit(this)">Cancel</button>
 
                                 <form id="editEmail" class="profile-form" novalidate>
                                     <div class="row my-2">
@@ -185,8 +185,8 @@
                                     </div>
                                 </form>
 
-                                <form id="otpVerify" class="profile-form hide" >
-                                    <div class="row my-2">
+                                <form id="otpVerify" class="profile-form hide">
+                                    <div class="row myt-2">
                                         <div class="col-sm-5">
                                             <input type="email" class="form-control" disabled name="editEmail"
                                                 placeholder="Email" value="" required>
@@ -197,6 +197,7 @@
                                         </div>
                                         <button type="submit" class="btn bttn col-auto edit">Save</button>
                                     </div>
+                                    <p class="errMsg text-danger p-0 m-0"></p>
                                 </form>
                             </div>
                         </div>
@@ -211,16 +212,16 @@
                                 const email = $("[name='editEmail']").val()
                                 const otp = $("[name='OTP']").val()
                                 const hidden = $('.hide')
+                                $(hidden).removeClass('hide')
+                                $('#editEmail').addClass('hide')
+                                $('#otpVerify input[name=editEmail]').val(email)
                                 $.ajax({
                                     url: `${url}/user/edit/email`,
                                     method: 'PUT',
                                     data: { email },
                                     success: res => {
-                                        if (res.msg === 'otpSend') {
-                                            $(hidden).removeClass('hide')
-                                            $('#editEmail').addClass('hide')
-                                            $('#otpVerify input[name=editEmail]').val(res.newEmail)
-                                        }
+                                        //     if (res.msg === 'otpSend') {
+                                        //   }
                                         console.log(res)
                                     },
                                     error: err => {
@@ -240,8 +241,11 @@
                                     method: 'PUT',
                                     data: { email, OTP: otp },
                                     success: res => {
+                                        if(res === "Invalid Otp") {
+                                            $('.errMsg').text(res)
+                                        }
                                         console.log(res)
-                                        window.location.reload()
+                                        //window.location.reload()
                                     },
                                     error: err => {
                                         console.log(err)

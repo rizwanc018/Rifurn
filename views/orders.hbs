@@ -72,7 +72,6 @@
             order: [[0, 'desc']],
         });
 
-        $('#orderTable tr:last').remove()
     });
 
     $('.status').each(function () {
@@ -201,7 +200,11 @@
                         <div class="col-xl-4" style="font-size: 14px;">
                             <p class="text-black mb-1">
                                 <span class="text-black me-auto ms-3"> SubTotal</span>
-                                <span class="ms-auto total float-end">$1221</span>
+                                <span class="ms-auto subTotal float-end">$1221</span>
+                            </p>
+                            <p class="text-black mb-1">
+                                <span class="text-black me-auto ms-3"> Discount</span>
+                                <span class="ms-auto discount float-end">$0</span>
                             </p>
                             <p class="text-black fw-bold">
                                 <span class="text-black me-auto ms-3"> Total</span>
@@ -234,7 +237,6 @@
             method: "POST",
             data: { orderId: orderId },
             success: res => {
-                console.log(res[0].address.mobile)
                 $('#name').text(res[0].address.firstname + " " + res[0].address.lastname)
                 $('#addr').text(res[0].address.addr1 + ", " + res[0].address.addr2)
                 $('#sc').text(res[0].address.state + ", " + res[0].address.country)
@@ -244,7 +246,6 @@
                 date = date.toLocaleDateString()
                 $('#date').text(date)
                 $('#status').text(res[0].orderStatus)
-
                 let total = 0
                 res.forEach((data, index) => {
                     $('#tableBody').append(`
@@ -262,7 +263,8 @@
                     total += data.quantity * data.price[0]
                 })
                 $('.subTotal').text(`₹${total}`)
-                $('.total').text(`₹${total}`)
+                $('.discount').text(`₹${res[0].discount}`)
+                $('.total').text(`₹${total - res[0].discount}`)
 
             },
             error: err => {

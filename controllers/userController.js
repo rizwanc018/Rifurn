@@ -138,16 +138,21 @@ const userController = {
     },
     showCheckoutPage: async (req, res) => {
         const userId = req.session.user.id
+        const discount = req.session.user.discount || 0
+        console.log("🚀 ~ file: userController.js:142 ~ showCheckoutPage: ~ discount:", discount)
         const cartItems = await cartHelper.getCartData(userId)
         const total = cartItems.reduce((total, item) => {
             return total + item.subTotal
         }, 0)
+        const grandTotal = total - discount
         const userData = await userHelper.getUSerbyId(userId)
         console.log("🚀 ~ file: userController.js:146 ~ showCheckoutPage: ~ userData:", userData)
-        res.render('checkout', { cartItems, total, userData })
+        res.render('checkout', { cartItems, total, userData, discount, grandTotal })
     },
     placeOrder: async (req, res) => {
         const userId = req.session.user.id
+        const discount = req.session.user.discount || 0
+        req.session.user.discount = 0
         let { firstname, lastname, mobile, addr1, addr2, country, town, state, zip, paymentMethod, saveAddress, accepTerms } = req.body
         country = country.charAt(0).toUpperCase() + country.slice(1)
         state = state.charAt(0).toUpperCase() + state.slice(1)
@@ -164,12 +169,11 @@ const userController = {
             zip: zip
         }
         if (saveAddress == 'true') {
-            console.log("🚀 ~ file: userController.js:152 ~ placeOrder: ~ saveAddress:", saveAddress)
             const updateAddressStatus = await userHelper.updateAddress(userId, address)
         }
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
         if (paymentMethod === 'COD') {
-            const orderdata = await orderHelper.createOrder(userId, cartData, address)
+            const orderdata = await orderHelper.createOrder(userId, cartData, address, discount)
             res.status(200).send("Order Placed Successfully")
         } else {
             res.status(400).send("Only COD Allowed")
@@ -217,6 +221,8 @@ const userController = {
                 } else {
                     res.status(400).send("Something wrong")
                 }
+            } else {
+                res.status(200).send("Invalid Otp")
             }
         } else {
             const otp = generateOTP()

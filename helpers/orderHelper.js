@@ -50,14 +50,14 @@ const orderHelper = {
             //     }
             // }
         ])
-        console.log("🚀 ~ file: orderHelper.js:53 ~ getAllOrders: ~ orders:", orders)
         return orders
     },
-    createOrder: async (userId, cartData, address) => {
+    createOrder: async (userId, cartData, address, discount) => {
         const status = await orderModel.create({
             userId: userId,
             items: cartData,
             address: address,
+            discount: discount
         })
         return status
     },
@@ -120,6 +120,7 @@ const orderHelper = {
                     address: 1,
                     paymentId: 1,
                     createdAt: 1,
+                    discount: 1,
                     quantity: '$items.quantity',
                     productName: "$result.productName",
                     price: "$result.price",
@@ -132,6 +133,7 @@ const orderHelper = {
             //     $unwind: '$result'
             // },
         ])
+        console.log("🚀 ~ file: orderHelper.js:136 ~ getSingleOrderdetails: ~ orderDetails:", orderDetails)
         return orderDetails
     }
 

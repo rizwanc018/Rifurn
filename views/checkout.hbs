@@ -92,8 +92,9 @@
                                             {{/each}}
                                         </ul>
                                         <p class="py-0">Sub Total <span>₹ {{total}}</span></p>
-                                        <p class="py-0">Shipping Fee <span>₹ 00.00</span></p>
-                                        <h4>Grand Total <span>₹ {{total}}</span></h4>
+                                        <p class="py-0">Discount <span>₹ {{discount}}</span></p>
+                                        <p class="py-0">Shipping Fee <span>₹ 0</span></p>
+                                        <h4>Grand Total <span>₹ {{grandTotal}}</span></h4>
                                     </div>
                                 </div>
 
@@ -126,7 +127,7 @@
                                                 conditions</label>
                                         </div>
                                         {{!-- svaAddress --}}
-                                        <input class="form-control"  hidden type="text" name="saveAddress" value="true">
+                                        <input class="form-control" hidden type="text" name="saveAddress" value="true">
                                     </div>
 
                                     <button class="place-order btn bttn btn-lg btn-round py-2">Place order</button>

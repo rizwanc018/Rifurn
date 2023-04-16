@@ -3,8 +3,8 @@ import userController from '../controllers/userController.js';
 import { isUserLoggedin } from '../middlewares/userMiddlewares.js';
 import cartController from '../controllers/cartController.js';
 import orderController from '../controllers/orderController.js';
-// import upload from "../utils/multer.js";
 import multer from "multer";
+import couponController from '../controllers/couponContoller.js';
 const upload = multer()
 
 const userRouter = express.Router()
@@ -42,6 +42,7 @@ userRouter.put('/edit/name', isUserLoggedin, userController.editName)
 userRouter.put('/edit/mobile', isUserLoggedin, userController.editMobile)
 userRouter.put('/edit/email', isUserLoggedin, userController.editEmail)
 
+userRouter.post('/apply/coupon', couponController.applyCoupon)
 
 
 export default userRouter;

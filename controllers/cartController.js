@@ -14,11 +14,13 @@ const cartController = {
     },
     showCart: async (req, res) => {
         const userId = req.session.user.id
+        const discount = req.session.user.discount || 0
         const cartItems = await cartHelper.getCartData(userId)
         const total = cartItems.reduce((total, item) => {
             return total + item.subTotal
         }, 0)
-        res.render('cart', { cartItems, isUserLoggedin: req.session.user?.loggedin, total: total })
+        const grandTotal = total - discount
+        res.render('cart', { cartItems, isUserLoggedin: req.session.user?.loggedin, total: total, discount, grandTotal })
     },
     changeQuantity: async (req, res) => {
         const userId = req.session.user.id

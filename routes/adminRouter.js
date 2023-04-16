@@ -6,6 +6,7 @@ import userController from '../controllers/userController.js';
 import { verifyAdmin } from '../middlewares/adminMiddlewares.js';
 import orderController from '../controllers/orderController.js';
 import imageUpload from '../middlewares/imageUplod.js'
+import couponController from '../controllers/couponContoller.js';
 
 const adminRouter = express.Router()
 
@@ -36,6 +37,8 @@ adminRouter.get('/orders',verifyAdmin, orderController.getAllOrders)
 adminRouter.post('/order/details', verifyAdmin, orderController.getSingleOrderdetails)
 adminRouter.post('/order/changestatus',verifyAdmin, adminController.changeOrderStatus)
 
-
+adminRouter.get('/coupons',verifyAdmin, couponController.showAllCoupons)
+adminRouter.post('/addcoupon', couponController.addCoupon)
+adminRouter.delete('/coupon/delete/:id', verifyAdmin, couponController.deleteCoupon)
 
 export default adminRouter;

@@ -134,18 +134,20 @@
                         <!-- Discount Coupon -->
                         <div class="discount-coupon">
                             <h4 class="text-dark"> Discount Coupon Code</h4>
-                            <form action="#">
+                            <form id="couponForm" action="">
                                 <div class="row">
                                     <div class="col-md-6 col-12 mb-25">
-                                        <input type="text" placeholder="Coupon Code">
+                                        <input type="text" placeholder="Coupon Code" name="coupon" value="">
                                     </div>
                                     <div class="col-md-6 col-12 mb-25">
-                                        <button class="btn py-3">Apply Code</button>
+                                        <button class="btn bttn py-3">Apply Code</button>
                                     </div>
                                 </div>
                             </form>
+                            <p class="text-danger cpnErrMsg"></p>
                         </div>
                     </div>
+
 
                     <!-- Cart Summary -->
                     <div class="col-lg-6 col-12 mb-30 d-flex">
@@ -153,8 +155,9 @@
                             <div class="cart-summary-wrap">
                                 <h4>Cart Summary</h4>
                                 <p>Total <span class="total">₹ {{total}}</span></p>
-                                <p>Shipping Cost <span>₹ 00.00</span></p>
-                                <h2>Grand Total <span class="total">₹ {{total}}</span></h2>
+                                <p>Discount <span id="discount">₹ {{discount}}</span></p>
+                                <p>Shipping Cost <span>₹ 0</span></p>
+                                <h2>Grand Total <span class="grandtotal">₹ {{grandTotal}}</span></h2>
                             </div>
                             <div class="cart-summary-button mb-5">
                                 <button class="btn bttn"><a class="checkout-btn"
@@ -175,7 +178,38 @@
     </div>
 </div>
 <hr class="mb-5">
+
 <script>
+    let discount = 0
+    const $grandTotal = $('.grandtotal')
+    $('#couponForm').on('submit', function (e) {
+        e.preventDefault()
+        const couponCode = $('input[name=coupon]').val();
+        $.ajax({
+            type: "POST",
+            url: `${url}/user/apply/coupon`,
+            data: { couponCode },
+            success: res => {
+                if (res.err) $('.cpnErrMsg').text(res.msg)
+                else if (res.success) {
+                    console.log(res)
+                    $('#discount').text(`₹ ${res.discount}`)
+                    discount = res.discount
+                    //$grandTotal.text($grandTotal.text().split(' ')[1] - discount)
+
+                    if ($grandTotal.text().split(' ')[1] > discount) {
+                        $grandTotal.text(`₹ ${$grandTotal.text().split(' ')[1] - discount}`)
+                    } else {
+                        $grandTotal.text(`₹ 0`)
+                    }
+                }
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    })
+
     var url = window.location.origin
     const $total = $('.total')
     function changeQuantity(self, qty) {
@@ -197,7 +231,7 @@
                 $qtyField.val(res.item.quantity)
                 $subTotalField.html(`₹ ${res.item.subTotal}`)
                 $total.text(`₹ ${res.total}`)
-
+                $grandTotal.text(`₹ ${res.total - discount}`)
             },
             error: err => {
                 console.log(err)
@@ -220,7 +254,12 @@
                 console.log(res)
                 $tr.remove()
                 totalValue = totalValue - subTotalValue
-                $total.text(`₹ ${totalValue}`)
+                if (totalValue > discount) {
+                    $grandTotal.text(`₹ ${totalValue - discount}`)
+                } else {
+                    $grandTotal.text(`₹ 0`)
+                }
+
             },
             error: err => {
                 console.log(err)
