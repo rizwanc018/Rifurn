@@ -26,6 +26,7 @@ const cartController = {
         const userId = req.session.user.id
         const productId = req.body.productId
         const qty = req.body.quantity
+        const discount = req.session.user.discount || 0
         const status = await cartHelper.updateCart(userId, productId, qty)
         if (status.upsertedCount === 1 || status.modifiedCount === 1) {
             const cartItems = await cartHelper.getCartData(userId)
@@ -35,16 +36,17 @@ const cartController = {
             const total = cartItems.reduce((total, item) => {
                 return total + item.subTotal
             }, 0)
-            res.status(200).send({ item, total })
+            res.status(200).send({ item, total, discount })
         }
     },
     deleteItemfromCart: async (req, res) => {
         const cartId = req.body.cartId
+        const discount = req.session.user.discount || 0
         const data = await cartHelper.deleteItemfromCart(cartId)
         const productId = data.productId
         const quantity = data.quantity * -1  // Multipin by -1,  to use it in (productHelper.updateProductQuantity())
         const status = await productHelper.updateProductQuantity(productId, quantity)
-        res.status(200).send("Removed Item Successfully")
+        res.status(200).send({ discount, msg: "Removed Item Successfully" })
     }
 }
 

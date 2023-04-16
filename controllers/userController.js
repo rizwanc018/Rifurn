@@ -260,6 +260,14 @@ const userController = {
         } else {
             res.status(400).send('something wrong')
         }
+    },
+    deleteAddress: async (req, res) => {
+        const userId = req.session.user.id
+        const { addressId } = req.body
+        const status = await UserModel.updateOne({ _id: userId },
+            { $pull: { address: { _id: addressId } } })
+        if (status.modifiedCount === 1) res.status(200).send('deleted')
+        else res.status(400).send("something wrong")
     }
 }
 

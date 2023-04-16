@@ -144,12 +144,18 @@
                     <h4 class="checkout-title mb-3">Choose Address</h4>
                     {{#if userData.address }}
                     {{#each userData.address }}
-                    <input class="addressInput" type="radio" name="address" id="{{_id}}"
-                        value="{{firstname}}, {{lastname}}, {{mobile}}, {{addr1}}, {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}">
-                    <label class="ps-2 form-check-label" for="{{_id}}">{{firstname}}, {{lastname}}, {{mobile}},
-                        {{addr1}},
-                        {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}</label>
-                    <br>
+                    <div>
+                        <input class="addressInput" type="radio" name="address" id="{{_id}}"
+                            value="{{firstname}}, {{lastname}}, {{mobile}}, {{addr1}}, {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}">
+                        <label class="ps-2 form-check-label" for="{{_id}}">{{firstname}}, {{lastname}}, {{mobile}},
+                            {{addr1}},
+                            {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}
+                            <button class="btn" onclick="deleteAddress(this,'{{_id}}')">
+                                <i class="fa fa-close "></i>
+                            </button>
+                        </label>
+                        <br>
+                    </div>
                     {{/each}}
                     {{else}}
                     <h6 class="m-5">No saved Address</h6>
@@ -157,6 +163,21 @@
                 </div>
 
                 <script>
+                    function deleteAddress(self, id) {
+                        const div = $(self).closest('div')
+                        $.ajax({
+                            url: `${url}/user/delete/address`,
+                            method: 'DELETE',
+                            data: { addressId: id },
+                            success: res => {
+                                div.remove()
+                            },
+                            error: err => {
+                                console.log(err)
+                            }
+                        })
+                    }
+
                     $('.addressInput').click(e => {
                         const [fname, lname, mobile, addr1, addr2, town, state, country, zip] = e.target.value.split(",")
 

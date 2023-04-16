@@ -18,6 +18,7 @@ userRouter.get('/logout', userController.doLogOut)
 userRouter.post('/forgotpassword', userController.forgotPassword)
 userRouter.post('/forgotpassword/verifyotp', userController.doOTPVerificationForPasswordChange)
 userRouter.post('/changepassword', userController.changePassword)
+userRouter.delete('/delete/address', userController.deleteAddress)
 
 userRouter.post('/addtocart', isUserLoggedin, cartController.addtoCart)
 userRouter.get('/cart', isUserLoggedin, cartController.showCart)

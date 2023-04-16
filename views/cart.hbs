@@ -81,56 +81,7 @@
                 </div>
                 <div class="row my-5">
                     <div class="col-lg-6 col-12">
-                        {{!-- <!-- Calculate Shipping -->
-                        <div class="calculate-shipping">
-                            <h4>Calculate Shipping</h4>
-                            <form action="#">
-                                <div class="row">
-                                    <div class="col-md-6 col-12 mb-25">
-                                        <select class="nice-select" style="display: none;">
-                                            <option>Bangladesh</option>
-                                            <option>China</option>
-                                            <option>country</option>
-                                            <option>India</option>
-                                            <option>Japan</option>
-                                        </select>
-                                        <div class="nice-select" tabindex="0"><span class="current">Bangladesh</span>
-                                            <ul class="list">
-                                                <li data-value="Bangladesh" class="option selected">Bangladesh</li>
-                                                <li data-value="China" class="option">China</li>
-                                                <li data-value="country" class="option">country</li>
-                                                <li data-value="India" class="option">India</li>
-                                                <li data-value="Japan" class="option">Japan</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12 mb-25">
-                                        <select class="nice-select" style="display: none;">
-                                            <option>Dhaka</option>
-                                            <option>Barisal</option>
-                                            <option>Khulna</option>
-                                            <option>Comilla</option>
-                                            <option>Chittagong</option>
-                                        </select>
-                                        <div class="nice-select" tabindex="0"><span class="current">Dhaka</span>
-                                            <ul class="list">
-                                                <li data-value="Dhaka" class="option selected">Dhaka</li>
-                                                <li data-value="Barisal" class="option">Barisal</li>
-                                                <li data-value="Khulna" class="option">Khulna</li>
-                                                <li data-value="Comilla" class="option">Comilla</li>
-                                                <li data-value="Chittagong" class="option">Chittagong</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12 mb-25">
-                                        <input type="text" placeholder="Postcode / Zip">
-                                    </div>
-                                    <div class="col-md-6 col-12 mb-25">
-                                        <button class="btn">Estimate</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div> --}}
+
                         <!-- Discount Coupon -->
                         <div class="discount-coupon">
                             <h4 class="text-dark"> Discount Coupon Code</h4>
@@ -154,7 +105,7 @@
                         <div class="cart-summary">
                             <div class="cart-summary-wrap">
                                 <h4>Cart Summary</h4>
-                                <p>Total <span class="total">₹ {{total}}</span></p>
+                                <p>Total <span class="amount">₹ {{total}}</span></p>
                                 <p>Discount <span id="discount">₹ {{discount}}</span></p>
                                 <p>Shipping Cost <span>₹ 0</span></p>
                                 <h2>Grand Total <span class="grandtotal">₹ {{grandTotal}}</span></h2>
@@ -211,7 +162,7 @@
     })
 
     var url = window.location.origin
-    const $total = $('.total')
+    const amount = $('.amount')
     function changeQuantity(self, qty) {
         const $tr = $(self).closest('tr')
         const productId = $($tr).attr('data-productId')
@@ -222,7 +173,7 @@
             url: `${url}/user/change/product/quantity`,
             data: { productId: productId, quantity: qty },
             success: res => {
-                console.log(res)
+                discount = res.discount
                 if (res.item.quantity === 1) {
                     $tr.find('#decBtn').hide()
                 } else {
@@ -230,7 +181,7 @@
                 }
                 $qtyField.val(res.item.quantity)
                 $subTotalField.html(`₹ ${res.item.subTotal}`)
-                $total.text(`₹ ${res.total}`)
+                amount.text(`₹ ${res.total}`)
                 $grandTotal.text(`₹ ${res.total - discount}`)
             },
             error: err => {
@@ -243,17 +194,20 @@
         const $tr = $(self).closest('tr')
         const productId = $($tr).attr('data-productId')
         const cartId = $($tr).attr('data-cartId')
-        const subTotal = $($tr).find('.pro-subtotal')
-        const subTotalValue = Number(subTotal.text().split(" ")[1])
-        let totalValue = Number($total.html().split(" ")[1])
+        const subtotal = $($tr).find('.pro-subtotal')
+        const subtotalValue = Number(subtotal.text().split(" ")[1])
+        let totalValue = Number(amount.html().split(" ")[1])
+        console.log("🚀 ~ file: cart.hbs:202 ~ deleteFromCart ~ totalValue:", totalValue)
         $.ajax({
             type: "DELETE",
             url: `${url}/user/cart/item/delete`,
             data: { productId: $($tr).attr('data-productId'), cartId: cartId },
             success: res => {
-                console.log(res)
+                console.log('discount: ', res)
+                discount = res.discount
                 $tr.remove()
-                totalValue = totalValue - subTotalValue
+                totalValue = totalValue - subtotalValue
+                amount.text(`₹ ${totalValue}`)
                 if (totalValue > discount) {
                     $grandTotal.text(`₹ ${totalValue - discount}`)
                 } else {
