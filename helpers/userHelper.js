@@ -1,6 +1,9 @@
 import bcrypt from "bcrypt";
 import UserModel from "../models/userModel.js";
-import { sendOTP, verifyOTP } from "../helpers/twilioHelper.js";
+import instance from "../utils/razorpay.js";
+import crypto from 'crypto';
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 
 const userHelper = {
@@ -94,6 +97,31 @@ const userHelper = {
                     address: address
                 }
             })
+    },
+    generateRazorpay: async (orderId, total) => {
+        const options = {
+            amount: total * 100,
+            currency: "INR",
+            receipt: "" + orderId,
+            notes: {
+                key1: "value3",
+                key2: "value2"
+            }
+        }
+        const rzpOrder = await instance.orders.create(options)
+        return rzpOrder
+    },
+    verifyPayment: async (paymentDetails) => {
+        let hmac = crypto.createHmac('sha256', process.env.RZP_KEY_SECRET)
+        hmac.update(paymentDetails['payment[razorpay_order_id]'] + '|' + paymentDetails['payment[razorpay_payment_id]'])
+        hmac = hmac.digest('hex')
+        if (hmac == paymentDetails['payment[razorpay_signature]']) {
+            console.log("🚀 ~ file: userHelper.js:119 ~ verifyPayment: ~ hmac:", hmac)
+            return { paymentStatus: true }
+        } else {
+            console.log("🚀 ~ file: userHelper.js:119 ~ verifyPayment: ~ hmac:", 'failed')
+            return { paymentStatus: false }
+        }
     }
 }
 

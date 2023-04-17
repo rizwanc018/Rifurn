@@ -162,6 +162,7 @@
                     {{/if}}
                 </div>
 
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                 <script>
                     function deleteAddress(self, id) {
                         const div = $(self).closest('div')
@@ -200,33 +201,81 @@
                         if (!placeOrderForm.checkValidity()) {
                         } else {
                             var formData = new FormData(placeOrderForm)
-                            if ($('input[name="paymentMethod"]:checked').val() === 'COD') {
-                                $.ajax({
-                                    url: `${url}/user/placeorder`,
-                                    method: 'POST',
-                                    data: formData,
-                                    processData: false,
-                                    contentType: false,
-                                    success: res => {
+                            $.ajax({
+                                url: `${url}/user/placeorder`,
+                                method: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: res => {
+                                    console.log("🚀 ~ file: checkout.hbs:221 ~ res:", res)
+                                    if (res.codSuccess) {
                                         window.location.href = `${url}/user/orders`
-                                    },
-                                    error: err => {
-                                        console.log(err)
+                                    } else {
+                                        razorpayPayment(res)
                                     }
-                                })
-                            } else {
-                                Swal.fire({
-                                    icon: 'info',
-                                    title: 'Sorry',
-                                    text: 'Only COD allowed',
-                                    footer: '<a href="">Why do I have this issue?</a>'
-                                })
-                            }
+                                },
+                                error: err => {
+                                    console.log(err)
+                                }
+                            })
                         }
                         placeOrderForm.classList.add('was-validated');
                     })
-                </script>
 
+                    function razorpayPayment(rzpOrder) {
+                        var options = {
+                            "key": "rzp_test_ts8syQO1KpPeTJ", // Enter the Key ID generated from the Dashboard
+                            "amount": rzpOrder.amount,  // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                            "currency": "INR",
+                            "name": "Rifurn Ind",
+                            "description": "Test Transaction",
+                            "image": "/images/logo.png",
+                            "order_id": rzpOrder.id,  //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                            "handler": function (response) {
+                                verifyPayment(response, rzpOrder)
+                            },
+                            "prefill": {
+                                "name": "Gaurav Kumar",
+                                "email": "gaurav.kumar@example.com",
+                                "contact": "9000090000"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response) {
+                            alert(response.error.code);
+                            alert(response.error.description);
+                            alert(response.error.source);
+                            alert(response.error.step);
+                            alert(response.error.reason);
+                            alert(response.error.metadata.order_id);
+                            alert(response.error.metadata.payment_id);
+                        });
+                        rzp1.open();
+                    }
+
+                    function verifyPayment(payment, rzpOrder) {
+                        $.ajax({
+                            url: '/user/verifypayment',
+                            method: 'POST',
+                            data: { payment, rzpOrder },
+                            success: res => {
+                                alert(res)
+                                console.log("🚀 ~ file: checkout.hbs:275 ~ verifyPayment ~ res:", res)
+                            },
+                            error: err => {
+                                alert(err)
+                                console.log("🚀 ~ file: checkout.hbs:274 ~ verifyPayment ~ err:", err)
+                            }
+                        })
+                    }
+                </script>
             </div>
         </div>
     </div>

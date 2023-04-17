@@ -30,9 +30,9 @@ const couponController = {
             res.status(200).send({ err: true, msg: 'Coupon alredy used' })
         } else {
             const response = await couponModel.findOneAndUpdate({ code: couponCode }, { $push: { users: userId } })
-            req.session.user.discount = response.discount
+            req.session.user.discount = response?.discount || 0
             if (response) res.status(200).send({success: true, discount: response.discount })
-            else res.status(200).send()
+            else res.status(200).send("Invlid coupon")
         }
     }
 }

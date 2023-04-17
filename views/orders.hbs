@@ -233,7 +233,7 @@
         const tr = $(self).closest('tr')
         const orderId = $(tr).attr('data-orderId')
         $.ajax({
-            url: `${url}/admin/order/details`,
+            url: `${url}/user/order/details`,
             method: "POST",
             data: { orderId: orderId },
             success: res => {
@@ -257,10 +257,10 @@
                                     <td>${data.productName}</td>
                                     <td>${data.quantity}</td>
                                     <td>₹${data.price}</td>
-                                    <td>₹${data.quantity * data.price[0]}</td>
+                                    <td>₹${data.amount}</td>
                                 </tr>
                     `)
-                    total += data.quantity * data.price[0]
+                    total += data.amount
                 })
                 $('.subTotal').text(`₹${total}`)
                 $('.discount').text(`₹${res[0].discount}`)

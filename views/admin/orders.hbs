@@ -297,8 +297,6 @@
                 $('.subTotal').text(total)
                 $('.discount').text(`₹${res[0].discount}`)
                 $('.total').text(`₹${total - res[0].discount}`)
-
-
             },
             error: err => {
                 console.log(err)

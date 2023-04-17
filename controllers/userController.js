@@ -6,7 +6,7 @@ import UserModel from "../models/userModel.js";
 import productHelper from "../helpers/productHelpers.js";
 import cartHelper from "../helpers/cartHelper.js";
 import orderHelper from "../helpers/orderHelper.js";
-
+import { response } from "express";
 
 const userController = {
     doSignup: async (req, res) => {
@@ -139,14 +139,12 @@ const userController = {
     showCheckoutPage: async (req, res) => {
         const userId = req.session.user.id
         const discount = req.session.user.discount || 0
-        console.log("🚀 ~ file: userController.js:142 ~ showCheckoutPage: ~ discount:", discount)
         const cartItems = await cartHelper.getCartData(userId)
         const total = cartItems.reduce((total, item) => {
             return total + item.subTotal
         }, 0)
         const grandTotal = total - discount
         const userData = await userHelper.getUSerbyId(userId)
-        console.log("🚀 ~ file: userController.js:146 ~ showCheckoutPage: ~ userData:", userData)
         res.render('checkout', { cartItems, total, userData, discount, grandTotal })
     },
     placeOrder: async (req, res) => {
@@ -172,11 +170,15 @@ const userController = {
             const updateAddressStatus = await userHelper.updateAddress(userId, address)
         }
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
+        const orderdata = await orderHelper.createOrder(userId, cartData, address, discount)
+        let total = await orderHelper.getTotal(orderdata._id)   // total: [ { total: 6200 } ]
+        total = total[0].total - discount
+
         if (paymentMethod === 'COD') {
-            const orderdata = await orderHelper.createOrder(userId, cartData, address, discount)
-            res.status(200).send("Order Placed Successfully")
-        } else {
-            res.status(400).send("Only COD Allowed")
+            res.status(200).send({ codSuccess: true, msg: 'Order Placed Successfully' })
+        } else if (paymentMethod === 'payNow') {
+            const rzpOrder = await userHelper.generateRazorpay(orderdata._id, total)
+            res.status(200).send(rzpOrder)
         }
     },
     cancelOrder: async (req, res) => {
@@ -268,6 +270,22 @@ const userController = {
             { $pull: { address: { _id: addressId } } })
         if (status.modifiedCount === 1) res.status(200).send('deleted')
         else res.status(400).send("something wrong")
+    },
+    verifyPayment: async (req, res) => {
+        let action = 'placed'
+        const paymentDetails = req.body
+        const orderId = paymentDetails['rzpOrder[receipt]']
+        const paymentId = paymentDetails['payment[razorpay_payment_id]']
+        const paymentStatus = await userHelper.verifyPayment(paymentDetails)
+        if (paymentStatus) {
+            const status = await orderHelper.updateStatus(orderId, paymentId, action)  //rzpOrder[receipt] is orderId
+            console.log("🚀 ~ file: userController.js:282 ~ verifyPayment: ~ status:", status)
+            res.status(200).send("Ordre placed successfully")
+        } else {
+            const status = await orderHelper.updateStatus(orderId, paymentId, 'failed')  //rzpOrder[receipt] is orderId
+            console.log("🚀 ~ file: userController.js:285 ~ verifyPayment: ~ status:", status)
+
+        }
     }
 }
 

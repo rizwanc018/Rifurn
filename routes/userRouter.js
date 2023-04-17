@@ -34,7 +34,10 @@ userRouter.delete('/cart/item/delete', cartController.deleteItemfromCart)
 userRouter.get('/checkout', isUserLoggedin, userController.showCheckoutPage)
 userRouter.post('/placeorder',isUserLoggedin, upload.none(), userController.placeOrder)
 
+userRouter.post('/verifypayment', userController.verifyPayment)
+
 userRouter.get('/orders', isUserLoggedin, orderController.getUserOrders)
+userRouter.post('/order/details', isUserLoggedin, orderController.getSingleOrderdetails)
 userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
 
 userRouter.get('/profile',isUserLoggedin, userController.showProfilePage)

@@ -99,6 +99,16 @@ const orderHelper = {
             })
         return status
     },
+    updateStatus: async (orderId, paymentId, action) => {
+        const status = await orderModel.updateOne(
+            { _id: orderId },
+            {
+                orderStatus: action,
+                paymentId: paymentId
+            })
+        console.log("🚀 ~ file: orderHelper.js:109 ~ updateStatus: ~ status:", status)
+        return status
+    },
     getSingleOrderdetails: async (orderId) => {
         const orderDetails = await orderModel.aggregate([
             {
@@ -123,18 +133,45 @@ const orderHelper = {
                     discount: 1,
                     quantity: '$items.quantity',
                     productName: "$result.productName",
-                    price: "$result.price",
                     orderStatus: 1,
-                    //         // amount: {$multiply : ['$items.quantity', "$result.price.0"]},
+                    price: { $arrayElemAt: ["$result.price", 0] },
+                    amount: { $multiply: ['$items.quantity', { $arrayElemAt: ["$result.price", 0] }] },
                     image: { $first: "$result.images" },
                 }
             }
-            // {
-            //     $unwind: '$result'
-            // },
         ])
-        console.log("🚀 ~ file: orderHelper.js:136 ~ getSingleOrderdetails: ~ orderDetails:", orderDetails)
         return orderDetails
+    },
+    getTotal: async (orderId) => {
+        const total = await orderModel.aggregate([
+            {
+                $match: { _id: new mongoose.Types.ObjectId(orderId) }
+            },
+            {
+                $unwind: '$items'
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items.productId',
+                    foreignField: '_id',
+                    as: 'result'
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: { $multiply: ['$items.quantity', { $arrayElemAt: ["$result.price", 0] }] } },
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    total: 1
+                }
+            }
+        ])
+        return total
     }
 
 }

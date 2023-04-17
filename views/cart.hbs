@@ -143,17 +143,14 @@
             success: res => {
                 if (res.err) $('.cpnErrMsg').text(res.msg)
                 else if (res.success) {
-                    console.log(res)
                     $('#discount').text(`₹ ${res.discount}`)
                     discount = res.discount
-                    //$grandTotal.text($grandTotal.text().split(' ')[1] - discount)
-
                     if ($grandTotal.text().split(' ')[1] > discount) {
                         $grandTotal.text(`₹ ${$grandTotal.text().split(' ')[1] - discount}`)
                     } else {
                         $grandTotal.text(`₹ 0`)
                     }
-                }
+                } else $('.cpnErrMsg').text(res)
             },
             error: err => {
                 console.log(err)
