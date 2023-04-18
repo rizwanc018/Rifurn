@@ -6985,7 +6985,7 @@ a.popup-img {
   border: 1px solid #999999;
   line-height: 24px;
   padding: 9px 20px;
-  color: #929292;
+  color: #0e0e0e;
   background-color: transparent;
 }
 
@@ -7196,7 +7196,7 @@ a.popup-img {
   line-height: 23px;
   padding: 10px 20px;
   font-size: 14px;
-  color: hsl(0, 0%, 37%);
+  color: hsl(0, 0%, 21%);
   margin-bottom: 15px;
 }
 

@@ -67,11 +67,12 @@
                     closeOnConfirm: false
                 }).then(function (result) {
                     if (result.isConfirmed) {
+                        $tr.remove()
                         $.ajax({
                             url: `${url}/admin/product/delete/${id}?img=${images}`,
                             method: "GET",
                             success: res => {
-                                $tr.remove()
+                                console.log(res)
                             },
                             error: err => {
                                 console.log(err)

@@ -92,6 +92,32 @@ const productHelper = {
                 })
         })
     },
+    getCategoriesAndCountOfProducts: async () => {
+        const count = await productModel.aggregate([
+            {
+                '$match': { _id: { $ne: "" } },
+            },
+            {
+                $group: {
+                    _id: '$category',
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'categories',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'result'
+                }
+            },
+            {
+                $unwind: "$result"
+            }
+        ])
+        console.log("🚀 ~ file: categoryHelper.js:54 ~ returnnewPromise ~ count:", count)
+        return count
+    },
     getAllProductsByCategory: async (req) => {
         const id = new mongoose.Types.ObjectId(req.params.id)
         try {

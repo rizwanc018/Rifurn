@@ -1,4 +1,6 @@
 import categoryModel from "../models/categoryModel.js"
+import productModel from "../models/productModel.js";
+import productHelper from "./productHelpers.js";
 
 const categoryHelper = {
     addCategory: (req, res) => {
@@ -55,7 +57,7 @@ const categoryHelper = {
                     reject(err)
                 })
         })
-    }
+    },
 }
 
 export default categoryHelper

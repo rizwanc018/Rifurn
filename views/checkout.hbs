@@ -24,7 +24,7 @@
             <div class="col-12">
 
                 <!-- Checkout Form Start-->
-                <form id="placeOrderForm" action="" class="checkout-form" method="" novalidate>
+                <form id="placeOrderForm" action="" class="checkout-form text-dark" method="" novalidate>
                     <div class="row row-40">
                         <div class="col-lg-7">
                             <!-- Billing Address -->
@@ -208,8 +208,8 @@
                                 processData: false,
                                 contentType: false,
                                 success: res => {
-                                    if (res) {
-                                        console.log("🚀 ~ file: checkout.hbs:212 ~ res:", res)
+                                    if (res.codSuccess) {
+                                        // cod
                                         viewOrderDetails(res.orderId)
                                         //window.location.href = `${url}/user/orders`
                                     } else {
@@ -269,12 +269,9 @@
                             data: { payment, rzpOrder },
                             success: res => {
                                 viewOrderDetails(rzpOrder.receipt)
-                                console.log("🚀 ~ file: checkout.hbs:275 ~ verifyPayment ~ res:", res)
-
                             },
                             error: err => {
                                 alert(err)
-                                console.log("🚀 ~ file: checkout.hbs:274 ~ verifyPayment ~ err:", err)
                             }
                         })
                     }

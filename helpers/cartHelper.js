@@ -55,7 +55,7 @@ const cartHelper = {
     //             }
     //         },
     //         {
-    //             $lookup: {
+    //             $kup: {
     //                 from: "products",
     //                 localField: 'productId',
     //                 foreignField: '_id',
@@ -113,7 +113,7 @@ const cartHelper = {
     },
     getItemsAndDeleteCart: async (userId) => {
         const data = await cartModel.find({ userId: userId }, { _id: 0, productId: 1, quantity: 1 })
-        // const deleteCartStatus = await cartModel.deleteMany({userId: userId})
+        const deleteCartStatus = await cartModel.deleteMany({userId: userId})
         return data
     }
 }
