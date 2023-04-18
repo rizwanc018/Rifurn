@@ -52,15 +52,14 @@
                         <input value="1" type="number">
                     </div>
                     <div class="col-5 border turn-red" data-productId={{product._id}} onclick="addtoCart(this)">
-                        <button class="btn align-middle pt-3" ><i
-                                class="fa-solid fa-bag-shopping"></i></i>add to
+                        <button class="btn align-middle pt-3"><i class="fa-solid fa-bag-shopping"></i></i>add to
                             cart</button>
                     </div>
                 </form>
                 <div class="row mt-3">
                     <div class="col-6 border turn-red">
-                        <button class="btn align-middle" data-productId={{product._id}}><i
-                                class="fa-regular fa-heart"></i></i>add to
+                        <button class="btn py-3 align-middle" onclick="addtowishlist('{{product._id}}')"
+                            data-productId={{product._id}}><i class="fa-regular fa-heart"></i></i>add to
                             wishlist</button>
                     </div>
                 </div>
@@ -89,7 +88,6 @@
         $(imgViewer).attr('src', $(this).attr('src'))
     })
 
-
     var url = window.location.origin
     function addtoCart(self) {
         const productId = $(self).attr('data-productId')
@@ -115,6 +113,13 @@
             error: err => {
                 alert("Product didn't added to cart")
             }
+        })
+    }
+
+    function addtowishlist(id) {
+        $.ajax({
+            url: `${url}/user/add/wishlist/${id}`,
+            method: "GET"
         })
     }
 </script>

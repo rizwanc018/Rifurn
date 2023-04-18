@@ -171,11 +171,12 @@ const userController = {
         }
         const cartData = await cartHelper.getItemsAndDeleteCart(userId)
         const orderdata = await orderHelper.createOrder(userId, cartData, address, discount)
+        console.log("🚀 ~ file: userController.js:174 ~ placeOrder: ~ orderdata:", orderdata)
         let total = await orderHelper.getTotal(orderdata._id)   // total: [ { total: 6200 } ]
         total = total[0].total - discount
 
         if (paymentMethod === 'COD') {
-            res.status(200).send({ codSuccess: true, msg: 'Order Placed Successfully' })
+            res.status(200).send({ codSuccess: true, msg: 'Order Placed Successfully', orderId: orderdata._id })
         } else if (paymentMethod === 'payNow') {
             const rzpOrder = await userHelper.generateRazorpay(orderdata._id, total)
             res.status(200).send(rzpOrder)
