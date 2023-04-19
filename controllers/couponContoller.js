@@ -21,17 +21,17 @@ const couponController = {
         status.deletedCount === 1 ? res.status(200).send('deleted') :
             res.status(400).send("Someting wrong")
     },
+
     applyCoupon: async (req, res) => {
         const userId = req.session.user.id
         const { couponCode } = req.body
-        // const isExist = await couponModel.exists({ users: userId })
-        const isExist = false
+        const isExist = await couponModel.exists({ code: couponCode, users: { $in: userId } })
         if (isExist) {
             res.status(200).send({ err: true, msg: 'Coupon alredy used' })
         } else {
-            const response = await couponModel.findOneAndUpdate({ code: couponCode }, { $push: { users: userId } })
+            const response = await couponModel.findOneAndUpdate({ code: couponCode }, { $push: { users: userId }, $inc: { count: -1 } })
             req.session.user.discount = response?.discount || 0
-            if (response) res.status(200).send({success: true, discount: response.discount })
+            if (response) res.status(200).send({ success: true, discount: response.discount })
             else res.status(200).send("Invlid coupon")
         }
     }

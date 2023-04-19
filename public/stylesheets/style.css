@@ -10084,3 +10084,7 @@ only screen and (max-width: 767px) {
 .hide {
   display: none;
 }
+
+input {
+  border-radius: 0 !important;
+}

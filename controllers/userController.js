@@ -146,7 +146,6 @@ const userController = {
         const grandTotal = total - discount
         const userData = await userHelper.getUSerbyId(userId)
         if (!cartItems.length) {
-            console.log("🚀 ~ file: userController.js:143 ~ showCheckoutPage: ~ cartItems:", cartItems)
             res.redirect('/user/cart')
             return
         }

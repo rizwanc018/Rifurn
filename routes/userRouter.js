@@ -27,7 +27,6 @@ userRouter.get('/add/wishlist/:id', isUserLoggedin, userController.addToWishlist
 userRouter.get('/wishlist', isUserLoggedin, userController.showWishlist)
 userRouter.delete('/delete/wishlist/:id', isUserLoggedin, userController.removeFromWishlist)
 
-
 userRouter.post('/change/product/quantity', cartController.changeQuantity)
 userRouter.delete('/cart/item/delete', cartController.deleteItemfromCart)
 
@@ -41,7 +40,6 @@ userRouter.post('/order/details', isUserLoggedin, orderController.getSingleOrder
 userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
 
 userRouter.get('/profile',isUserLoggedin, userController.showProfilePage)
-
 userRouter.put('/edit/name', isUserLoggedin, userController.editName)
 userRouter.put('/edit/mobile', isUserLoggedin, userController.editMobile)
 userRouter.put('/edit/email', isUserLoggedin, userController.editEmail)
