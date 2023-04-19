@@ -198,7 +198,11 @@
                     const placeOrderForm = document.querySelector('#placeOrderForm');
                     placeOrderForm.addEventListener('submit', e => {
                         e.preventDefault()
-                        if (!placeOrderForm.checkValidity()) {           
+                        const firstname = $('[name="firstname"]').val()
+                        const lastname = $('[name="lastname"]').val()
+                        const mobile = $('[name="mobile"]').val()
+
+                        if (!placeOrderForm.checkValidity()) {
                         } else {
                             var formData = new FormData(placeOrderForm)
                             $.ajax({
@@ -214,7 +218,7 @@
                                         //window.location.href = `${url}/user/orders`
                                     } else {
                                         // online payment
-                                        razorpayPayment(res)
+                                        razorpayPayment(res, firstname, lastname, mobile)
                                     }
                                 },
                                 error: err => {
@@ -225,7 +229,7 @@
                         placeOrderForm.classList.add('was-validated');
                     })
 
-                    function razorpayPayment(rzpOrder) {
+                    function razorpayPayment(rzpOrder, firstname, lastname, mobile) {
                         var options = {
                             "key": "rzp_test_ts8syQO1KpPeTJ", // Enter the Key ID generated from the Dashboard
                             "amount": rzpOrder.amount,  // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -238,9 +242,9 @@
                                 verifyPayment(response, rzpOrder)
                             },
                             "prefill": {
-                                "name": "Gaurav Kumar",
+                                "name": firstname + " " + lastname,
                                 "email": "gaurav.kumar@example.com",
-                                "contact": "9000090000"
+                                "contact": mobile
                             },
                             "notes": {
                                 "address": "Razorpay Corporate Office"
@@ -388,6 +392,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    function downloadPDF() {
+        var details = document.getElementById("orderDetails");
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><head><style>@media print { @page { size: A4; margin: 0; } }</style></head><body onload="window.print()">' + details.outerHTML + '</html>'); newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+<script>
+    function downloadExcel() {
+        var table = document.getElementById("orderDetails");
+        var worksheet = XLSX.utils.table_to_sheet(table);
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "table.xlsx");
+    }
+</script>
 
 <script>
     function viewOrderDetails(orderId) {

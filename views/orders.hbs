@@ -130,10 +130,10 @@
                                 #123-123</strong></p>
                     </div>
                     <div class="col-xl-3 float-end">
-                        <a class="btn btn-light text-capitalize border-0 p-0 me-3" data-mdb-ripple-color="dark"><i
-                                class="fas fa-print text-primary"></i></a>
-                        <a class="btn btn-light text-capitalize p-0" data-mdb-ripple-color="dark"><i
-                                class="far fa-file-pdf text-danger"></i></a>
+                        <a class="btn btn-light text-capitalize border-0 px-2 float-end me-3 " data-mdb-ripple-color="dark"
+                            onclick="downloadExcel()"><i class="fas fa-print text-primary"></i></a>
+                        <a class="btn btn-light text-capitalize px-2 float-end" data-mdb-ripple-color="dark"
+                            onclick="downloadPDF()"><i class="far fa-file-pdf text-danger"></i></a>
                     </div>
                     <hr>
                 </div>
@@ -225,6 +225,28 @@
         </div>
     </div>
 </div>
+
+<script>
+    function downloadPDF() {
+        var details = document.getElementById("orderDetails");
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><body onload="window.print()">' + details.outerHTML + '</html>');
+        newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+<script>
+    function downloadExcel() {
+        var table = document.getElementById("orderDetails");
+        var worksheet = XLSX.utils.table_to_sheet(table);
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "table.xlsx");
+    }
+</script>
 
 <script>
 

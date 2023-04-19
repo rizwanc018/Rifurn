@@ -283,7 +283,7 @@ const userController = {
         const paymentId = paymentDetails['payment[razorpay_payment_id]']
         const paymentStatus = await userHelper.verifyPayment(paymentDetails)
         if (paymentStatus) {
-            const status = await orderHelper.updateStatus(orderId, paymentId, action)  //rzpOrder[receipt] is orderId
+            const status = await orderHelper.updateStatusAndPaymentId(orderId, paymentId, action)  //rzpOrder[receipt] is orderId
             console.log("🚀 ~ file: userController.js:282 ~ verifyPayment: ~ status:", status)
             res.status(200).send("Ordre placed successfully")
         } else {

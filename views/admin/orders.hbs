@@ -117,7 +117,6 @@
                         method: "POST",
                         data: { orderId, orderNewStatus },
                         success: res => {
-                            console.log(orderNewStatus)
                             orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
                                 orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
                                     orderNewStatus === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
@@ -147,10 +146,11 @@
                                 #123-123</strong></p>
                     </div>
                     <div class="col-xl-3 float-end">
-                        <a class="btn btn-light text-capitalize border-0 p-0 me-3" data-mdb-ripple-color="dark"><i
+                        <a class="btn btn-light text-capitalize border-0 p-0 px-2 float-end  me-3"
+                            data-mdb-ripple-color="dark" onclick="downloadExcel()"><i
                                 class="fas fa-print text-primary"></i></a>
-                        <a class="btn btn-light text-capitalize p-0" data-mdb-ripple-color="dark"><i
-                                class="far fa-file-pdf text-danger"></i></a>
+                        <a class="btn btn-light text-capitalize p-0 px-2 float-end " data-mdb-ripple-color="dark"
+                            onclick="downloadPDF()"><i class="far fa-file-pdf text-danger"></i></a>
                     </div>
                     <hr>
                 </div>
@@ -191,7 +191,7 @@
                     </div>
 
                     <div class="row my-2 mx-1 justify-content-center">
-                        <table class="table table-striped table-borderless">
+                        <table class="table table-striped table-borderless" id="detailsTable">
                             <thead style="background-color:#0b0c0c ;" class="text-white">
                                 <tr>
                                     <th scope="col">#</th>
@@ -238,23 +238,32 @@
                             </p>
                         </div>
                     </div>
-                    {{!--
-                    <hr>
-                    <div class="row">
-                        <div class="col-xl-10">
-                            <p>Thank you for your purchase</p>
-                        </div>
-                        <div class="col-xl-2">
-                            <button type="button" class="btn btn-primary text-capitalize"
-                                style="background-color:#60bdf3 ;">Pay Now</button>
-                        </div>
-                    </div> --}}
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function downloadPDF() {
+        var details = document.getElementById("orderDetails");
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><head><style>@media print { @page { size: A4; margin: 0; } }</style></head><body onload="window.print()">' + details.outerHTML + '</html>'); newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+<script>
+    function downloadExcel() {
+        var table = document.getElementById("orderDetails");
+        var worksheet = XLSX.utils.table_to_sheet(table);
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "table.xlsx");
+    }
+</script>
 
 <script>
 

@@ -99,7 +99,7 @@ const orderHelper = {
             })
         return status
     },
-    updateStatus: async (orderId, paymentId, action) => {
+    updateStatusAndPaymentId: async (orderId, paymentId, action) => {
         const status = await orderModel.updateOne(
             { _id: orderId },
             {
