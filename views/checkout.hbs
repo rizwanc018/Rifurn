@@ -198,7 +198,7 @@
                     const placeOrderForm = document.querySelector('#placeOrderForm');
                     placeOrderForm.addEventListener('submit', e => {
                         e.preventDefault()
-                        if (!placeOrderForm.checkValidity()) {
+                        if (!placeOrderForm.checkValidity()) {           
                         } else {
                             var formData = new FormData(placeOrderForm)
                             $.ajax({

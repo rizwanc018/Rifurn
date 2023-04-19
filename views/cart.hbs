@@ -143,6 +143,7 @@
             success: res => {
                 if (res.err) $('.cpnErrMsg').text(res.msg)
                 else if (res.success) {
+                    $('.cpnErrMsg').text('')
                     $('#discount').text(`₹ ${res.discount}`)
                     discount = res.discount
                     if ($grandTotal.text().split(' ')[1] > discount) {

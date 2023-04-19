@@ -19,8 +19,6 @@ const guestHelper = {
     showShop: async (req, res) => {
         // const categories = await categoryHelper.getAllCategories()
         const categories = await productHelper.getCategoriesAndCountOfProducts()
-
-
         productHelper.getAllProducts()
             .then(products => {
                 res.render("shop", { products, categories, isUserLoggedin: req.session.user?.loggedin })
@@ -29,7 +27,7 @@ const guestHelper = {
             })
     },
     showProductsByCategory: async (req, res) => {
-        const categories = await categoryHelper.getAllCategories()
+        const categories = await productHelper.getCategoriesAndCountOfProducts()
         const products = await productHelper.getAllProductsByCategory(req)
         res.render("shop", { products, categories, isUserLoggedin: req.session.user?.loggedin })
     }
