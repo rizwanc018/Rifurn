@@ -25,7 +25,8 @@ const couponController = {
     applyCoupon: async (req, res) => {
         const userId = req.session.user.id
         const { couponCode } = req.body
-        const isExist = await couponModel.exists({ code: couponCode, users: { $in: userId } })
+        // const isExist = await couponModel.exists({ code: couponCode, users: { $in: userId } })
+        const isExist = false
         if (isExist) {
             res.status(200).send({ err: true, msg: 'Coupon alredy used' })
         } else {

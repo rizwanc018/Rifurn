@@ -19,6 +19,9 @@ const orderHelper = {
             {
                 $unwind: '$user'
             },
+            {
+                $sort: { updatedAt: 1 }
+            }
             // {
             //     $unwind: '$items'
             // },
@@ -80,6 +83,9 @@ const orderHelper = {
             {
                 $unwind: '$result'
             },
+            {
+                $sort: { updatedAt: -1 }
+            }
             // {
             //     $project: {
             //         createdAt: 1,
@@ -89,6 +95,7 @@ const orderHelper = {
             //     }
             // }
         ])
+        console.log("🚀 ~ file: orderHelper.js:95 ~ getUserOrders: ~ userOrders:", userOrders)
         return userOrders
     },
     updateStatus: async (orderId, action) => {
