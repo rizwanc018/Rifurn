@@ -115,7 +115,6 @@ const productHelper = {
                 $unwind: "$result"
             }
         ])
-        console.log("🚀 ~ file: categoryHelper.js:54 ~ returnnewPromise ~ count:", count)
         return count
     },
     getAllProductsByCategory: async (req) => {

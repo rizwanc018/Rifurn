@@ -8,6 +8,7 @@ guestRouter.get('/', guestHelper.showHomePage)
 guestRouter.get('/shop', guestHelper.showShop)
 guestRouter.get('/shop/category/:id', guestHelper.showProductsByCategory)
 guestRouter.get('/product/view/:id', productController.getSingleProduct)
+guestRouter.get('/shop/search', guestHelper.getProductsBySearch)
 
 
 export default guestRouter;

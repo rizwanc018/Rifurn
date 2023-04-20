@@ -30,6 +30,13 @@ const guestHelper = {
         const categories = await productHelper.getCategoriesAndCountOfProducts()
         const products = await productHelper.getAllProductsByCategory(req)
         res.render("shop", { products, categories, isUserLoggedin: req.session.user?.loggedin })
+    },
+    getProductsBySearch: async (req, res) => {
+        const searchWord = '^' + req.query.q
+        const result = await productModel.find({ productName: { $regex: new RegExp(searchWord, "i") } })
+            .populate('category');
+        console.log("🚀 ~ file: guestHelper.js:37 ~ getProductsBySearch: ~ result:", result)
+        res.status(200).send(result)
     }
 }
 

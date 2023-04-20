@@ -11,7 +11,35 @@
 
                 <div class="row">
                     <div class="col-lg-2 order-lg-1 order-2">
+
                         <!-- Single Sidebar Start  -->
+                        <div class="row common-sidebar-widget">
+                            <h3 class="sidebar-title">Search</h3>
+                            <form action="" id="searchForm">
+                                <input type="text" class="form-control" name="search" id="searchProducts" placeholder=""
+                                    style="width: 100%;">
+                                <button class="btn bttn py-1 mt-3">Search</button>
+                            </form>
+                        </div>
+
+                        <script>
+                            const searchProducts = $('#searchProducts')
+                            searchProducts.keyup((e) => {
+                                $.ajax({
+                                    url: `/shop/search?q=${searchProducts.val()}`,
+                                    method: "GET",
+                                    success: res => {
+                                        showSearchResult(res)
+                                    },
+                                    error: err => {
+                                        console.log(err)
+                                    }
+                                })
+                            })
+
+
+                        </script>
+
                         <div class="common-sidebar-widget">
                             <h3 class="sidebar-title">Product categories</h3>
                             <ul class="sidebar-list">
@@ -78,44 +106,44 @@
                                     <div id="myTabContent-2" class="tab-content">
 
                                         {{> individualProduct}}
-                                        <script>
-                                            var url = window.location.origin
-                                            function addtoCart(self) {
-                                                const productId = $(self).attr('data-productId')
-                                                $.ajax({
-                                                    url: `${url}/user/addtocart`,
-                                                    method: "POST",
-                                                    data: { productId: productId },
-                                                    success: res => {
-                                                        if (res == "Out of stock") {
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                title: 'Sorry...',
-                                                                text: 'Product out of stock!',
-                                                            })
-                                                        }
-                                                        if (res == "Product added to cart") {
-                                                            Swal.fire({
-                                                                icon: 'success',
-                                                                text: 'Product added to cart!',
-                                                            })
-                                                        }
-                                                    },
-                                                    error: err => {
-                                                        alert("Product didn't added to cart")
-                                                    }
-                                                })
-                                            }
-
-                                            function addtowishlist(id) {
-                                                $.ajax({
-                                                    url: `${url}/user/add/wishlist/${id}`,
-                                                    method: "GET"
-                                                })
-                                            }
-                                        </script>
 
                                     </div>
+                                    <script>
+                                        var url = window.location.origin
+                                        function addtoCart(self) {
+                                            const productId = $(self).attr('data-productId')
+                                            $.ajax({
+                                                url: `${url}/user/addtocart`,
+                                                method: "POST",
+                                                data: { productId: productId },
+                                                success: res => {
+                                                    if (res == "Out of stock") {
+                                                        Swal.fire({
+                                                            icon: 'error',
+                                                            title: 'Sorry...',
+                                                            text: 'Product out of stock!',
+                                                        })
+                                                    }
+                                                    if (res == "Product added to cart") {
+                                                        Swal.fire({
+                                                            icon: 'success',
+                                                            text: 'Product added to cart!',
+                                                        })
+                                                    }
+                                                },
+                                                error: err => {
+                                                    alert("Product didn't added to cart")
+                                                }
+                                            })
+                                        }
+
+                                        function addtowishlist(id) {
+                                            $.ajax({
+                                                url: `${url}/user/add/wishlist/${id}`,
+                                                method: "GET"
+                                            })
+                                        }
+                                    </script>
                                 </div>
                             </div>
                         </div>
@@ -127,3 +155,60 @@
         </div>
     </div>
 </div>
+
+<script>
+    function showSearchResult(result) {
+        let products = '<div class="container"><div class="row">'
+        result.forEach(p => {
+            console.log("🚀 ~ file: shop.hbs:163 ~ showSearchResult ~ p:", p)
+            products += `<div class="col-md-3" style="display: inline-block;">
+                                            <!--  Single Grid product Start -->
+                                            <div class="single-grid-product mb-4">
+                                                <div class="product-image">
+                                                    <a href="/product/view/${p._id}" tabindex="0">
+                                                        <img src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/${p.images[0]}.webp"
+                                                            class="img-fluid" alt="" style="border:1px solid hsla(0, 0%, 57%, 0.5)">
+                                                        <img src="http://res.cloudinary.com/dz9knbtwi/image/upload/v1680054685/${p.images[1]}.webp"
+                                                            class="img-fluid" alt="" style="border:1px solid hsla(0, 0%, 57%, 0.5)">
+                                                    </a>
+
+                                                    <div class="product-action d-flex justify-content-between align-items-center">
+                                                        <button class="btn bttn  btn-link product-btn text-decoration-none py-0 px-2 border-0" data-productId="${p._id}"
+                                                            onclick="addtoCart(this)" tabindex="0">Add to
+                                                            Cart</button>
+                                                        <button class="btn btn-link p-0" onclick="addtowishlist('${p._id}')" tabindex="0">
+                                                            <i class="add-to-wish fa-regular fa-heart"></i>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                                <div class="product-content">
+                                                    <div class="product-category-rating">
+                                                        <span class="category"><a href="/shop" tabindex="0">${p.category.category}</a></span>
+                                                        <span class="rating">
+                                                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);"></i>
+                                                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                                                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                                                            <i class="fa-solid fa-star" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                                                            <i class="fa-solid fa-star-half-stroke" style="color: hsla(0, 0%, 57%, 0.7);;"></i>
+                                                            {{!-- < i class="fa-regular fa-star" style="color: #8de41b;"></i>
+                                                        <i class="fa-solid fa-star-half-stroke" style="color: #8de41b;"></i> --}}
+
+                                                    </span>
+                                                </div>
+
+                                                <h3 class="title mb-1"> <a style="color: hsla(0, 0%, 0%, 0.85)" href="single-product.html"
+                                                    tabindex="0">${p.productName}</a></h3>
+                                                <p class="product-price"><span class="discounted-price">${p.price}</span></p>
+                                            </div>
+                                        </div >
+                                    </div >
+                                    
+                                    `
+        })
+        products += '</div></div>'
+
+        $('#myTabContent-2').html(products)
+
+    }
+</script>
