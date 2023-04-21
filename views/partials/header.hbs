@@ -34,6 +34,25 @@
                         <i class="fas fa-heart"></i>
                     </a>
                 </li>
+                {{!-- Wallet strt here --}}
+                <li class="nav-item dropdown">
+                    <a class=" nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-wallet"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right" style="width: 300px;" aria-labelledby="navbarDropdown">
+                        <li class="d-flex justify-content-between">
+                            <p>OrderID</p>
+                            <p>Amount</p>
+                        </li>
+                        <li class="d-flex justify-content-between">
+                            <p>12345678901234567</p>
+                            <p>4000</p>
+                        </li>
+                    </ul>
+
+                </li>
+                {{!-- Wallet End here --}}
                 <li class="nav-item dropdown">
                     {{#if isUserLoggedin}}
                     <a class="green-circle nav-link dropdown-toggle d-flex align-items-center" href="#"

@@ -192,6 +192,11 @@ const userController = {
         const status = await orderHelper.updateStatus(orderId, "cancelled")
         res.status(200).send("Order Cancelled")
     },
+    returnOrder: async(req, res) => {
+        const { orderId } = req.body
+        const status = await orderHelper.updateStatus(orderId, "returned")
+        res.status(200).send("Order Cancelled")
+    },
     showProfilePage: async (req, res) => {
         const userId = req.session.user.id
         const userData = await userHelper.getUSerbyId(userId)

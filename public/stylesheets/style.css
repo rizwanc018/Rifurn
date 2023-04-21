@@ -6838,7 +6838,7 @@ a.popup-img {
   color: #929292;
 }
 
-.cart-table td.pro-status {
+.cart-table td.pro-status, td.pro-return {
   min-width: 120px;
   font-size: 15px;
   font-weight: 600;
@@ -6858,6 +6858,7 @@ a.popup-img {
   padding: 0 10px;
   border: none;
   background-color: transparent;
+  /* color: lightblue */
 }
 
 .cart-table td.pro-quantity .pro-qty input {

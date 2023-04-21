@@ -56,6 +56,11 @@
                                 <td class="pro-remove">
                                 </td>
                                 {{/noteq}}
+                                <td class="pro-return hide">
+                                    <button data-productId={{id}} onclick="returnOrder(this)" class=" bttn p-2">
+                                        Return
+                                    </button>
+                                </td>
                             </tr>
                             {{/each}}
                         </tbody>
@@ -66,7 +71,49 @@
     </div>
 </div>
 <script>
+    function returnOrder(self) {
+        const $tr = $(self).closest('tr')
+        const orderId = $tr.attr('data-orderId')
+        const prodId = $(self).attr('data-productId')
+        const status = $($tr).find('.status')
+        swal.fire({
+            title: "Delete?",
+            text: `Are you sure you want to return orders`,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            closeOnConfirm: false
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: `${url}/user/return/order`,
+                    method: 'POST',
+                    data: { orderId },
+                    success: res => {
+                        status.html("Returned")
+                        status.addClass('text-info')
+                        $(self).remove()
+                    },
+                    error: err => {
+                        console.log(err)
+                    }
+                })
 
+            }
+        })
+    }
+
+    $('tbody tr').each(function () {
+        if ($(this).find('.status').text() === "delivered") {
+            $(this).find('.pro-remove').remove()
+            $(this).find('.pro-return').removeClass('hide')
+        } else if ($(this).find('.status').text() === "returned" || $(this).find('.status').text() === "refunded") {
+            $(this).find('.pro-remove').remove()
+            $(this).find('.pro-return').remove()
+        }
+
+    })
 
     $('.status').each(function () {
         if (this.innerHTML === "cancelled") {
@@ -74,6 +121,10 @@
         } else if (this.innerHTML === "dispatched") {
             this.classList.add('text-warning')
         } else if (this.innerHTML === "delivered") {
+            this.classList.add('text-success')
+        } else if (this.innerHTML === "returned") {
+            this.classList.add('text-info')
+        } else if (this.innerHTML === "refunded") {
             this.classList.add('text-success')
         }
     })
@@ -124,8 +175,9 @@
                                 #123-123</strong></p>
                     </div>
                     <div class="col-xl-3 float-end">
-                        <a class="btn btn-light text-capitalize border-0 px-2 float-end me-3 " data-mdb-ripple-color="dark"
-                            onclick="downloadExcel()"><i class="fas fa-print text-primary"></i></a>
+                        <a class="btn btn-light text-capitalize border-0 px-2 float-end me-3 "
+                            data-mdb-ripple-color="dark" onclick="downloadExcel()"><i
+                                class="fas fa-print text-primary"></i></a>
                         <a class="btn btn-light text-capitalize px-2 float-end" data-mdb-ripple-color="dark"
                             onclick="downloadPDF()"><i class="far fa-file-pdf text-danger"></i></a>
                     </div>

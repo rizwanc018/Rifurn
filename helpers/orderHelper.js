@@ -20,38 +20,8 @@ const orderHelper = {
                 $unwind: '$user'
             },
             {
-                $sort: { updatedAt: 1 }
+                $sort: { updatedAt: -1 }
             }
-            // {
-            //     $unwind: '$items'
-            // },
-            // {
-            //     $lookup: {
-            //         from: 'products',
-            //         localField: 'items.productId',
-            //         foreignField: '_id',
-            //         as: 'result'
-            //     }
-            // },
-            // {
-            //     $unwind: '$result'
-            // },
-            // {
-            //     $project: {
-            //         orderId: '$_id',
-            //         user: '$user.firstname',
-            //         email: '$user.email',
-            //         mobile: '$contact',
-            //         address: '$address',
-            //         product: '$result.productName',
-            //         productId: '$items.productId',
-            //         qty: '$items.quantity',
-            //         orderStatus: '$items.orderStatus',
-            //         paymentId: 1,
-            //         createdAt: 1,
-            //         updatedAt: 1
-            //     }
-            // }
         ])
         return orders
     },
@@ -100,12 +70,17 @@ const orderHelper = {
         return userOrders
     },
     updateStatus: async (orderId, action) => {
-        const status = await orderModel.updateOne(
-            { _id: orderId },
-            {
-                orderStatus: action
-            })
-        return status
+        if (action === 'refunded') {
+        console.log("🚀 ~ file: orderHelper.js:74 ~ updateStatus: ~ action:", action)
+
+        }else {
+            const status = await orderModel.updateOne(
+                { _id: orderId },
+                {
+                    orderStatus: action
+                })
+            return status
+        }
     },
     updateStatusAndPaymentId: async (orderId, paymentId, action) => {
         const status = await orderModel.updateOne(
@@ -114,7 +89,6 @@ const orderHelper = {
                 orderStatus: action,
                 paymentId: paymentId
             })
-        console.log("🚀 ~ file: orderHelper.js:109 ~ updateStatus: ~ status:", status)
         return status
     },
     getSingleOrderdetails: async (orderId) => {

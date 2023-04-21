@@ -40,12 +40,23 @@
                         <td>{{paymentId}}</td>
                         <td>
                             {{!-- {{orderStatus}} --}}
-                            <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
-                                <option value="placed">Placed</option>
-                                <option value="dispatched">Dispatched</option>
-                                <option value="delivered">Delivered</option>
-                                <option value="cancelled">Canclled</option>
-                            </select>
+                            {{#noteq orderStatus "refunded"}}
+                                {{#noteq orderStatus "returned"}}
+                                        <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
+                                            <option value="placed" style="background-color: blue;">Placed</option>
+                                            <option value="dispatched" style="background-color: Yellow;">Dispatched</option>
+                                            <option value="delivered" style="background-color: green;">Delivered</option>
+                                            <option value="cancelled" style="background-color: red;">Canclled</option>
+                                        </select>
+                                    {{else}}
+                                        <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
+                                            <option value="returned" style="background-color: orange;">Returned</option>
+                                            <option value="refunded" style="background-color: green;">Refunded</option>
+                                        </select>
+                                {{/noteq}}
+                                {{else}}
+                                    <p class="text-capitalize text-success fw-bold" data-status={{orderStatus}} id=_{{_id}}>{{orderStatus}}</p>
+                            {{/noteq}}
                         </td>
                         <script>
 
@@ -69,7 +80,6 @@
             dispatched: 1,
             cancelled: 2,
             delivered: 3
-
         }
 
         //$('.statusChange').each((i, e) => {
@@ -82,7 +92,9 @@
             select.value === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
                 select.value === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
                     select.value === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
-                        $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
+                        select.value === 'returned' ? $(select).css({ 'backgroundColor': 'orange', 'color': 'white' }) :
+                            select.value === 'refunded' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                                $(select).css({ 'backgroundColor': 'red', 'color': 'white' }) // cancelled
         });
 
     })
@@ -97,8 +109,6 @@
             const orderNewStatus = select.value
             const updatedDate = new Date().toLocaleDateString()
             const dateCell = $(tr).find('.date')
-            console.log("🚀 ~ file: orders.hbs:132 ~ orderNewStatus:", orderNewStatus)
-            console.log("🚀 ~ file: orders.hbs:132 ~ orderId:", orderId)
 
             swal.fire({
                 title: "Change status?",

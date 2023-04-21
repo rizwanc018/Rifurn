@@ -40,6 +40,8 @@ userRouter.get('/orders', isUserLoggedin, orderController.getUserOrders)
 userRouter.post('/order/details', isUserLoggedin, orderController.getSingleOrderdetails)
 userRouter.post('/cancel/order', isUserLoggedin, userController.cancelOrder)
 
+userRouter.post('/return/order', isUserLoggedin, userController.returnOrder)
+
 userRouter.get('/profile',isUserLoggedin, userController.showProfilePage)
 userRouter.put('/edit/name', isUserLoggedin, userController.editName)
 userRouter.put('/edit/mobile', isUserLoggedin, userController.editMobile)
