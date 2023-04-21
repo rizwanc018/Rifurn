@@ -283,9 +283,10 @@ const userController = {
             country: country,
             zip: zip
         }
-        const updateAddressStatus = await userHelper.updateAddress(userId, address)
-        if(updateAddressStatus.modifiedCount === 1) {
-            res.status(200).send(address)
+        const response = await userHelper.updateAddress(userId, address)
+        // console.log("🚀 ~ file: userController.js:287 ~ saveAddress: ~ response:", response.address.pop())
+        if(response) {
+            res.status(200).send(response.address.pop())
         } else {
             res.status(400).send("Something wrong")
         }

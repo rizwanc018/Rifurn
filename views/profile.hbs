@@ -287,7 +287,7 @@
                     <div class="card-body">
                         <div class="row">
 
-                            <div class="text-dark my-3">
+                            <div id="chooseAddress" class="text-dark my-3">
                                 <h4 class="checkout-title mb-3">Saved Addresses</h4>
                                 {{#if userData.address }}
                                 {{#each userData.address }}
@@ -370,9 +370,25 @@
 </section>
 
 <script>
+
+    function deleteAddress(self, id) {
+        const div = $(self).closest('div')
+        $.ajax({
+            url: `${url}/user/delete/address`,
+            method: 'DELETE',
+            data: { addressId: id },
+            success: res => {
+                div.remove()
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
     $('.address-form').submit(function (e) {
         e.preventDefault()
         if (!e.target.checkValidity()) {
+            e.target.classList.add('was-validated');
         } else {
             var formData = new FormData(e.target)
             $.ajax({
@@ -382,6 +398,22 @@
                 processData: false,
                 contentType: false,
                 success: res => {
+                    $('.address-form input').val('')
+                    $('#chooseAddress').append(
+                        `<div class="d-flex align-items-center">
+                            <input class="addressInput" type="radio" name="address" id="${res._id}"
+                                value="${res.firstname}, ${res.lastname}, ${res.mobile}, ${res.addr1}, ${res.addr2}, ${res.town}, ${res.state}, ${res.country}, ${res.zip}">
+                                <label class="ps-2 form-check-label" for="${res._id}">${res.firstname}, ${res.lastname},
+                                    ${res.mobile},
+                                    ${res.addr1},
+                                    ${res.addr2}, ${res.town}, ${res.state}, ${res.country}, ${res.zip}
+                                    <button class="btn" onclick="deleteAddress(this,'${res._id}')">
+                                        <i class="fa fa-close "></i>
+                                    </button>
+                                </label>
+                                <br>
+                                </div>`
+                    )
                     console.log("🚀 ~ file: profile.hbs:390 ~ res:", res)
                 },
                 error: err => {
@@ -389,7 +421,7 @@
                 }
             })
         }
-        e.target.classList.add('was-validated');
+        //e.target.classList.add('was-validated');
 
     })
 

@@ -91,13 +91,13 @@ const userHelper = {
             zip: address.zip,
         }
         try {
-            const status = await UserModel.updateOne({ _id: userId },
+            const status = await UserModel.findOneAndUpdate({ _id: userId },
                 {
                     $addToSet:
                     {
                         address: address
                     }
-                })
+                }, {new: true})
             return status
         } catch (error) {
             console.log("🚀 ~ file: userHelper.js:96 ~ updateAddress: ~ error:", error.message)
