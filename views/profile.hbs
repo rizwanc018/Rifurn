@@ -33,17 +33,25 @@
 
                 <div class="card mb-4">
                     <div class="card-body p-0">
-                        <ul class="list-group list-group-flush rounded-0">
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                        <ul class="list-group profileMenu list-group-flush rounded-0">
+                            <li class="list-group-item  d-flex justify-content-between align-items-center p-3"
+                                data-target="profile">
+                                <p class="mb-0"><span>Profile</span></p>
+                            </li>
+                            <li class="list-group-item  d-flex justify-content-between align-items-center p-3"
+                                data-target="address">
+                                <p class="mb-0"><span>Address</span></p>
+                            </li>
+                            <li class="list-group-item  d-flex justify-content-between align-items-center p-3">
                                 <p class="mb-0"><a href="/user/cart">Cart</a></p>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <li class="list-group-item  d-flex justify-content-between align-items-center p-3">
                                 <p class="mb-0"><a href="/user/orders">Orders</a></p>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <li class="list-group-item  d-flex justify-content-between align-items-center p-3">
                                 <p class="mb-0">Options</p>
                             </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <li class="list-group-item  d-flex justify-content-between align-items-center p-3">
                                 <p class="mb-0">Settings</p>
                             </li>
 
@@ -63,7 +71,7 @@
             </div>
 
             <div class="col-sm-9">
-                <div class="card mb-4 rounded-0 profile profile-card">
+                <div class="card view mb-4 rounded-0 profile profile-card hide">
                     <div class="card-body">
                         <div class="row">
                             <div class="editProfile row">
@@ -241,7 +249,7 @@
                                     method: 'PUT',
                                     data: { email, OTP: otp },
                                     success: res => {
-                                        if(res === "Invalid Otp") {
+                                        if (res === "Invalid Otp") {
                                             $('.errMsg').text(res)
                                         }
                                         console.log(res)
@@ -274,7 +282,121 @@
                         </div> --}}
                     </div>
                 </div>
+
+                <div class="card view mb-4 rounded-0 address address-card ">
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="text-dark my-3">
+                                <h4 class="checkout-title mb-3">Saved Addresses</h4>
+                                {{#if userData.address }}
+                                {{#each userData.address }}
+                                <div class="d-flex align-items-center">
+                                    <input class="addressInput" type="radio" name="address" id="{{_id}}"
+                                        value="{{firstname}}, {{lastname}}, {{mobile}}, {{addr1}}, {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}">
+                                    <label class="ps-2 form-check-label" for="{{_id}}">{{firstname}}, {{lastname}},
+                                        {{mobile}},
+                                        {{addr1}},
+                                        {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}
+                                        <button class="btn" onclick="deleteAddress(this,'{{_id}}')">
+                                            <i class="fa fa-close "></i>
+                                        </button>
+                                    </label>
+                                    <br>
+                                </div>
+                                {{/each}}
+                                {{else}}
+                                <h6 class="m-5">No saved Address</h6>
+                                {{/if}}
+                            </div>
+                            <hr>
+
+                            <form action="/user/address/save" class="address-form" method="" novalidate>
+                                <div class="editAddress row">
+                                    <h4 class="checkout-title mb-3 text-dark">Add new</h4>
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <label>First Name</label>
+                                        <input class="form-control" required type="text" placeholder="First Name"
+                                            name="firstname" value="">
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <label>Last Name</label>
+                                        <input class="form-control" required type="text" placeholder="Last Name"
+                                            name="lastname" value="">
+                                    </div>
+
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <label>Phone no</label>
+                                        <input class="form-control" required type="number" placeholder="Phone number"
+                                            name="mobile" value="">
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <label>Address</label>
+                                        <input class="form-control" required type="text" name="addr1"
+                                            placeholder="Address line 1" value={{userData.address.addr1}}>
+                                        <input class="form-control mt-2" required type="text" name="addr2"
+                                            placeholder="Address line 2" value="">
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <label>Country</label>
+                                        <input class="form-control" required type="text" name="country"
+                                            placeholder="Country" value="">
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <label>Town/City</label>
+                                        <input class="form-control" required type="text" name="town"
+                                            placeholder="Town/City" value={{userData.address.town}}>
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <label>State</label>
+                                        <input class="form-control" required type="text" name="state"
+                                            placeholder="State" value={{userData.address.state}}>
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-2">
+                                        <label>Zip Code</label>
+                                        <input class="form-control" required type="text" name="zip"
+                                            placeholder="Zip Code" value={{userData.address.zip}}>
+                                    </div>
+                                </div>
+                                <button class="btn bttn mb-3 py-2">Save</button>
+                            </form>
+                            <hr>
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 </section>
+
+<script>
+    $('.address-form').submit(function (e) {
+        e.preventDefault()
+        if (!e.target.checkValidity()) {
+        } else {
+            var formData = new FormData(e.target)
+            $.ajax({
+                url: `/user/address/save`,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: res => {
+                    console.log("🚀 ~ file: profile.hbs:390 ~ res:", res)
+                },
+                error: err => {
+                    console.log(err)
+                }
+            })
+        }
+        e.target.classList.add('was-validated');
+
+    })
+
+    $('.profileMenu').delegate('li', 'click', function (e) {
+        let target = "." + $(e.target).attr('data-target')
+        //console.log("🚀 ~ file: profile.hbs:350 ~ $ ~ target:", target)
+        $('.card.view').addClass('hide')
+        $(target).removeClass('hide')
+    })
+</script>

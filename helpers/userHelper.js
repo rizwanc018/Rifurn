@@ -90,23 +90,25 @@ const userHelper = {
             country: address.country,
             zip: address.zip,
         }
-        const status = await UserModel.updateOne({ _id: userId },
-            {
-                $addToSet:
+        try {
+            const status = await UserModel.updateOne({ _id: userId },
                 {
-                    address: address
-                }
-            })
+                    $addToSet:
+                    {
+                        address: address
+                    }
+                })
+            return status
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:96 ~ updateAddress: ~ error:", error.message)
+
+        }
     },
-    generateRazorpay: async (orderId, total) => {
+    generateRazorpay: async (total) => {
         const options = {
             amount: total * 100,
             currency: "INR",
-            receipt: "" + orderId,
-            notes: {
-                key1: "value3",
-                key2: "value2"
-            }
+            receipt: "SSS"
         }
         const rzpOrder = await instance.orders.create(options)
         return rzpOrder
@@ -116,10 +118,8 @@ const userHelper = {
         hmac.update(paymentDetails['payment[razorpay_order_id]'] + '|' + paymentDetails['payment[razorpay_payment_id]'])
         hmac = hmac.digest('hex')
         if (hmac == paymentDetails['payment[razorpay_signature]']) {
-            console.log("🚀 ~ file: userHelper.js:119 ~ verifyPayment: ~ hmac:", hmac)
             return { paymentStatus: true }
         } else {
-            console.log("🚀 ~ file: userHelper.js:119 ~ verifyPayment: ~ hmac:", 'failed')
             return { paymentStatus: false }
         }
     }

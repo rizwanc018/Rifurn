@@ -5,6 +5,7 @@ import cartController from '../controllers/cartController.js';
 import orderController from '../controllers/orderController.js';
 import multer from "multer";
 import couponController from '../controllers/couponContoller.js';
+import cartHelper from '../helpers/cartHelper.js';
 const upload = multer()
 
 const userRouter = express.Router()
@@ -43,8 +44,16 @@ userRouter.get('/profile',isUserLoggedin, userController.showProfilePage)
 userRouter.put('/edit/name', isUserLoggedin, userController.editName)
 userRouter.put('/edit/mobile', isUserLoggedin, userController.editMobile)
 userRouter.put('/edit/email', isUserLoggedin, userController.editEmail)
+userRouter.post('/address/save', isUserLoggedin, upload.none(), userController.saveAddress)
 
 userRouter.post('/apply/coupon', couponController.applyCoupon)
 
+userRouter.get('/tst', isUserLoggedin, async (req, res) => {
+    const userId = req.session.user.id
+    console.log("🚀 ~ file: userRouter.js:52 ~ userRouter.get ~ userId:", userId)
+    await cartHelper.getTotalFromCart(userId)
+    res.send("YES")
+    
+})
 
 export default userRouter;

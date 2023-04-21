@@ -25,13 +25,13 @@ const couponController = {
     applyCoupon: async (req, res) => {
         const userId = req.session.user.id
         const { couponCode } = req.body
-        // const isExist = await couponModel.exists({ code: couponCode, users: { $in: userId } })
-        const isExist = false
+        const isExist = await couponModel.exists({ code: couponCode, users: { $in: userId } })
         if (isExist) {
             res.status(200).send({ err: true, msg: 'Coupon alredy used' })
         } else {
-            const response = await couponModel.findOneAndUpdate({ code: couponCode }, { $push: { users: userId }, $inc: { count: -1 } })
+            const response = await couponModel.findOne({ code: couponCode })
             req.session.user.discount = response?.discount || 0
+            req.session.user.couponCode = couponCode
             if (response) res.status(200).send({ success: true, discount: response.discount })
             else res.status(200).send("Invlid coupon")
         }

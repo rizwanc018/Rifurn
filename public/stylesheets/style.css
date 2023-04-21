@@ -7188,7 +7188,7 @@ a.popup-img {
   margin-bottom: 15px;
 }
 
-.checkout-form input, .profile-form input {
+.checkout-form input, .profile-form input, .address-form input {
   width: 100%;
   background-color: transparent;
   border: 1px solid #999999;

@@ -31,7 +31,6 @@ const productController = {
         const categories = await categoryHelper.getAllCategories()
         productHelper.getSingleProduct(req, res)
             .then(data => {
-                console.log("🚀 ~ file: productController.js:34 ~ showProductEditPage: ~ data:", data)
                 res.render("admin/editProduct", { isAdmin: req.session.isAdmin, product: data, categories: categories })
             }).catch(err => { console.log(err) })
     },

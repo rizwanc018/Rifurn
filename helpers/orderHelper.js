@@ -55,12 +55,14 @@ const orderHelper = {
         ])
         return orders
     },
-    createOrder: async (userId, cartData, address, discount) => {
+    createOrder: async (userId, cartData, address, discount, paymentId, action) => {
         const status = await orderModel.create({
             userId: userId,
             items: cartData,
             address: address,
-            discount: discount
+            discount: discount,
+            orderStatus: action,
+            paymentId: paymentId
         })
         return status
     },
@@ -95,7 +97,6 @@ const orderHelper = {
             //     }
             // }
         ])
-        console.log("🚀 ~ file: orderHelper.js:95 ~ getUserOrders: ~ userOrders:", userOrders)
         return userOrders
     },
     updateStatus: async (orderId, action) => {
@@ -179,7 +180,7 @@ const orderHelper = {
             }
         ])
         return total
-    }
+    },
 
 }
 

@@ -6,6 +6,7 @@ import UserModel from "../models/userModel.js";
 import productHelper from "../helpers/productHelpers.js";
 import cartHelper from "../helpers/cartHelper.js";
 import orderHelper from "../helpers/orderHelper.js";
+import couponModel from "../models/couponModel.js";
 import { response } from "express";
 
 const userController = {
@@ -154,7 +155,7 @@ const userController = {
     placeOrder: async (req, res) => {
         const userId = req.session.user.id
         const discount = req.session.user.discount || 0
-        req.session.user.discount = 0
+        const couponCode = req.session.user.couponCode
         let { firstname, lastname, mobile, addr1, addr2, country, town, state, zip, paymentMethod, saveAddress, accepTerms } = req.body
         country = country.charAt(0).toUpperCase() + country.slice(1)
         state = state.charAt(0).toUpperCase() + state.slice(1)
@@ -170,20 +171,20 @@ const userController = {
             country: country,
             zip: zip
         }
+        req.session.user.address = address
         if (saveAddress == 'true') {
             const updateAddressStatus = await userHelper.updateAddress(userId, address)
         }
-        const cartData = await cartHelper.getItemsAndDeleteCart(userId)
-        const orderdata = await orderHelper.createOrder(userId, cartData, address, discount)
-        console.log("🚀 ~ file: userController.js:174 ~ placeOrder: ~ orderdata:", orderdata)
-        let total = await orderHelper.getTotal(orderdata._id)   // total: [ { total: 6200 } ]
-        total = total[0].total - discount
-
         if (paymentMethod === 'COD') {
+            const cartData = await cartHelper.getItemsAndDeleteCart(userId)
+            const orderdata = await orderHelper.createOrder(userId, cartData, address, discount)
+            let total = await orderHelper.getTotal(orderdata._id)   // total: [ { total: 6200 } ]
             res.status(200).send({ codSuccess: true, msg: 'Order Placed Successfully', orderId: orderdata._id })
         } else if (paymentMethod === 'payNow') {
-            const rzpOrder = await userHelper.generateRazorpay(orderdata._id, total)
-            res.status(200).send(rzpOrder)
+            let total = await cartHelper.getTotalFromCart(userId)   // total: [ { total: 6200 } ]
+            total = total[0].grandTotal - discount
+            const rzpOrder = await userHelper.generateRazorpay(total)
+            res.status(200).send({ payment: "rzPay", rzpOrder })
         }
     },
     cancelOrder: async (req, res) => {
@@ -268,6 +269,27 @@ const userController = {
             res.status(400).send('something wrong')
         }
     },
+    saveAddress: async (req, res) => {
+        const userId = req.session.user.id
+        let { firstname, lastname, mobile, addr1, addr2, country, town, state, zip } = req.body
+        const address = {
+            firstname: firstname,
+            lastname: lastname,
+            mobile: mobile,
+            addr1: addr1,
+            addr2: addr2,
+            town: town,
+            state: state,
+            country: country,
+            zip: zip
+        }
+        const updateAddressStatus = await userHelper.updateAddress(userId, address)
+        if(updateAddressStatus.modifiedCount === 1) {
+            res.status(200).send(address)
+        } else {
+            res.status(400).send("Something wrong")
+        }
+    },
     deleteAddress: async (req, res) => {
         const userId = req.session.user.id
         const { addressId } = req.body
@@ -277,19 +299,23 @@ const userController = {
         else res.status(400).send("something wrong")
     },
     verifyPayment: async (req, res) => {
+        const userId = req.session.user.id
         let action = 'placed'
         const paymentDetails = req.body
-        const orderId = paymentDetails['rzpOrder[receipt]']
         const paymentId = paymentDetails['payment[razorpay_payment_id]']
+        const address = req.session.user.address
         const paymentStatus = await userHelper.verifyPayment(paymentDetails)
+        const discount = req.session.user.discount || 0
         if (paymentStatus) {
-            const status = await orderHelper.updateStatusAndPaymentId(orderId, paymentId, action)  //rzpOrder[receipt] is orderId
-            console.log("🚀 ~ file: userController.js:282 ~ verifyPayment: ~ status:", status)
-            res.status(200).send("Ordre placed successfully")
+            const cartData = await cartHelper.getItemsAndDeleteCart(userId)
+            const orderdata = await orderHelper.createOrder(userId, cartData, address, discount, paymentId, action)
+            const response = await couponModel.updateOne({ code: req.session.user.couponCode },
+                { $push: { users: userId }, $inc: { count: -1 } })
+            req.session.user.discount = 0
+            req.session.user.couponCode = ""
+            res.status(200).send(orderdata._id)
         } else {
-            const status = await orderHelper.updateStatus(orderId, paymentId, 'failed')  //rzpOrder[receipt] is orderId
-            console.log("🚀 ~ file: userController.js:285 ~ verifyPayment: ~ status:", status)
-
+            res.status(400).send("Payment Failed")
         }
     }
 }

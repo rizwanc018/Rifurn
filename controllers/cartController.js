@@ -13,6 +13,7 @@ const cartController = {
         }
     },
     showCart: async (req, res) => {
+        console.log("🚀 ~ file: cartController.js:18 ~ showCart: ~ req.session.user:", req.session.user)
         const userId = req.session.user.id
         const discount = req.session.user.discount || 0
         const cartItems = await cartHelper.getCartData(userId)

@@ -141,6 +141,7 @@
             url: `${url}/user/apply/coupon`,
             data: { couponCode },
             success: res => {
+                console.log("🚀 ~ file: cart.hbs:161 ~ res:", res)
                 if (res.err) $('.cpnErrMsg').text(res.msg)
                 else if (res.success) {
                     Swal.fire(`Discount: ₹ ${res.discount}`)

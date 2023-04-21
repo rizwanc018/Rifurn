@@ -216,9 +216,10 @@
                                         // cod
                                         viewOrderDetails(res.orderId)
                                         //window.location.href = `${url}/user/orders`
-                                    } else {
+                                    } else if (res.payment === "rzPay") {
                                         // online payment
-                                        razorpayPayment(res, firstname, lastname, mobile)
+                                        console.log("🚀 ~ file: checkout.hbs:228 ~ res:", res)
+                                        razorpayPayment(res.rzpOrder, firstname, lastname, mobile)
                                     }
                                 },
                                 error: err => {
@@ -272,9 +273,10 @@
                             method: 'POST',
                             data: { payment, rzpOrder },
                             success: res => {
-                                viewOrderDetails(rzpOrder.receipt)
+                                viewOrderDetails(res)
                             },
                             error: err => {
+                                console.log(err)
                                 alert(err)
                             }
                         })
