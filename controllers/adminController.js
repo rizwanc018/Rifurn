@@ -37,7 +37,12 @@ const adminController = {
         res.status(200).send("Status changed")
     },
     showSalesReport: async (req, res) => {
-        res.render('admin/salesReport', { isAdmin: req.session.isAdmin })
+        const option = req.query.q
+        const salesReport = await adminHelper.getSalesReport(option)
+        let grandTotal = salesReport.reduce((grand, i) => {
+            return grand + i.total
+        }, 0)
+        res.render('admin/salesReport', { salesReport, grandTotal, isAdmin: req.session.isAdmin })
     }
 }
 

@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import adminModel from "../models/adminModel.js";
+import orderModel from "../models/orderModel.js";
 
 const adminHelper = {
     doLogin: (req, res) => {
@@ -70,6 +71,60 @@ const adminHelper = {
             }
         })
     },
+    getSalesReport: async (option = 'daily') => {
+        const format = option === 'monthly' ? '%Y-%m' :
+            option === 'yearly' ? '%Y' : '%Y-%m-%d'
+        const salesReport = await orderModel.aggregate([
+            {
+                $match: { _id: { $ne: "" } },
+            },
+            {
+                $unwind: '$items'
+            },
+            {
+                $lookup: {
+                    from: 'products',
+                    localField: 'items.productId',
+                    foreignField: '_id',
+                    as: 'result'
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: { format: format, date: "$createdAt" }
+                    },
+                    orderCount: { $sum: 1 },
+                    productCount: { $sum: '$items.quantity' },
+                    discount: { $sum: '$discount' },
+                    subTotal: { $sum: { $multiply: ['$items.quantity', { $arrayElemAt: ["$result.price", 0] }] } },
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    orderCount: 1,
+                    productCount: 1,
+                    discount: 1,
+                    subTotal: 1
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    orderCount: 1,
+                    productCount: 1,
+                    discount: 1,
+                    subTotal: 1,
+                    total: { $subtract: ['$subTotal', '$discount'] }
+                }
+            },
+            {
+                $sort: { _id: -1 }
+            }
+        ])
+        return salesReport
+    }
 }
 
 export default adminHelper

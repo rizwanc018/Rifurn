@@ -5,35 +5,52 @@
 </div>
 <hr>
 <div class="container">
-    {{!-- <div class="row justify-content-end mb-3">
-        <a class="btn btn-success col-3 me-3" href="/admin/product/add"><i class="fa-solid fa-plus"></i>
-            Add Product
+    <div class="row justify-content-end mb-3">
+        <a style="font-size: 13px;" class="btn btn-success col-auto me-3" href="/admin/salesreport">
+            Daily
         </a>
-    </div> --}}
+        <a style="font-size: 13px;" class="btn btn-success col-auto me-3" href="/admin/salesreport?q=monthly">
+            Monthly
+        </a>
+        <a style="font-size: 13px;" class="btn btn-success col-auto me-3" href="/admin/salesreport?q=yearly">
+            Yearly
+        </a>
+    </div>
 
     <div class="row">
         {{!-- <table id="usersTable datatables" class="table mb-0"> --}}
-            <table id="orderTable" class="table mb-0">
+            <table id="orderTable" class="table mb-0 text-end">
                 <thead>
                     <tr>
+                        <th scope="col">#</th>
                         <th scope="col">Date</th>
-                        <th scope="col">No of Orders</th>
-                        <th scope="col">No of Products</th>
+                        <th scope="col">Orders</th>
+                        <th scope="col">Products</th>
+                        <th scope="col">Discount</th>
                         <th scope="col">Total</th>
+                        <th scope="col">Final</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{#each orders }}
+                    {{#each salesReport }}
                     <tr data-orderId="{{_id}}">
-                        <td scope="row">{{createdAt}}</td>
-                        <td>{{user.email}}</td>
-                        <td>{{_id}}</td>
-                        <td>{{paymentId}}</td>
-                    {{/each}}
+                        <th scope="row" class="nr">{{inc @index}}</th>
+                        <td scope="row">{{_id}}</td>
+                        <td>{{orderCount}}</td>
+                        <td>{{productCount}}</td>
+                        <td>₹ {{discount}}</td>
+                        <td>₹ {{subTotal}}</td>
+                        <td style="font-weight: 500;">₹ {{total}}</td>
+                        {{/each}}
                 </tbody>
             </table>
     </div>
+    <div class="row ">
+        <div class="col-auto ms-auto my-3 pe-0">
+            <h4 class="ms-auto text-dark fw-bold">Grand total <span id="grandTotal" class="ms-3">₹ {{grandTotal}}</span>
+            </h4>
+        </div>
+    </div>
 </div>
-
-
-{{!-- Modal --}}
+<script>
+</script>
