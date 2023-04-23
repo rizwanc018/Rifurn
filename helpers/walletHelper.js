@@ -2,17 +2,16 @@ import walletModel from "../models/walletModel.js"
 import mongoose from "mongoose"
 
 const walletHelper = {
-    updateWallet: async (userId, amount) => {
+    updateWallet: async (userId, amount, mode = 'refund') => {
         const status = await walletModel.updateOne(
             { userId: userId },
-            { userId: userId, $push: { transactions: { amount: amount } }, $inc: { balance: amount } },
+            { userId: userId, $push: { transactions: { amount: amount, mode: mode } }, $inc: { balance: amount } },
             { upsert: true }
         )
         return status
     },
     getWalletData: async (req, res) => {
         const userId = req.session.user.id
-        console.log("🚀 ~ file: walletHelper.js:17 ~ getWalletData: ~ userId:", userId)
         const [data] = await walletModel.aggregate([
             {
                 $match: { userId: new mongoose.Types.ObjectId(userId) }
@@ -21,8 +20,11 @@ const walletHelper = {
             //     $unwind: 
             // }
         ])
-        console.log("🚀 ~ file: walletHelper.js:21 ~ getWalletData: ~ data:", data)
         res.status(200).send(data)
+    },
+    getWalletBalance: async (userId) => {
+        const { balance } = await walletModel.findOne({ userId: userId }, { balance: 1 })
+        return balance
     }
 }
 

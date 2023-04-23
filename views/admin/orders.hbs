@@ -38,24 +38,25 @@
                         <td>{{user.email}}</td>
                         <td>{{_id}}</td>
                         <td>{{paymentId}}</td>
-                        <td>
+                        <td id="statusSec">
                             {{!-- {{orderStatus}} --}}
                             {{#noteq orderStatus "refunded"}}
-                                {{#noteq orderStatus "returned"}}
-                                        <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
-                                            <option value="placed" style="background-color: blue;">Placed</option>
-                                            <option value="dispatched" style="background-color: Yellow;">Dispatched</option>
-                                            <option value="delivered" style="background-color: green;">Delivered</option>
-                                            <option value="cancelled" style="background-color: red;">Canclled</option>
-                                        </select>
-                                    {{else}}
-                                        <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
-                                            <option value="returned" style="background-color: orange;">Returned</option>
-                                            <option value="refunded" style="background-color: green;">Refunded</option>
-                                        </select>
-                                {{/noteq}}
-                                {{else}}
-                                    <p class="text-capitalize text-success fw-bold" data-status={{orderStatus}} id=_{{_id}}>{{orderStatus}}</p>
+                            {{#noteq orderStatus "returned"}}
+                            <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
+                                <option value="placed" style="background-color: blue;">Placed</option>
+                                <option value="dispatched" style="background-color: Yellow;">Dispatched</option>
+                                <option value="delivered" style="background-color: green;">Delivered</option>
+                                <option value="cancelled" style="background-color: red;">Canclled</option>
+                            </select>
+                            {{else}}
+                            <select class="statusChange" name="orderStatus" data-status={{orderStatus}} id=_{{_id}}>
+                                <option value="returned" style="background-color: orange;">Returned</option>
+                                <option value="refunded" style="background-color: green;">Refunded</option>
+                            </select>
+                            {{/noteq}}
+                            {{else}}
+                            <p class="text-capitalize text-success fw-bold" data-status={{orderStatus}} id=_{{_id}}>
+                                {{orderStatus}}</p>
                             {{/noteq}}
                         </td>
                         <script>
@@ -93,7 +94,7 @@
                 select.value === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
                     select.value === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
                         select.value === 'returned' ? $(select).css({ 'backgroundColor': 'orange', 'color': 'white' }) :
-                            select.value === 'refunded' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
+                            select.value === 'refunded' ? $('#statusSec').html('<p class="text-capitalize text-success fw-bold" data-status=refunded >refunded</p>')  :
                                 $(select).css({ 'backgroundColor': 'red', 'color': 'white' }) // cancelled
         });
 
@@ -127,7 +128,8 @@
                             orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
                                 orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
                                     orderNewStatus === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
-                                        $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
+                                        orderNewStatus === 'refunded' ? $('#statusSec').html('<p class="text-capitalize text-success fw-bold" data-status=refunded >refunded</p>'):
+                                            $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
                             dateCell.text(updatedDate)
                         },
                         error: err => {

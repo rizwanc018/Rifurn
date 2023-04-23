@@ -48,7 +48,7 @@
                         <li>
                             <hr class="my-2">
                         </li>
-                            <h5 class="fw-bold text-dark">Transactions</h5>
+                        <h5 class="fw-bold text-dark">Transactions</h5>
                         <div class="d-flex justify-content-between text-dark">
                             <span>Date</span>
                             <span>Amount</span>
@@ -120,7 +120,7 @@
                     date = date.toLocaleDateString()
                     html += `<div class="d-flex justify-content-between">
                                 <span>${date}</span>
-                                <span>+ ₹ ${t.amount}</span>
+                                ${t.amount < 0 ? '<span>- ₹ ' + t.amount * -1 +'</span>' : '<span>+ ₹ ' + t.amount+'</span>'}
                             </div>`
                 })
 

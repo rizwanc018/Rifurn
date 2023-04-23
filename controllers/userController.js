@@ -8,6 +8,7 @@ import cartHelper from "../helpers/cartHelper.js";
 import orderHelper from "../helpers/orderHelper.js";
 import couponModel from "../models/couponModel.js";
 import { response } from "express";
+import walletHelper from "../helpers/walletHelper.js";
 
 const userController = {
     doSignup: async (req, res) => {
@@ -178,13 +179,27 @@ const userController = {
         if (paymentMethod === 'COD') {
             const cartData = await cartHelper.getItemsAndDeleteCart(userId)
             const orderdata = await orderHelper.createOrder(userId, cartData, address, discount)
-            let total = await orderHelper.getTotal(orderdata._id)   // total: [ { total: 6200 } ]
+            // let total = await orderHelper.getTotal(orderdata._id)   // total: [ { total: 6200 } ]
             res.status(200).send({ codSuccess: true, msg: 'Order Placed Successfully', orderId: orderdata._id })
-        } else if (paymentMethod === 'payNow') {
+        } else if (paymentMethod === 'payOnline') {
             let total = await cartHelper.getTotalFromCart(userId)   // total: [ { total: 6200 } ]
             total = total[0].grandTotal - discount
             const rzpOrder = await userHelper.generateRazorpay(total)
             res.status(200).send({ payment: "rzPay", rzpOrder })
+        } else if (paymentMethod === 'wallet') {
+            const walletBalance = await walletHelper.getWalletBalance(userId)
+            let total = await cartHelper.getTotalFromCart(userId)   // total: [ { total: 6200 } ]
+            total = total[0].grandTotal - discount
+            if (total <= walletBalance) {
+                const cartData = await cartHelper.getItemsAndDeleteCart(userId)
+                const orderdata = await orderHelper.createOrder(userId, cartData, address, discount, 'wallet')
+                const status = await walletHelper.updateWallet(userId, total*-1, 'buy')
+                console.log("🚀 ~ file: userController.js:197 ~ placeOrder: ~ status:", status)
+                if(status.modifiedCount === 1) {
+                    res.status(200).send({ walletSuccess: true, msg: 'Order Placed Successfully', orderId: orderdata._id })
+
+                }
+            }
         }
     },
     cancelOrder: async (req, res) => {
@@ -192,7 +207,7 @@ const userController = {
         const status = await orderHelper.updateStatus(orderId, "cancelled")
         res.status(200).send("Order Cancelled")
     },
-    returnOrder: async(req, res) => {
+    returnOrder: async (req, res) => {
         const { orderId } = req.body
         const status = await orderHelper.updateStatus(orderId, "returned")
         res.status(200).send("Order Cancelled")
@@ -290,7 +305,7 @@ const userController = {
         }
         const response = await userHelper.updateAddress(userId, address)
         // console.log("🚀 ~ file: userController.js:287 ~ saveAddress: ~ response:", response.address.pop())
-        if(response) {
+        if (response) {
             res.status(200).send(response.address.pop())
         } else {
             res.status(400).send("Something wrong")

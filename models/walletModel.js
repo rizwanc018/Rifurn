@@ -6,7 +6,9 @@ const transactionSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    } })
+    },
+    mode: String
+ })
 
 
 const walletSchema = new mongoose.Schema({
