@@ -70,17 +70,12 @@ const orderHelper = {
         return userOrders
     },
     updateStatus: async (orderId, action) => {
-        if (action === 'refunded') {
-        console.log("🚀 ~ file: orderHelper.js:74 ~ updateStatus: ~ action:", action)
-
-        }else {
-            const status = await orderModel.updateOne(
-                { _id: orderId },
-                {
-                    orderStatus: action
-                })
-            return status
-        }
+        const status = await orderModel.updateOne(
+            { _id: orderId },
+            {
+                orderStatus: action
+            })
+        return status
     },
     updateStatusAndPaymentId: async (orderId, paymentId, action) => {
         const status = await orderModel.updateOne(

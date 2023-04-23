@@ -37,18 +37,26 @@
                 {{!-- Wallet strt here --}}
                 <li class="nav-item dropdown">
                     <a class=" nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="getWalletData()">
                         <i class="fa-solid fa-wallet"></i>
                     </a>
-                    <ul class="dropdown-menu pull-right" style="width: 300px;" aria-labelledby="navbarDropdown">
-                        <li class="d-flex justify-content-between">
-                            <p>OrderID</p>
-                            <p>Amount</p>
+                    <ul class="dropdown-menu pull-right px-3" style="width: 300px;" aria-labelledby="navbarDropdown">
+                        <li class="d-flex justify-content-between text-dark">
+                            <span>Balance</span>
+                            <span class="balance">...</span>
                         </li>
-                        <li class="d-flex justify-content-between">
-                            <p>12345678901234567</p>
-                            <p>4000</p>
+                        <li>
+                            <hr class="my-2">
                         </li>
+                            <h5 class="fw-bold text-dark">Transactions</h5>
+                        <div class="d-flex justify-content-between text-dark">
+                            <span>Date</span>
+                            <span>Amount</span>
+                        </div>
+                        <div class="transactions">
+
+                        </div>
+
                     </ul>
 
                 </li>
@@ -95,6 +103,36 @@
     })
 </script>
 {{/if}}
+
+<script>
+    function getWalletData() {
+        console.log('clicked')
+        $.ajax({
+            url: '/user/wallet',
+            method: 'GET',
+            success: res => {
+                console.log(res)
+                let balance = res.balance || '000'
+                $('.balance').text(`₹ ${balance}`)
+                let html = ''
+                $(res.transactions).each((i, t) => {
+                    let date = new Date(t.date)
+                    date = date.toLocaleDateString()
+                    html += `<div class="d-flex justify-content-between">
+                                <span>${date}</span>
+                                <span>+ ₹ ${t.amount}</span>
+                            </div>`
+                })
+
+                $('.transactions').html(html)
+                console.log(html)
+            },
+            error: err => {
+                console.log(err)
+            }
+        })
+    }
+</script>
 
 {{!-- Signup Modal --}}
 {{> userSignup}}

@@ -31,14 +31,16 @@ adminRouter.get('/user/restrict/:id', verifyAdmin, userController.toggleUserRest
 adminRouter.get('/categories', verifyAdmin, categoryController.showCategories)
 adminRouter.post('/addcategoty', verifyAdmin, categoryController.addCategoty)
 adminRouter.get('/category/delete/:id', verifyAdmin, categoryController.deleteCategory)
-adminRouter.put('/category/edit/:id', categoryController.editCategory)
+adminRouter.put('/category/edit/:id',verifyAdmin, categoryController.editCategory)
 
 adminRouter.get('/orders', verifyAdmin, orderController.getAllOrders)
 adminRouter.post('/order/details', verifyAdmin, orderController.getSingleOrderdetails)
 adminRouter.post('/order/changestatus', verifyAdmin, adminController.changeOrderStatus)
 
 adminRouter.get('/coupons', verifyAdmin, couponController.showAllCoupons)
-adminRouter.post('/addcoupon', couponController.addCoupon)
+adminRouter.post('/addcoupon', verifyAdmin, couponController.addCoupon)
 adminRouter.delete('/coupon/delete/:id', verifyAdmin, couponController.deleteCoupon)
+
+adminRouter.get('/salesreport',verifyAdmin, adminController.showSalesReport)
 
 export default adminRouter;

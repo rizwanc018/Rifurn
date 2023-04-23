@@ -10089,3 +10089,15 @@ only screen and (max-width: 767px) {
 input {
   border-radius: 0 !important;
 }
+
+.dropdown-menu {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 0;
+  color: hsl(0, 0%, 37%);
+  border: 0;
+}
+
+.transactions span {
+  font-weight: 400;
+  font-size: 14px;
+}

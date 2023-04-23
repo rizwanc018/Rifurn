@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row text-center mb-1">
+        <h3 class="fw-bolder mb-0">Sales Report</h3>
+    </div>
+</div>
+<hr>
+<div class="container">
+    {{!-- <div class="row justify-content-end mb-3">
+        <a class="btn btn-success col-3 me-3" href="/admin/product/add"><i class="fa-solid fa-plus"></i>
+            Add Product
+        </a>
+    </div> --}}
+
+    <div class="row">
+        {{!-- <table id="usersTable datatables" class="table mb-0"> --}}
+            <table id="orderTable" class="table mb-0">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">No of Orders</th>
+                        <th scope="col">No of Products</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each orders }}
+                    <tr data-orderId="{{_id}}">
+                        <td scope="row">{{createdAt}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{_id}}</td>
+                        <td>{{paymentId}}</td>
+                    {{/each}}
+                </tbody>
+            </table>
+    </div>
+</div>
+
+
+{{!-- Modal --}}
