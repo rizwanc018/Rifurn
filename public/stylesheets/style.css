@@ -10097,6 +10097,11 @@ input {
   border: 0;
 }
 
+.transactions {
+  height: 30vh;
+  overflow-y: scroll;
+}
+
 .transactions span {
   font-weight: 400;
   font-size: 13px;
