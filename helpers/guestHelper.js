@@ -35,7 +35,6 @@ const guestHelper = {
         const searchWord = '^' + req.query.q
         const result = await productModel.find({ productName: { $regex: new RegExp(searchWord, "i") } })
             .populate('category');
-        console.log("🚀 ~ file: guestHelper.js:37 ~ getProductsBySearch: ~ result:", result)
         res.status(200).send(result)
     }
 }

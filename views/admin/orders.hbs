@@ -11,11 +11,7 @@
 </div>
 <hr>
 <div class="container">
-    {{!-- <div class="row justify-content-end mb-3">
-        <a class="btn btn-success col-3 me-3" href="/admin/product/add"><i class="fa-solid fa-plus"></i>
-            Add Product
-        </a>
-    </div> --}}
+
 
     <div class="row">
         {{!-- <table id="usersTable datatables" class="table mb-0"> --}}
@@ -94,8 +90,12 @@
                 select.value === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
                     select.value === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
                         select.value === 'returned' ? $(select).css({ 'backgroundColor': 'orange', 'color': 'white' }) :
-                            select.value === 'refunded' ? $('#statusSec').html('<p class="text-capitalize text-success fw-bold" data-status=refunded >refunded</p>')  :
+                            select.value === 'refunded' ? $('#statusSec').html('<p class="text-capitalize text-success fw-bold" data-status=refunded >refunded</p>') :
                                 $(select).css({ 'backgroundColor': 'red', 'color': 'white' }) // cancelled
+        });
+
+        $(document).ready(function () {
+            $('#orderTable').DataTable();
         });
 
     })
@@ -128,7 +128,7 @@
                             orderNewStatus === 'placed' ? $(select).css({ 'backgroundColor': 'blue', 'color': 'white' }) :
                                 orderNewStatus === 'dispatched' ? $(select).css({ 'backgroundColor': 'yellow', 'color': 'black' }) :
                                     orderNewStatus === 'delivered' ? $(select).css({ 'backgroundColor': 'green', 'color': 'white' }) :
-                                        orderNewStatus === 'refunded' ? $('#statusSec').html('<p class="text-capitalize text-success fw-bold" data-status=refunded >refunded</p>'):
+                                        orderNewStatus === 'refunded' ? $('#statusSec').html('<p class="text-capitalize text-success fw-bold" data-status=refunded >refunded</p>') :
                                             $(select).css({ 'backgroundColor': 'red', 'color': 'white' })
                             dateCell.text(updatedDate)
                         },
@@ -222,16 +222,7 @@
                             {{!-- <p class="ms-3">Billing address</p> --}}
 
                         </div>
-                        {{!-- <div class="col-xl-4">
-                            <ul class="list-unstyled">
-                                <li class="text-muted"><span class="text-black me-3">SubTotal</span> <span
-                                        class="subTotal">1110</span></li>
 
-                            </ul>
-                            <p class="text-black float-start">
-                                <span class="text-black me-3"> Total</span><span class=" ms-4 total">$1221</span>
-                            </p>
-                        </div> --}}
                         <div class="col-4" style="font-size: 12px;">
                             <p class="text-black mb-1">
                                 <span class="text-black me-auto ms-3"> SubTotal</span>
