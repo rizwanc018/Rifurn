@@ -76,7 +76,7 @@ const adminHelper = {
             option === 'yearly' ? '%Y' : '%Y-%m-%d'
         const salesReport = await orderModel.aggregate([
             {
-                $match: { _id: { $ne: "" } },
+                $match: { _id: { $ne: "" }, orderStatus: "delivered" },
             },
             {
                 $unwind: '$items'

@@ -6,6 +6,12 @@
 <hr>
 <div class="container">
     <div class="row justify-content-end mb-3">
+        <div class="col-xl-3 me-auto">
+            <a class="btn btn-light text-capitalize border-0 p-0 me-3" onclick="downloadExcel()" data-mdb-ripple-color="dark"><i
+                    class="fas fa-print text-primary"></i></a>
+            <a class="btn btn-light text-capitalize p-0" onclick="downloadPDF()" data-mdb-ripple-color="dark"><i
+                    class="far fa-file-pdf text-danger"></i></a>
+        </div>
         <a style="font-size: 13px;" class="btn btn-success col-auto me-3" href="/admin/salesreport">
             Daily
         </a>
@@ -19,7 +25,7 @@
 
     <div class="row">
         {{!-- <table id="usersTable datatables" class="table mb-0"> --}}
-            <table id="orderTable" class="table mb-0 text-end">
+            <table id="salesReport" class="table mb-0 text-end">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -53,4 +59,22 @@
     </div>
 </div>
 <script>
+    function downloadPDF() {
+        var details = document.getElementById("salesReport");
+        var newWin = window.open('', 'Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><head><style>@media print { @page { size: A4; margin: 0; } }</style></head><body onload="window.print()">' + details.outerHTML + '</html>'); newWin.document.close();
+        setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+<script>
+    function downloadExcel() {
+        var table = document.getElementById("salesReport");
+        var worksheet = XLSX.utils.table_to_sheet(table);
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+        XLSX.writeFile(workbook, "table.xlsx");
+    }
 </script>
