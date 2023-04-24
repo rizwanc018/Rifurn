@@ -124,7 +124,98 @@ const adminHelper = {
             }
         ])
         return salesReport
+    },
+    getNoOfOrders: async (option) => {
+        if (option === 'delivered') {
+            const [deliveredOrders] = await orderModel.aggregate([
+                {
+                    $match: { _id: { $ne: "" }, orderStatus: "delivered" },
+                },
+                {
+                    $unwind: '$items'
+                },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'items.productId',
+                        foreignField: '_id',
+                        as: 'result'
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        count: { $sum: 1 },
+                    }
+                },
+            ])
+            return deliveredOrders.count
+        } else {
+            const [allOrders] = await orderModel.aggregate([
+                {
+                    $match: { _id: { $ne: "" }, orderStatus: { $nin: ['cancelled', 'returned', 'refunded'] } },
+                },
+                {
+                    $unwind: '$items'
+                },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'items.productId',
+                        foreignField: '_id',
+                        as: 'result'
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        count: { $sum: 1 },
+                    }
+                },
+            ])
+            return allOrders.count
+        }
+    },
+    getPaymentStastics: async () => {
+        const paymentStatistics = await orderModel.aggregate([
+            {
+                $match: { _id: { $ne: "" } }
+            },
+            {
+                $group: {
+                    _id: '$paymentId',
+                    count: { $sum: 1 }
+                }
+            }
+        ])
+        return paymentStatistics
+    },
+    generateDataForGraph: (data) => {
+        data = data.reverse()
+        let label = []
+        let points = []
+        data.forEach(e => {
+            label.push(e._id)
+        });
+        data.forEach(e => {
+            points.push(e.total)
+        });
+        return { label, points }
+    },
+    generatePaymentDataForChart: (data) => {
+        let points = []
+        let count = 0
+        data.forEach(d => {
+            if(d._id === 'COD'){
+                points.push(d.count)
+            } else if (d._id === 'wallet') {
+                points.push(d.count)
+            } else {
+                count++
+            }
+        })
+        points.push(count)
+        return points
     }
 }
-
 export default adminHelper

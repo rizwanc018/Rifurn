@@ -97,7 +97,7 @@ const userHelper = {
                     {
                         address: address
                     }
-                }, {new: true})
+                }, { new: true })
             return status
         } catch (error) {
             console.log("🚀 ~ file: userHelper.js:96 ~ updateAddress: ~ error:", error.message)
@@ -122,6 +122,20 @@ const userHelper = {
         } else {
             return { paymentStatus: false }
         }
+    },
+    getUsersCount: async () => {
+        const [users] = await UserModel.aggregate([
+            {
+                $match: { _id: { $ne: "" } },
+            },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 },
+                }
+            }
+        ])
+        return users.count
     }
 }
 

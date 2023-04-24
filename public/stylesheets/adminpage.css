@@ -81,7 +81,13 @@ a:focus {
     background: #fff;
 }
 
-#sidebar ul li.active>a,
+/* #sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: #6d7fcc;
+} */
+
+#sidebar ul li>a.active,
 a[aria-expanded="true"] {
     color: #fff;
     background: #6d7fcc;
@@ -147,9 +153,11 @@ a.article:hover {
     #sidebar {
         margin-left: -250px;
     }
+
     #sidebar.active {
         margin-left: 0;
     }
+
     #sidebarCollapse span {
         display: none;
     }

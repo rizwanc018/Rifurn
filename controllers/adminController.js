@@ -2,6 +2,7 @@ import adminHelper from "../helpers/adminHelper.js"
 import orderHelper from "../helpers/orderHelper.js"
 import orderModel from "../models/orderModel.js"
 import walletHelper from "../helpers/walletHelper.js"
+import userHelper from "../helpers/userHelper.js"
 
 
 const adminController = {
@@ -18,8 +19,19 @@ const adminController = {
                 res.redirect('/')
             })
     },
-    showDashboard: (req, res) => {
-        res.render('admin/dashboard', { isAdmin: req.session.isAdmin })
+    showDashboard: async (req, res) => {
+        const [monthlyReport] = await adminHelper.getSalesReport('monthly')
+        const [yearlyReport] = await adminHelper.getSalesReport('yearly')
+        const deliveredOrders = await adminHelper.getNoOfOrders('delivered')
+        const allOrders = await adminHelper.getNoOfOrders('all')
+        let deliveredPercent = ((deliveredOrders / allOrders) * 100).toFixed(1)
+        const usersCount = await userHelper.getUsersCount()
+        const dailySalesReport = await adminHelper.getSalesReport()
+        const { label, points } = adminHelper.generateDataForGraph(dailySalesReport)
+        const paymentData = await adminHelper.getPaymentStastics()
+        const paymentPoints = adminHelper.generatePaymentDataForChart(paymentData)
+
+        res.render('admin/dashboard', { label, points,  paymentPoints, monthlyReport, yearlyReport, deliveredPercent, usersCount, isAdmin: req.session.isAdmin })
     },
     doLogOut: (req, res) => {
         req.session.isAdmin = null
