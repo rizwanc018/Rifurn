@@ -95,7 +95,7 @@
         });
 
         $(document).ready(function () {
-            $('#orderTable').DataTable();
+        //    $('#orderTable').DataTable();
         });
 
     })
@@ -219,8 +219,10 @@
                     </div>
                     <div class="row">
                         <div class="col-8">
-                            {{!-- <p class="ms-3">Billing address</p> --}}
-
+                            <div class="returnReasonContainer hide">
+                                <p>Reason for retruning product</p>
+                                <p id="returnReason" class="ms-3 text-danger "></p>
+                            </div>
                         </div>
 
                         <div class="col-4" style="font-size: 12px;">
@@ -306,6 +308,13 @@
                 $('.subTotal').text(total)
                 $('.discount').text(`₹${res[0].discount}`)
                 $('.total').text(`₹${total - res[0].discount}`)
+                if (res[0].returnReason) {
+                    $('#returnReason').text(res[0].returnReason)
+                    $('.returnReasonContainer').removeClass('hide')
+                } else {
+                    $('.returnReasonContainer').addClass('hide')
+                }
+                console.log("🚀 ~ file: orders.hbs:315 ~ viewOrderDetails ~ res[0].returnReason:", res[0].returnReason)
             },
             error: err => {
                 console.log(err)

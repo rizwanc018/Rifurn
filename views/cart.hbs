@@ -56,7 +56,7 @@
                                         <button id="decBtn" onclick="changeQuantity(this, -1)" style="display: none"
                                             class="dec qtybtn">-</button>
                                         {{/lt}}
-                                        <input class="qty" type="text" value={{quantity}}>
+                                        <input class="qty" id="quantity" type="text" value={{quantity}}>
                                         <button id="incBtn" onclick="changeQuantity(this, 1)"
                                             class="inc qtybtn">+</button>
                                     </div>
@@ -164,6 +164,7 @@
     var url = window.location.origin
     const amount = $('.amount')
     function changeQuantity(self, qty) {
+        console.log($('#quantity').text())
         const $tr = $(self).closest('tr')
         const productId = $($tr).attr('data-productId')
         const $qtyField = $tr.find('input.qty')
@@ -176,8 +177,11 @@
                 discount = res.discount
                 if (res.item.quantity === 1) {
                     $tr.find('#decBtn').hide()
+                }else if (res.item.quantity === 5) {
+                    $tr.find('#incBtn').hide()
                 } else {
                     $tr.find('#decBtn').show()
+                    $tr.find('#incBtn').show()
                 }
                 $qtyField.val(res.item.quantity)
                 $subTotalField.html(`₹ ${res.item.subTotal}`)

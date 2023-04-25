@@ -69,13 +69,30 @@ const orderHelper = {
         ])
         return userOrders
     },
-    updateStatus: async (orderId, action) => {
-        const status = await orderModel.updateOne(
-            { _id: orderId },
-            {
-                orderStatus: action
-            })
-        return status
+    updateStatus: async (orderId, action, returnReason = "") => {
+        console.log("🚀 ~ file: orderHelper.js:73 ~ updateStatus: ~ returnReason:", returnReason)
+        console.log("🚀 ~ file: orderHelper.js:73 ~ updateStatus: ~ action:", action)
+        console.log("🚀 ~ file: orderHelper.js:73 ~ updateStatus: ~ orderId:", orderId)
+        if (returnReason) {
+            console.log('Return reason is trueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+            const status = await orderModel.updateOne(
+                { _id: orderId },
+                {
+                    orderStatus: action,
+                    returnReason: returnReason
+                })
+            console.log("🚀 ~ file: orderHelper.js:84 ~ updateStatus: ~ status:", status)
+            return status
+        } else {
+            console.log('Return reason is FALSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe');
+
+            const status = await orderModel.updateOne(
+                { _id: orderId },
+                {
+                    orderStatus: action
+                })
+            return status
+        }
     },
     updateStatusAndPaymentId: async (orderId, paymentId, action) => {
         const status = await orderModel.updateOne(
@@ -114,6 +131,7 @@ const orderHelper = {
                     price: { $arrayElemAt: ["$result.price", 0] },
                     amount: { $multiply: ['$items.quantity', { $arrayElemAt: ["$result.price", 0] }] },
                     image: { $first: "$result.images" },
+                    returnReason: 1
                 }
             }
         ])

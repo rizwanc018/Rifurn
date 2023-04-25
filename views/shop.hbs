@@ -18,7 +18,7 @@
                             <form action="" id="searchForm">
                                 <input type="text" class="form-control" name="search" id="searchProducts" placeholder=""
                                     style="width: 100%;">
-                                <button class="btn bttn py-1 mt-3">Search</button>
+                                {{!-- <button class="btn bttn py-1 mt-3">Search</button> --}}
                             </form>
                         </div>
 
@@ -40,7 +40,7 @@
 
                         </script>
 
-                        <div class="common-sidebar-widget">
+                        <div class="common-sidebar-widget mb-0">
                             <h3 class="sidebar-title">Product categories</h3>
                             <ul class="sidebar-list">
                                 {{#each categories }}
@@ -73,6 +73,22 @@
                             </div>
                         </div>
                         <!-- Single Sidebar End  --> --}}
+
+                        <!-- Single Sidebar Start  -->
+                        <div class="common-sidebar-widget">
+                            <h3 class="sidebar-title">Tags</h3>
+                            <ul class="sidebar-tag">
+                                {{#each categories }}
+                                <li>
+                                    <a href="/shop/category/{{_id}}">
+                                        {{result.category}}
+                                    </a>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                        <!-- Single Sidebar End  -->
+
                         <!-- Single Sidebar Start  -->
                         <div class="common-sidebar-widget">
                             <h3 class="sidebar-title">Filter by</h3>
@@ -80,21 +96,6 @@
                                 <li><a href="#"><i class="ion-plus"></i>Gold</a></li>
                                 <li><a href="#"><i class="ion-plus"></i>Green</a></li>
                                 <li><a href="#"><i class="ion-plus"></i>White</a></li>
-                            </ul>
-                        </div>
-                        <!-- Single Sidebar End  -->
-
-                        <!-- Single Sidebar Start  -->
-                        <div class="common-sidebar-widget">
-                            <h3 class="sidebar-title">Product tags</h3>
-                            <ul class="sidebar-tag">
-                                {{#each categories }}
-                                <li>
-                                    <a href="/shop/category/{{_id}}">
-                                        {{category}}
-                                    </a>
-                                </li>
-                                {{/each}}
                             </ul>
                         </div>
                         <!-- Single Sidebar End  -->

@@ -25,7 +25,8 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "COD"
     },
-    discount: Number
+    discount: Number,
+    returnReason: String
 },
     {
         timestamps: true
