@@ -74,60 +74,8 @@ const adminHelper = {
     getSalesReport: async (option = 'daily') => {
         const format = option === 'monthly' ? '%Y-%m' :
             option === 'yearly' ? '%Y' : '%Y-%m-%d'
-        const salesReport = await orderModel.aggregate([
-            {
-                $match: { _id: { $ne: "" }, orderStatus: "delivered" },
-            },
-            {
-                $unwind: '$items'
-            },
-            {
-                $lookup: {
-                    from: 'products',
-                    localField: 'items.productId',
-                    foreignField: '_id',
-                    as: 'result'
-                }
-            },
-            {
-                $group: {
-                    _id: {
-                        $dateToString: { format: format, date: "$createdAt" }
-                    },
-                    orderCount: { $sum: 1 },
-                    productCount: { $sum: '$items.quantity' },
-                    discount: { $sum: '$discount' },
-                    subTotal: { $sum: { $multiply: ['$items.quantity', { $arrayElemAt: ["$result.price", 0] }] } },
-                }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    orderCount: 1,
-                    productCount: 1,
-                    discount: 1,
-                    subTotal: 1
-                }
-            },
-            {
-                $project: {
-                    _id: 1,
-                    orderCount: 1,
-                    productCount: 1,
-                    discount: 1,
-                    subTotal: 1,
-                    total: { $subtract: ['$subTotal', '$discount'] }
-                }
-            },
-            {
-                $sort: { _id: -1 }
-            }
-        ])
-        return salesReport
-    },
-    getNoOfOrders: async (option) => {
-        if (option === 'delivered') {
-            const [deliveredOrders] = await orderModel.aggregate([
+        try {
+            const salesReport = await orderModel.aggregate([
                 {
                     $match: { _id: { $ne: "" }, orderStatus: "delivered" },
                 },
@@ -144,51 +92,116 @@ const adminHelper = {
                 },
                 {
                     $group: {
-                        _id: null,
-                        count: { $sum: 1 },
+                        _id: {
+                            $dateToString: { format: format, date: "$createdAt" }
+                        },
+                        orderCount: { $sum: 1 },
+                        productCount: { $sum: '$items.quantity' },
+                        discount: { $sum: '$discount' },
+                        subTotal: { $sum: { $multiply: ['$items.quantity', { $arrayElemAt: ["$result.price", 0] }] } },
                     }
                 },
+                {
+                    $project: {
+                        _id: 1,
+                        orderCount: 1,
+                        productCount: 1,
+                        discount: 1,
+                        subTotal: 1
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        orderCount: 1,
+                        productCount: 1,
+                        discount: 1,
+                        subTotal: 1,
+                        total: { $subtract: ['$subTotal', '$discount'] }
+                    }
+                },
+                {
+                    $sort: { _id: -1 }
+                }
             ])
-            return deliveredOrders.count
-        } else {
-            const [allOrders] = await orderModel.aggregate([
-                {
-                    $match: { _id: { $ne: "" }, orderStatus: { $nin: ['cancelled', 'returned', 'refunded'] } },
-                },
-                {
-                    $unwind: '$items'
-                },
-                {
-                    $lookup: {
-                        from: 'products',
-                        localField: 'items.productId',
-                        foreignField: '_id',
-                        as: 'result'
-                    }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        count: { $sum: 1 },
-                    }
-                },
-            ])
-            return allOrders.count
+            return salesReport
+        } catch (error) {
+            console.log("🚀 ~ file: adminHelper.js:129 ~ getSalesReport: ~ error:", error)
+        }
+    },
+    getNoOfOrders: async (option) => {
+        try {
+            if (option === 'delivered') {
+                const [deliveredOrders] = await orderModel.aggregate([
+                    {
+                        $match: { _id: { $ne: "" }, orderStatus: "delivered" },
+                    },
+                    {
+                        $unwind: '$items'
+                    },
+                    {
+                        $lookup: {
+                            from: 'products',
+                            localField: 'items.productId',
+                            foreignField: '_id',
+                            as: 'result'
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            count: { $sum: 1 },
+                        }
+                    },
+                ])
+                return deliveredOrders.count
+            } else {
+                const [allOrders] = await orderModel.aggregate([
+                    {
+                        $match: { _id: { $ne: "" }, orderStatus: { $nin: ['cancelled', 'returned', 'refunded'] } },
+                    },
+                    {
+                        $unwind: '$items'
+                    },
+                    {
+                        $lookup: {
+                            from: 'products',
+                            localField: 'items.productId',
+                            foreignField: '_id',
+                            as: 'result'
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            count: { $sum: 1 },
+                        }
+                    },
+                ])
+                return allOrders.count
+            }
+        } catch (error) {
+            console.log("🚀 ~ file: adminHelper.js:184 ~ getNoOfOrders: ~ error:", error)
+
         }
     },
     getPaymentStastics: async () => {
-        const paymentStatistics = await orderModel.aggregate([
-            {
-                $match: { _id: { $ne: "" } }
-            },
-            {
-                $group: {
-                    _id: '$paymentId',
-                    count: { $sum: 1 }
+        try {
+            const paymentStatistics = await orderModel.aggregate([
+                {
+                    $match: { _id: { $ne: "" } }
+                },
+                {
+                    $group: {
+                        _id: '$paymentId',
+                        count: { $sum: 1 }
+                    }
                 }
-            }
-        ])
-        return paymentStatistics
+            ])
+            return paymentStatistics   
+        } catch (error) {
+            console.log("🚀 ~ file: adminHelper.js:192 ~ getPaymentStastics: ~ error:", error)
+        }
     },
     generateDataForGraph: (data) => {
         data = data.reverse()
@@ -206,7 +219,7 @@ const adminHelper = {
         let points = []
         let count = 0
         data.forEach(d => {
-            if(d._id === 'COD'){
+            if (d._id === 'COD') {
                 points.push(d.count)
             } else if (d._id === 'wallet') {
                 points.push(d.count)

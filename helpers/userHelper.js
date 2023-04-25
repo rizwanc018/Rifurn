@@ -8,8 +8,12 @@ dotenv.config()
 
 const userHelper = {
     isEmailExist: async (email) => {
-        const isExist = await UserModel.exists({ email: email })
-        return isExist
+        try {
+            const isExist = await UserModel.exists({ email: email })
+            return isExist
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:15 ~ isEmailExist: ~ error:", error)
+        }
     },
     doOTPVerification: (req, res) => {
         const otp = req.body.otp
@@ -21,62 +25,55 @@ const userHelper = {
         }
     },
     createUser: async (req) => {
-        const { firstname, lastname, email, mobile, password } = req.session.user
-        const hash = await bcrypt.hash(password, 10)
-        const userData = await UserModel.create({ firstname, lastname, email, mobile, password: hash })
-        return userData
+        try {
+            const { firstname, lastname, email, mobile, password } = req.session.user
+            const hash = await bcrypt.hash(password, 10)
+            const userData = await UserModel.create({ firstname, lastname, email, mobile, password: hash })
+            return userData
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:34 ~ createUser: ~ error:", error)
+        }
     },
     getUser: async (email, password) => {
-        console.log(email, password)
-        const user = await UserModel.findOne({ email: email })
-        return user
+        try {
+            const user = await UserModel.findOne({ email: email })
+            return user
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:42 ~ getUser: ~ error:", error)
+        }
     },
     getUSerbyId: async (id) => {
-        const user = await UserModel.findById(id)
-        return user
+        try {
+            const user = await UserModel.findById(id)
+            return user
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:50 ~ getUSerbyId: ~ error:", error)
+        }
     },
     getallUsers: async () => {
-        const allUsers = await UserModel.find({})
-        if (allUsers) return allUsers
+        try {
+            const allUsers = await UserModel.find({})
+            if (allUsers) return allUsers
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:58 ~ getallUsers: ~ error:", error)
+        }
     },
-    // doOTPLogin: (req, res) => {
-    //     return new Promise(async (resolve, reject) => {
-    //         let { email } = req.body
-    //         if (email) {
-    //             console.log(`--------------`, email);
-    //             const emailExist = await UserModel.exists({ email: email })
-    //             if (emailExist) {
-    //                 const status = await sendOTP(mobile)
-    //                 resolve(status.to)
-    //             } else {
-    //                 reject("Number does not exist")
-    //             }
-    //         }
-    //     })
-    // },
-    // doOTPVerificationForLogin: (req, res) => {
-    //     const { mobile, otp } = req.body
-    //     return new Promise(async (resolve, reject) => {
-    //         if (otp) {
-    //             const status = await verifyOTP(mobile, otp)
-    //             if (status.valid) {
-    //                 resolve(status)
-    //             } else {
-    //                 reject("Invalid OTP")
-    //             }
-    //         } else {
-    //             reject("Invalid OTP")
-    //         }
-    //     })
-    // },
+
     deleteUser: async (id) => {
-        const data = await UserModel.deleteOne({ _id: id })
-        console.log(data)
-        return data
+        try {
+            const data = await UserModel.deleteOne({ _id: id })
+            return data
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:67 ~ deleteUser: ~ error:", error)
+        }
     },
     updateUser: async (id, blockstatus) => {
-        const status = UserModel.updateOne({ _id: id }, { blocked: blockstatus })
-        return status
+        try {
+            const status = UserModel.updateOne({ _id: id }, { blocked: blockstatus })
+            return status
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:75 ~ updateUser: ~ error:", error)
+        }
     },
     updateAddress: async (userId, address) => {
         const data = {
@@ -110,8 +107,12 @@ const userHelper = {
             currency: "INR",
             receipt: "SSS"
         }
-        const rzpOrder = await instance.orders.create(options)
-        return rzpOrder
+        try {
+            const rzpOrder = await instance.orders.create(options)
+            return rzpOrder
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:114 ~ generateRazorpay: ~ error:", error)
+        }
     },
     verifyPayment: async (paymentDetails) => {
         let hmac = crypto.createHmac('sha256', process.env.RZP_KEY_SECRET)
@@ -124,18 +125,22 @@ const userHelper = {
         }
     },
     getUsersCount: async () => {
-        const [users] = await UserModel.aggregate([
-            {
-                $match: { _id: { $ne: "" } },
-            },
-            {
-                $group: {
-                    _id: null,
-                    count: { $sum: 1 },
+        try {
+            const [users] = await UserModel.aggregate([
+                {
+                    $match: { _id: { $ne: "" } },
+                },
+                {
+                    $group: {
+                        _id: null,
+                        count: { $sum: 1 },
+                    }
                 }
-            }
-        ])
-        return users.count
+            ])
+            return users.count
+        } catch (error) {
+            console.log("🚀 ~ file: userHelper.js:131 ~ getUsersCount: ~ error:", error)
+        }
     }
 }
 
