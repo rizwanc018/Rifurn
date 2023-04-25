@@ -134,6 +134,7 @@
                                                 conditions</label>
                                         </div>
                                         {{!-- svaAddress --}}
+                                        <p id="paymentErr" class="text-danger"></p>
                                         <input class="form-control" hidden type="text" name="saveAddress" value="true">
                                     </div>
 
@@ -226,6 +227,8 @@
                                     } else if (res.payment === "rzPay") {
                                         // online payment
                                         razorpayPayment(res.rzpOrder, firstname, lastname, mobile)
+                                    } else if(res.noWallet) {
+                                        $('#paymentErr').text(res.msg)
                                     }
                                 },
                                 error: err => {

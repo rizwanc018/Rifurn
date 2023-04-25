@@ -7,7 +7,6 @@ import productHelper from "../helpers/productHelpers.js";
 import cartHelper from "../helpers/cartHelper.js";
 import orderHelper from "../helpers/orderHelper.js";
 import couponModel from "../models/couponModel.js";
-import { response } from "express";
 import walletHelper from "../helpers/walletHelper.js";
 
 const userController = {
@@ -187,18 +186,20 @@ const userController = {
             const rzpOrder = await userHelper.generateRazorpay(total)
             res.status(200).send({ payment: "rzPay", rzpOrder })
         } else if (paymentMethod === 'wallet') {
-            const walletBalance = await walletHelper.getWalletBalance(userId)
-            let total = await cartHelper.getTotalFromCart(userId)   // total: [ { total: 6200 } ]
-            total = total[0].grandTotal - discount
-            if (total <= walletBalance) {
-                const cartData = await cartHelper.getItemsAndDeleteCart(userId)
-                const orderdata = await orderHelper.createOrder(userId, cartData, address, discount, 'wallet')
-                const status = await walletHelper.updateWallet(userId, total*-1, 'buy')
-                console.log("🚀 ~ file: userController.js:197 ~ placeOrder: ~ status:", status)
-                if(status.modifiedCount === 1) {
-                    res.status(200).send({ walletSuccess: true, msg: 'Order Placed Successfully', orderId: orderdata._id })
-
+            try {
+                const walletBalance = await walletHelper.getWalletBalance(userId)
+                let total = await cartHelper.getTotalFromCart(userId)   // total: [ { total: 6200 } ]
+                total = total[0].grandTotal - discount
+                if (total <= walletBalance) {
+                    const cartData = await cartHelper.getItemsAndDeleteCart(userId)
+                    const orderdata = await orderHelper.createOrder(userId, cartData, address, discount, 'wallet')
+                    const status = await walletHelper.updateWallet(userId, total * -1, 'buy')
+                    if (status.modifiedCount === 1) {
+                        res.status(200).send({ walletSuccess: true, msg: 'Order Placed Successfully', orderId: orderdata._id })
+                    }
                 }
+            } catch (error) {
+                res.status(200).send({ noWallet: true, msg: 'No wallet found / Not enough balance' })
             }
         }
     },
@@ -304,7 +305,6 @@ const userController = {
             zip: zip
         }
         const response = await userHelper.updateAddress(userId, address)
-        // console.log("🚀 ~ file: userController.js:287 ~ saveAddress: ~ response:", response.address.pop())
         if (response) {
             res.status(200).send(response.address.pop())
         } else {
