@@ -123,7 +123,7 @@ const productHelper = {
             const products = await productModel.find({ category: id })
             return products
         } catch (err) {
-
+        console.log("🚀 ~ file: productHelpers.js:126 ~ getAllProductsByCategory: ~ err:", err)
         }
     },
     getSingleProduct: (req) => {
