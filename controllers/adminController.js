@@ -31,7 +31,7 @@ const adminController = {
         const paymentData = await adminHelper.getPaymentStastics()
         const paymentPoints = adminHelper.generatePaymentDataForChart(paymentData)
 
-        res.render('admin/dashboard', { label, points,  paymentPoints, monthlyReport, yearlyReport, deliveredPercent, usersCount, isAdmin: req.session.isAdmin })
+        res.render('admin/dashboard', { label, points, paymentPoints, monthlyReport, yearlyReport, deliveredPercent, usersCount, isAdmin: req.session.isAdmin })
     },
     doLogOut: (req, res) => {
         req.session.isAdmin = null
@@ -41,9 +41,14 @@ const adminController = {
         const { orderId, orderNewStatus } = req.body
         if (orderNewStatus === 'refunded') {
             const { userId, discount } = await orderModel.findOne({ _id: orderId }, { userId: 1, _id: 0, discount: 1 })
-            let amount = await orderHelper.getTotal(orderId) // total: [ { total: 2000 } ]
-            amount = amount[0].total - discount
-            const response = await walletHelper.updateWallet(userId, amount)
+            const orderData = await orderModel.findOne({ _id: orderId })
+            console.log("🚀 ~ file: adminController.js:45 ~ changeOrderStatus: ~ orderData:", orderData)
+
+            if (orderData.orderStatus !== 'cancelled' && orderData.paymentId !== COD) {
+                let amount = await orderHelper.getTotal(orderId) // total: [ { total: 2000 } ]
+                amount = amount[0].total - discount
+                const response = await walletHelper.updateWallet(userId, amount)
+            }
         }
         const status = await orderHelper.updateStatus(orderId, orderNewStatus)
         res.status(200).send("Status changed")

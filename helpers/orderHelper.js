@@ -74,7 +74,6 @@ const orderHelper = {
         console.log("🚀 ~ file: orderHelper.js:73 ~ updateStatus: ~ action:", action)
         console.log("🚀 ~ file: orderHelper.js:73 ~ updateStatus: ~ orderId:", orderId)
         if (returnReason) {
-            console.log('Return reason is trueeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
             const status = await orderModel.updateOne(
                 { _id: orderId },
                 {
