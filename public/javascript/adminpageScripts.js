@@ -119,7 +119,8 @@ var myLineChart = new Chart(ctx, {
 
   var ctx = document.getElementById("myPieChart");
   var myPieChart = new Chart(ctx, {
-    type: 'doughnut',
+    //type: 'doughnut',
+    type: 'polarArea',
     data: {
       labels: ["COD", "Wallet", "Online"],
       datasets: [{

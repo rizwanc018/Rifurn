@@ -35,12 +35,11 @@
                     <div class="card-body p-0">
                         <ul class="list-group profileMenu list-group-flush rounded-0">
                             <li class="list-group-item  d-flex justify-content-between align-items-center p-3"
-                                data-target="profile">
-                                <p class="mb-0"><span>Profile</span></p>
+                                data-target="profile">Profile
                             </li>
+
                             <li class="list-group-item  d-flex justify-content-between align-items-center p-3"
-                                data-target="address">
-                                <p class="mb-0"><span>Address</span></p>
+                                data-target="address">Address
                             </li>
                             <li class="list-group-item  d-flex justify-content-between align-items-center p-3">
                                 <p class="mb-0"><a href="/user/cart">Cart</a></p>
@@ -261,25 +260,7 @@
                                 })
                             })
                         </script>
-                        {{!--
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Mobile</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">(098) 765-4321</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Address</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
-                            </div>
-                        </div> --}}
+
                     </div>
                 </div>
 
@@ -298,6 +279,9 @@
                                         {{mobile}},
                                         {{addr1}},
                                         {{addr2}}, {{town}}, {{state}}, {{country}}, {{zip}}
+                                        <button class="btn" onclick="editAddress(this,'{{_id}}')">
+                                            <i class="fa fa-pen-to-square"></i>
+                                        </button>
                                         <button class="btn" onclick="deleteAddress(this,'{{_id}}')">
                                             <i class="fa fa-close "></i>
                                         </button>
@@ -310,6 +294,25 @@
                                 {{/if}}
                             </div>
                             <hr>
+
+                            <script>
+                                function editAddress(self, addId) {
+                                    deleteAddress(self, addId)
+                                    const div = $(self).closest('div')
+                                    const input = $(div).find('input')
+                                    const address = input.val().split(',')
+
+                                    $('.address-form [name=firstname]').val(address[0])
+                                    $('.address-form [name=lastname]').val(address[1])
+                                    $('.address-form [name=mobile]').val(Number(address[2]))
+                                    $('.address-form [name=addr1]').val(address[3])
+                                    $('.address-form [name=addr2]').val(address[4])
+                                    $('.address-form [name=town]').val(address[5])
+                                    $('.address-form [name=state]').val(address[6])
+                                    $('.address-form [name=country]').val(address[7])
+                                    $('.address-form [name=zip]').val(address[8])
+                                }
+                            </script>
 
                             <form action="/user/address/save" class="address-form" method="" novalidate>
                                 <div class="editAddress row">
@@ -358,7 +361,7 @@
                                             placeholder="Zip Code" value={{userData.address.zip}}>
                                     </div>
                                 </div>
-                                <button class="btn bttn mb-3 py-2">Save</button>
+                                <button class="btn bttn mb-3 py-2 saveBtn">Save</button>
                             </form>
                             <hr>
 
@@ -407,6 +410,9 @@
                                     ${res.mobile},
                                     ${res.addr1},
                                     ${res.addr2}, ${res.town}, ${res.state}, ${res.country}, ${res.zip}
+                                    <button class="btn" onclick="editAddress(this,'${res._id}')">
+                                        <i class="fa fa-pen-to-square"></i>
+                                    </button>
                                     <button class="btn" onclick="deleteAddress(this,'${res._id}')">
                                         <i class="fa fa-close "></i>
                                     </button>
