@@ -35,7 +35,7 @@ app.use(session({
     cookie: { maxAge: 6000000 }
 }));
 
-//HBS helper
+//HBS helpers
 registerHelpers(hbs);
 
 
