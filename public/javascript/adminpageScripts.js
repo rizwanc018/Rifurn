@@ -103,7 +103,7 @@ var myLineChart = new Chart(ctx, {
     data: {
       labels: label,
       datasets: [{
-        label: 'Payment Type',
+        label: 'Revenue',
         data: points,
         borderWidth: 1
       }]

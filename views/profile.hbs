@@ -71,7 +71,7 @@
             </div>
 
             <div class="col-sm-9">
-                <div class="card view mb-4 rounded-0 profile profile-card hide">
+                <div class="card view mb-4 rounded-0 profile profile-card">
                     <div class="card-body">
                         <div class="row">
                             <div class="editProfile row">
@@ -283,7 +283,7 @@
                     </div>
                 </div>
 
-                <div class="card view mb-4 rounded-0 address address-card ">
+                <div class="card view mb-4 rounded-0 address address-card hide">
                     <div class="card-body">
                         <div class="row">
 
@@ -425,9 +425,9 @@
 
     })
 
-    $('.profileMenu').delegate('li', 'click', function (e) {
+    // $('.profileMenu').delegate('li', 'click', function (e) {
+    $('.profileMenu').on('click', function (e) {
         let target = "." + $(e.target).attr('data-target')
-        //console.log("🚀 ~ file: profile.hbs:350 ~ $ ~ target:", target)
         $('.card.view').addClass('hide')
         $(target).removeClass('hide')
     })
