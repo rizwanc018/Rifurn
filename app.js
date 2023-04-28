@@ -11,7 +11,7 @@ import userRouter from './routes/userRouter.js';
 import adminRouter from './routes/adminRouter.js';
 import guestRouter from './routes/guestRouter.js';
 import nocache from "nocache";
-// import twilioRouter from './routes/twilioRouter.js'
+import { registerHelpers } from './utils/hbsHelpers.js';
 
 const app = express()
 const __filename = fileURLToPath(import.meta.url);
@@ -35,24 +35,9 @@ app.use(session({
     cookie: { maxAge: 6000000 }
 }));
 
-// HBS helper
-hbs.registerHelper("inc", function (value, options) {
-    return parseInt(value) + 1;
-});
-hbs.registerHelper('gt', function (a, b, options) {
-    if (a > b) return options.fn(this)
-});
-hbs.registerHelper('lt', function (a, b, options) {
-    if (a < b) return options.fn(this)
-});
-hbs.registerHelper('eq', function (a, b, options) {
-    if (a == b) return options.fn(this)
-    else return options.inverse(this)
-});
-hbs.registerHelper('noteq', function (a, b, options) {
-    if (a !== b) return options.fn(this)
-    else return options.inverse(this)
-});
+//HBS helper
+registerHelpers(hbs);
+
 
 // DB
 mongoose.connect(process.env.DATABASE_URL)

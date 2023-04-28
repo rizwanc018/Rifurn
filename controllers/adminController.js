@@ -42,9 +42,14 @@ const adminController = {
         if (orderNewStatus === 'refunded') {
             const { userId, discount } = await orderModel.findOne({ _id: orderId }, { userId: 1, _id: 0, discount: 1 })
             const orderData = await orderModel.findOne({ _id: orderId })
-            console.log("🚀 ~ file: adminController.js:45 ~ changeOrderStatus: ~ orderData:", orderData)
 
-            if (orderData.orderStatus !== 'cancelled' && orderData.paymentId !== COD) {
+            if (orderData.orderStatus === 'cancelled') {
+                if (orderData.paymentId !== 'COD') {
+                    let amount = await orderHelper.getTotal(orderId) // total: [ { total: 2000 } ]
+                    amount = amount[0].total - discount
+                    const response = await walletHelper.updateWallet(userId, amount)
+                }
+            } else {
                 let amount = await orderHelper.getTotal(orderId) // total: [ { total: 2000 } ]
                 amount = amount[0].total - discount
                 const response = await walletHelper.updateWallet(userId, amount)
