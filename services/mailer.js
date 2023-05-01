@@ -1,7 +1,4 @@
 import { createTransport } from 'nodemailer';
-import * as dotenv from 'dotenv'
-dotenv.config()
-
 
 const MAIL_SETTINGS = {
   service: 'gmail',
