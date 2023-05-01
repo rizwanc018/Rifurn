@@ -1,6 +1,6 @@
 import { createTransport } from 'nodemailer';
-import dotenv from 'dotenv';
-
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 
 const MAIL_SETTINGS = {
@@ -10,6 +10,7 @@ const MAIL_SETTINGS = {
     pass: process.env.MAILER_PASSWORD,
   },
 }
+console.log("🚀 ~ file: mailer.js:13 ~ MAIL_SETTINGS.auth.process.env.MAILER_PASSWORD:", MAIL_SETTINGS.auth.process.env.MAILER_PASSWORD)
 
 
 const transporter = createTransport(MAIL_SETTINGS);
