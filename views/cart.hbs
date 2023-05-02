@@ -110,9 +110,13 @@
                                 <p>Shipping Cost <span>₹ 0</span></p>
                                 <h2>Grand Total <span class="grandtotal">₹ {{grandTotal}}</span></h2>
                             </div>
-                            <div class="cart-summary-button mb-5">
+                            {{!-- <div class="cart-summary-button mb-5">
                                 <button class="btn bttn"><a class="checkout-btn"
                                         href="/user/checkout">Checkout</a></button>
+                            </div> --}}
+                            <div class="cart-summary-button mb-5">
+                                <a class="btn bttn checkout-btn py-3"
+                                        href="/user/checkout">Checkout</a>
                             </div>
                         </div>
                     </div>
@@ -177,7 +181,7 @@
                 discount = res.discount
                 if (res.item.quantity === 1) {
                     $tr.find('#decBtn').hide()
-                }else if (res.item.quantity === 5) {
+                } else if (res.item.quantity === 5) {
                     $tr.find('#incBtn').hide()
                 } else {
                     $tr.find('#decBtn').show()
