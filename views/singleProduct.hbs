@@ -86,6 +86,8 @@
     let $imgViewer = $('#imgViewer')
     $('.productImage').on('click', function () {
         $(imgViewer).attr('src', $(this).attr('src'))
+        new ImageZoom(document.getElementById("img-container"), options);
+
     })
 
     var url = window.location.origin
