@@ -290,7 +290,7 @@
                                 </div>
                                 {{/each}}
                                 {{else}}
-                                <h6 class="m-5">No saved Address</h6>
+                                <h6 class="m-5 savedAddress">No saved Address</h6>
                                 {{/if}}
                             </div>
                             <hr>
@@ -401,6 +401,7 @@
                 processData: false,
                 contentType: false,
                 success: res => {
+                    $('.savedAddress').remove()
                     $('.address-form input').val('')
                     $('#chooseAddress').append(
                         `<div class="d-flex align-items-center">
