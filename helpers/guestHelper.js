@@ -8,7 +8,6 @@ const guestHelper = {
             .then(products => {
                 if (req.session.user?.loggedin) {
                     res.render("index", { products, isUserLoggedin: req.session.user.loggedin })
-
                 } else {
                     res.render("index", { products, showLogin: true })
                 }
@@ -27,15 +26,23 @@ const guestHelper = {
             })
     },
     showProductsByCategory: async (req, res) => {
-        const categories = await productHelper.getCategoriesAndCountOfProducts()
-        const products = await productHelper.getAllProductsByCategory(req)
-        res.render("shop", { products, categories, isUserLoggedin: req.session.user?.loggedin })
+        try {
+            const categories = await productHelper.getCategoriesAndCountOfProducts()
+            const products = await productHelper.getAllProductsByCategory(req)
+            res.render("shop", { products, categories, isUserLoggedin: req.session.user?.loggedin })
+        } catch (error) {
+            console.log("🚀 ~ file: guestHelper.js:34 ~ showProductsByCategory: ~ error:", error)
+        }
     },
     getProductsBySearch: async (req, res) => {
         const searchWord = '^' + req.query.q
-        const result = await productModel.find({ productName: { $regex: new RegExp(searchWord, "i") } })
-            .populate('category');
-        res.status(200).send(result)
+        try {
+            const result = await productModel.find({ productName: { $regex: new RegExp(searchWord, "i") } })
+                .populate('category');
+            res.status(200).send(result)
+        } catch (error) {
+            console.log("🚀 ~ file: guestHelper.js:44 ~ getProductsBySearch: ~ error:", error)
+        }
     }
 }
 
