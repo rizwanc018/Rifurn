@@ -115,7 +115,8 @@
                                             <input class=" form-check-input" required type="radio" id="payOnline"
                                                 name="paymentMethod" value="payOnline">
                                             <label class="form-check-label" for="payOnline">Pay Online</label>
-                                            <p data-method="razorpay">Please send a Check to Store name with Store Street,
+                                            <p data-method="razorpay">Please send a Check to Store name with Store
+                                                Street,
                                                 Store Town, Store State, Store Postcode, Store Country.</p>
                                         </div>
                                         <div class="form-check single-method">
@@ -150,6 +151,9 @@
 
                 <div class="text-dark my-3">
                     <h4 class="checkout-title mb-3">Choose Address</h4>
+                    <button class="btn bttn btn-lg btn-round py-2 my-2" id="getLocationButton">Use
+                        Current Location</button>
+
                     {{#if userData.address }}
                     {{#each userData.address }}
                     <div>
@@ -169,6 +173,31 @@
                     <h6 class="m-5">No saved Address</h6>
                     {{/if}}
                 </div>
+
+                <script>
+                    document.getElementById('getLocationButton').addEventListener('click', function () {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(async (position) => {
+                                const latitude = position.coords.latitude;
+                                const longitude = position.coords.longitude;
+
+                                try {
+                                    const response = await fetch(`${url}/user/getAddress?lat=${latitude}&lng=${longitude}`);
+                                    const data = await response.json();
+                                    $('[name="addr2"]').val(data.village)
+                                    $('[name="town"]').val(data.county)
+                                    $('[name="country"]').val(data.country)
+                                    $('[name="state"]').val(data.state_district)
+                                    $('[name="zip"]').val(data.postcode)
+                                } catch (error) {
+                                    console.error('Error fetching address:', error);
+                                }
+                            });
+                        } else {
+                            console.log('Geolocation is not supported by this browser.');
+                        }
+                    });
+                </script>
 
                 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                 <script>
@@ -227,7 +256,7 @@
                                     } else if (res.payment === "rzPay") {
                                         // online payment
                                         razorpayPayment(res.rzpOrder, firstname, lastname, mobile)
-                                    } else if(res.noWallet) {
+                                    } else if (res.noWallet) {
                                         $('#paymentErr').text(res.msg)
                                     }
                                 },

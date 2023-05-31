@@ -8,6 +8,11 @@ import cartHelper from "../helpers/cartHelper.js";
 import orderHelper from "../helpers/orderHelper.js";
 import couponModel from "../models/couponModel.js";
 import walletHelper from "../helpers/walletHelper.js";
+import axios from 'axios';
+import { config } from 'dotenv';
+
+config();
+// require('dotenv').config();
 
 const userController = {
     doSignup: async (req, res) => {
@@ -337,6 +342,19 @@ const userController = {
             res.status(200).send(orderdata._id)
         } else {
             res.status(400).send("Payment Failed")
+        }
+    },
+    getCurrentLocation: async (req, res) => {
+        const { lat, lng } = req.query;
+        const accessToken = process.env.MAPBOX_API_KEY;
+        console.log(lat, lng, accessToken)
+
+        try {
+            const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+            const address = response.data.address;
+            res.send(address);
+        } catch (error) {
+            res.status(500).send({ error: 'Error fetching address' });
         }
     }
 }
